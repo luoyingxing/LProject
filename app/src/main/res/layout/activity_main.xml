@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_one"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.luo.project.ui.Carousel
+        android:id="@+id/carousel"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <!--android:fitsSystemWindows="true",这个属性表示系统UI（状态栏、导航栏）可见的时候，
+    会给我们的布局加上padding（paddingTop、paddingBottom）属性，
+    这样内容就不会被盖住了。-->
+
+    <Button
+        android:id="@+id/button_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#861aca"
+        android:text="RecyclerView"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/tv_main_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello Word"
+        android:textColor="#ff3"
+        android:textSize="20sp" />
+
+</LinearLayout>
