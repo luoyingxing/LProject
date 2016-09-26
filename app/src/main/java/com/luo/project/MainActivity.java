@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.luo.project.ViewGroup.ViewGroupActivity;
 import com.luo.project.view.ViewActivity;
 import com.luo.project.entity.Vocabulary;
 import com.yolanda.nohttp.NoHttp;
@@ -32,6 +33,7 @@ import java.lang.reflect.Type;
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private Button button_one;
+    private Button button_two;
 
     private String Url = "http://open.iciba.com/dsapi";
 
@@ -46,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ViewActivity.class));
+            }
+        });
+
+        button_two = (Button) findViewById(R.id.button_two);
+        button_two.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ViewGroupActivity.class));
             }
         });
 

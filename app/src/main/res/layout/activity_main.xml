@@ -23,6 +23,14 @@
         android:text="RecyclerView"
         android:textColor="#fff" />
 
+    <Button
+        android:id="@+id/button_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#12bc12"
+        android:text="ViewGroup"
+        android:textColor="#fff" />
+
     <TextView
         android:id="@+id/tv_main_text"
         android:layout_width="match_parent"
