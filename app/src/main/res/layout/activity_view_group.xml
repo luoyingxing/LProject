@@ -6,21 +6,16 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_group_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="hello view" />
 
+    <TextView
+        android:id="@+id/tv_group_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hello view group" />
 
-    <com.luo.project.ViewGroup.LuoView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hello LuoView" />
-
-    </com.luo.project.ViewGroup.LuoView>
 
 </LinearLayout>
