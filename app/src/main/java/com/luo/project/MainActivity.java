@@ -34,7 +34,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     private TextView textView;
     private Button button_one;
     private Button button_two;
@@ -67,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         load();
 
         test();
+
+        rx();
 
     }
 
@@ -224,6 +231,63 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+    }
+
+    private void rx() {
+
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onNext(String s) {
+                Log.d(TAG, "Item: " + s);
+            }
+
+            @Override
+            public void onCompleted() {
+                Log.d(TAG, "Completed!");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "Error!");
+            }
+        };
+
+        Subscriber<String> subscriber = new Subscriber<String>() {
+            @Override
+            public void onNext(String s) {
+                Log.d(TAG, "Item: " + s);
+            }
+
+            @Override
+            public void onCompleted() {
+                Log.d(TAG, "Completed!");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "Error!");
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+        };
+
+        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                subscriber.onNext("Hello");
+                subscriber.onNext("Hi");
+                subscriber.onNext("Aloha");
+                subscriber.onCompleted();
+            }
+        });
+
+        observable.subscribe(observer);
+//            或者：
+//            observable.subscribe(subscriber);
 
     }
 }
