@@ -27,8 +27,12 @@ import com.yolanda.nohttp.rest.Request;
 import com.yolanda.nohttp.rest.Response;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         setActionBar();
         load();
+
+        test();
 
     }
 
@@ -190,5 +196,34 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return statusHeight;
+    }
+
+    private void test() {
+        List<Integer> array = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+//        请写出三个数的和等于15或者12的组合
+//        每个组合的三个数不能相等
+        int a, b, c;
+        for (int i = 0; i < array.size() - 2; i++) {
+            a = array.get(i);
+
+            for (int j = i + 1; j < array.size() - 1; j++) {
+                b = array.get(j);
+
+                for (int k = i + 2; k < array.size(); k++) {
+                    c = array.get(k);
+
+
+                    int count = a + b + c;
+                    if (count == 15 || count == 12) {
+
+                        if (a != b && a != c && b != c) {
+
+                            Log.i("组合：", "[ " + a + " " + b + " " + c + " ]");
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
