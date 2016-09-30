@@ -76,6 +76,7 @@ public class Carousel extends FrameLayout {
 
         for (int i = 0; i < len; i++) {
             ImageView pageIV = new ImageView(mContext);
+            pageIV.setScaleType(ImageView.ScaleType.FIT_XY);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);

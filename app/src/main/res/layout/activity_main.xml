@@ -31,6 +31,14 @@
         android:text="ViewGroup"
         android:textColor="#fff" />
 
+    <Button
+        android:id="@+id/button_three"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#c1c71f"
+        android:text="Intent"
+        android:textColor="#fff" />
+
     <TextView
         android:id="@+id/tv_main_text"
         android:layout_width="match_parent"

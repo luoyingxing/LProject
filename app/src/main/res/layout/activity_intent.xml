@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@mipmap/image_four" />
+
+    <Button
+        android:id="@+id/intent_btn_open_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#cb1"
+        android:text="打开另一个程序" />
+
+    <Button
+        android:id="@+id/intent_btn_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#5a9cb1"
+        android:text="关机" />
+
+</LinearLayout>
