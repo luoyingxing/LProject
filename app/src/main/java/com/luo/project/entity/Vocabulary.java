@@ -179,4 +179,24 @@ public class Vocabulary {
             this.name = name;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Vocabulary{" +
+                "sid='" + sid + '\'' +
+                ", tts='" + tts + '\'' +
+                ", content='" + content + '\'' +
+                ", note='" + note + '\'' +
+                ", love='" + love + '\'' +
+                ", translation='" + translation + '\'' +
+                ", picture='" + picture + '\'' +
+                ", picture2='" + picture2 + '\'' +
+                ", caption='" + caption + '\'' +
+                ", dateline='" + dateline + '\'' +
+                ", s_pv='" + s_pv + '\'' +
+                ", sp_pv='" + sp_pv + '\'' +
+                ", fenxiang_img='" + fenxiang_img + '\'' +
+                ", tags=" + tags +
+                '}';
+    }
 }

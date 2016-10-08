@@ -42,6 +42,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".nohttp.NoHttpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

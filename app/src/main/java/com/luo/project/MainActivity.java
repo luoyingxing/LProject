@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.luo.project.ViewGroup.ViewGroupActivity;
 import com.luo.project.intent.IntentActivity;
+import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.view.ViewActivity;
 import com.luo.project.entity.Vocabulary;
 import com.yolanda.nohttp.NoHttp;
@@ -45,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_one;
     private Button button_two;
     private Button button_three;
-
-    private String Url = "http://open.iciba.com/dsapi";
+    private Button button_four;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +78,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        button_four = (Button) findViewById(R.id.button_four);
+        button_four.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NoHttpActivity.class));
+            }
+        });
+
         setActionBar();
-        load();
 
         test();
 
@@ -108,57 +115,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setElevation(0);
-    }
-
-    private void load() {
-        Request request = NoHttp.createJsonObjectRequest(Url, RequestMethod.GET);
-
-        MainApplication.mQueue.add(1, request, new OnResponseListener() {
-            @Override
-            public void onStart(int what) {
-                Log.e("MainActivity", "onStart");
-            }
-
-            @Override
-            public void onSucceed(int what, Response response) {
-                Log.e("MainActivity", "onSucceed");
-                try {
-                    String respon = new String(response.getByteArray(), "utf-8");
-                    Log.e("MainActivity", "response=" + respon);
-
-//                    ApiMsg apiMsg = new Gson().fromJson(json, ApiMsg.class);
-
-                    Vocabulary vocabulary = new Gson().fromJson(respon, Vocabulary.class);
-
-//                    List<Introduce> introduceLits = (List<Introduce>) new Gson().fromJson(respon, Introduce.class);
-
-//                    for (int i = 0; i < vocabulary.size(); i++) {
-//                        Log.e("onSucceed", "标题：" + introduceLits.get(i).getTitle() + "，时间：" + introduceLits.get(i).getCreateTime());
-//                    }
-
-                    Log.e("onSucceed", vocabulary.toString());
-                    textView.append(vocabulary.getContent());
-
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-
-//                Vocabulary vocabulary = (Vocabulary) ResponseParse.getInstance().getResponse(response);
-//                Log.e("onSucceed", vocabulary.toString());
-
-            }
-
-            @Override
-            public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
-                Log.e("MainActivity", "onFailed");
-            }
-
-            @Override
-            public void onFinish(int what) {
-                Log.e("MainActivity", "onFinish");
-            }
-        });
     }
 
     @SuppressWarnings("unchecked")

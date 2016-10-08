@@ -39,6 +39,14 @@
         android:text="Intent"
         android:textColor="#fff" />
 
+    <Button
+        android:id="@+id/button_four"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6aacdd"
+        android:text="NoHttp"
+        android:textColor="#fff" />
+
     <TextView
         android:id="@+id/tv_main_text"
         android:layout_width="match_parent"
