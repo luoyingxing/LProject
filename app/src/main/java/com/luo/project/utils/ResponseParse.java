@@ -9,20 +9,19 @@ import com.yolanda.nohttp.rest.Response;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.security.PublicKey;
 
 /**
  * ResponseParse
  * <p/>
  * Created by luoyingxing on 16/9/12.
  */
-public class ResponseParse<T> {
+public class ResponseParse{
 
     public static ResponseParse getInstance() {
         return new ResponseParse();
     }
 
-    public T getResponse(Response response) {
+    public Object getResponse(Class<?> tClass , Response response) {
         String data = null;
 
         try {
@@ -33,9 +32,8 @@ public class ResponseParse<T> {
 
         Log.i("ResponseParse", "Response=" + data);
 
-        T obj = new Gson().fromJson(data, new TypeToken<T>() {}.getType());
 
-        return obj;
+        return new Gson().fromJson(data, tClass);
     }
 
     @SuppressWarnings("unchecked")

@@ -7,18 +7,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.luo.project.MainApplication;
 import com.luo.project.R;
+import com.luo.project.entity.ApiMsg;
+import com.luo.project.entity.CollegeNotify;
 import com.luo.project.entity.Vocabulary;
+import com.luo.project.utils.ResponseParse;
+import com.yolanda.nohttp.Headers;
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.OnResponseListener;
 import com.yolanda.nohttp.rest.Request;
 import com.yolanda.nohttp.rest.Response;
+import com.yolanda.nohttp.rest.RestRequest;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * NoHttpActivity
@@ -41,8 +50,54 @@ public class NoHttpActivity extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.tv_http);
 
-        load();
+//        load();
+
+        requestString();
+
     }
+
+    private String path = "http://112.74.129.165:8001/renwoxue/school/notice";
+
+    private void requestString() {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("pageNumber", 1);
+        map.put("pageSize", 4);
+
+        new GsonRequest<List<CollegeNotify>>(path, map) {
+
+            @Override
+            protected void onSuccess(List<CollegeNotify> result) {
+                super.onSuccess(result);
+
+                Log.e(" -onSuccess- ", "onSuccess");
+
+                for (int i = 0; i < result.size(); i++) {
+                    Log.e(" -onSuccess- ", result.get(i).getTitle());
+                }
+
+
+            }
+
+            @Override
+            protected void onError(ApiMsg apiMsg) {
+                super.onError(apiMsg);
+                Log.e("onError", apiMsg.toString());
+            }
+
+
+            @Override
+            protected void onFinish() {
+                super.onFinish();
+                Log.e("onFinish", " -- onFinish -- ");
+            }
+
+        }
+                .post();
+
+
+    }
+
 
     private void load() {
         Request request = NoHttp.createJsonObjectRequest(Url, RequestMethod.GET);
@@ -78,9 +133,11 @@ public class NoHttpActivity extends AppCompatActivity {
                 }
 
 
-//                Vocabulary vocabulary = (Vocabulary) ResponseParse.getInstance().getResponse(response);
-//                Log.e("onSucceed", vocabulary.toString());
+                Vocabulary vocabulary = (Vocabulary) ResponseParse.getInstance().getResponse(Vocabulary.class, response);
 
+//                Vocabulary vocabulary = (Vocabulary) new ResponseParse<Vocabulary>().getResponse(response);
+
+                Log.e("LuoYingXing", vocabulary.toString());
             }
 
             @Override
