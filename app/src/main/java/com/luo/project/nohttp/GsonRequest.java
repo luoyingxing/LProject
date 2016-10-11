@@ -1,6 +1,5 @@
 package com.luo.project.nohttp;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -24,37 +23,33 @@ import java.util.Map;
  * Created by luoyingxing on 16/10/10.
  */
 public class GsonRequest<T> extends RestRequest<T> {
+    /**
+     * TAG
+     */
     private static final String TAG = "GsonRequest";
     /**
      * ACCEPT
      */
     protected static final String ACCEPT = "application/json";
-
     /**
      * Request method.
      */
     private RequestMethod mRequestMethod;
-
     /**
      * URL of this request.
      */
     private String mUrl;
-
     /**
      * Param collection.
      */
     private MultiValueMap<String, Object> mParamKeyValues;
 
-
     public GsonRequest(String url) {
         super(url);
         mUrl = url;
-    }
-
-    public GsonRequest(String url, RequestMethod requestMethod) {
-        super(url, requestMethod);
-        mUrl = url;
-        mRequestMethod = requestMethod;
+        if (mParamKeyValues == null) {
+            mParamKeyValues = new LinkedMultiValueMap<>();
+        }
     }
 
     public GsonRequest(String url, Map<String, Object> params) {
@@ -78,39 +73,13 @@ public class GsonRequest<T> extends RestRequest<T> {
     }
 
     @Override
-    public RequestMethod getRequestMethod() {
-        return mRequestMethod;
+    public String url() {
+        return mUrl;
     }
-
-    public GsonRequest<T> addParam(String key, Object value) {
-        if (mParamKeyValues == null) {
-            mParamKeyValues = new LinkedMultiValueMap<>();
-        }
-
-        mParamKeyValues.add(key, value);
-        return this;
-    }
-
-    /**
-     * The real .
-     */
-    private String buildUrl;
 
     @Override
-    public String url() {
-        if (TextUtils.isEmpty(buildUrl)) {
-            StringBuilder urlBuilder = new StringBuilder(mUrl);
-            if (!getRequestMethod().allowRequestBody() && mParamKeyValues.size() > 0) {
-                StringBuffer paramBuffer = buildCommonParams(getParamKeyValues(), getParamsEncoding());
-                if (mUrl.contains("?") && mUrl.contains("=") && paramBuffer.length() > 0)
-                    urlBuilder.append("&");
-                else if (paramBuffer.length() > 0)
-                    urlBuilder.append("?");
-                urlBuilder.append(paramBuffer);
-            }
-            buildUrl = urlBuilder.toString();
-        }
-        return buildUrl;
+    public RequestMethod getRequestMethod() {
+        return mRequestMethod;
     }
 
     @Override
@@ -122,7 +91,6 @@ public class GsonRequest<T> extends RestRequest<T> {
         if (params == null) {
             return null;
         }
-
 
         StringBuilder encodedParams = new StringBuilder();
 
@@ -139,22 +107,29 @@ public class GsonRequest<T> extends RestRequest<T> {
         return encodedParams.toString();
     }
 
+    public GsonRequest<T> addParam(String key, Object value) {
+        if (mParamKeyValues == null) {
+            mParamKeyValues = new LinkedMultiValueMap<>();
+        }
+        mParamKeyValues.add(key, value);
+        return this;
+    }
 
     public GsonRequest<T> get() {
         mRequestMethod = RequestMethod.GET;
 
         if (mParamKeyValues != null) {
-            mUrl += (mUrl.contains("?") ? "&" : "?") + paramsToString(mParamKeyValues);
+            mUrl = mParamKeyValues.keySet().size() == 0 ? mUrl : mUrl + (mUrl.contains("?") ? "&" : "?") + paramsToString(mParamKeyValues);
         }
 
-        Log.i("GsonRequest", "Get: " + mUrl);
+        Log.i(TAG, "Get: " + mUrl);
         return send();
     }
 
     public GsonRequest<T> post() {
         mRequestMethod = RequestMethod.POST;
-        Log.i("GsonRequest", "Post: " + mUrl);
-        Log.i("GsonRequest", "Body: " + paramsToString(mParamKeyValues));
+        Log.i(TAG, "Post: " + mUrl);
+        Log.i(TAG, "Body: " + paramsToString(mParamKeyValues));
 
         setRequestBody(paramsToString(mParamKeyValues));
         return send();
@@ -165,6 +140,11 @@ public class GsonRequest<T> extends RestRequest<T> {
         return this;
     }
 
+
+    public GsonRequest<T> addHeaders(String key, String value) {
+        addHeader(key, value);
+        return this;
+    }
 
     @Override
     public T parseResponse(String url, Headers responseHeaders, byte[] responseBody) {
@@ -186,10 +166,7 @@ public class GsonRequest<T> extends RestRequest<T> {
             return null;
         }
 
-        //TODO 测试
-//        json = "{\"errNum\":300205,\"errMsg\":\"Api does not exist\"}";
-
-        Log.e("GsonRequest", "Response= " + json);
+        Log.e(TAG, "Response= " + json);
 
         if (ApiMsg.isApiMsg(json)) {
             onError(new Gson().fromJson(json, ApiMsg.class));

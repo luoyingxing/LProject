@@ -14,6 +14,8 @@ import com.luo.project.MainApplication;
 import com.luo.project.R;
 import com.luo.project.entity.ApiMsg;
 import com.luo.project.entity.CollegeNotify;
+import com.luo.project.entity.News;
+import com.luo.project.entity.NewsDetial;
 import com.luo.project.entity.Vocabulary;
 import com.luo.project.utils.ResponseParse;
 import com.yolanda.nohttp.Headers;
@@ -52,28 +54,30 @@ public class NoHttpActivity extends AppCompatActivity {
 
 //        load();
 
-        requestString();
+//        requestString();
 
+        request();
+
+//        requestRenWoXue();
     }
 
-    private String path = "http://112.74.129.165:8001/renwoxue/school/notice";
+
+    private String path = "http://apis.baidu.com/showapi_open_bus/channel_news/channel_news";
+
+    private String apiKey = "87dd5b309735c00e1cc37bb52c97b7a0";
 
     private void requestString() {
-        Map<String, Object> map = new HashMap<>();
 
-        map.put("pageNumber", 1);
-        map.put("pageSize", 4);
-
-        new GsonRequest<List<CollegeNotify>>(path, map) {
+        new GsonRequest<News>(path) {
 
             @Override
-            protected void onSuccess(List<CollegeNotify> result) {
+            protected void onSuccess(News result) {
                 super.onSuccess(result);
 
                 Log.e(" -onSuccess- ", "onSuccess");
 
-                for (int i = 0; i < result.size(); i++) {
-                    Log.e(" -onSuccess- ", result.get(i).getTitle());
+                for (int i = 0; i < result.getShowapi_res_body().getChannelList().size(); i++) {
+                    Log.e(" -onSuccess- ", result.getShowapi_res_body().getChannelList().get(i).getName());
                 }
 
 
@@ -92,16 +96,88 @@ public class NoHttpActivity extends AppCompatActivity {
                 Log.e("onFinish", " -- onFinish -- ");
             }
 
-        }
-                .post();
+        }.addHeaders("apikey", apiKey)
+                .get();
 
+    }
+
+    private void request() {
+
+        String urlRequest = "http://apis.baidu.com/showapi_open_bus/channel_news/search_news";
+//        String urlRequest = "http://apis.baidu.com/showapi_open_bus/channel_news/search_news?channelId=5572a109b3cdc86cf39001db";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("channelId", "5572a108b3cdc86cf39001d6");
+
+        new GsonRequest<NewsDetial>(urlRequest) {
+
+            @Override
+            protected void onSuccess(NewsDetial result) {
+                super.onSuccess(result);
+
+                Log.e(" -onSuccess- ", "onSuccess");
+
+
+            }
+
+            @Override
+            protected void onError(ApiMsg apiMsg) {
+                super.onError(apiMsg);
+                Log.e("onError", apiMsg.toString());
+            }
+
+
+            @Override
+            protected void onFinish() {
+                super.onFinish();
+                Log.e("onFinish", " -- onFinish -- ");
+            }
+
+        }.addHeaders("apikey", apiKey)
+                .addParam("channelId", "5572a108b3cdc86cf39001d6")
+////                .addParam("channelName", "国内最新")
+////                .addParam("page", 1)
+////                .addParam("needContent", 0)
+////                .addParam("needHtml", 0)
+                .get();
+
+    }
+
+    private void requestRenWoXue() {
+        String path = "http://112.74.129.165:8001/renwoxue/school/notice";
+        new GsonRequest<List<CollegeNotify>>(path) {
+
+            @Override
+            protected void onSuccess(List<CollegeNotify> result) {
+                super.onSuccess(result);
+
+                Log.e(" -onSuccess- ", "onSuccess" + "返回数量" + result.size());
+
+
+            }
+
+            @Override
+            protected void onError(ApiMsg apiMsg) {
+                super.onError(apiMsg);
+                Log.e("onError", apiMsg.toString());
+            }
+
+
+            @Override
+            protected void onFinish() {
+                super.onFinish();
+                Log.e("onFinish", " -- onFinish -- ");
+            }
+
+        }.addParam("pageNumber", 2)
+                .addParam("pageSize", 4)
+                .post();
 
     }
 
 
     private void load() {
         Request request = NoHttp.createJsonObjectRequest(Url, RequestMethod.GET);
-
         MainApplication.mQueue.add(1, request, new OnResponseListener() {
             @Override
             public void onStart(int what) {
