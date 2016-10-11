@@ -218,8 +218,7 @@ public class NoHttpActivity extends AppCompatActivity {
                 Log.e("onFinish", "onFinish");
             }
         }.addHeaders("apikey", apiKey)
-                .addCookie("8asd818iahsd87189ei1h8asdy81827")
-                .addParam("num", 6)
+                .addParam("num", 18)
                 .get();
 
     }

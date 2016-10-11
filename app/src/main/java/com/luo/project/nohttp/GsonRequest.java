@@ -106,11 +106,6 @@ public class GsonRequest<T> extends RestRequest<T> {
         return this;
     }
 
-    public GsonRequest<T> addCookie(String cookie) {
-        setHeader(Headers.HEAD_KEY_SET_COOKIE, cookie);
-        return this;
-    }
-
     public GsonRequest<T> addParam(String key, Object value) {
         if (mParamKeyValues == null) {
             mParamKeyValues = new LinkedMultiValueMap<>();
