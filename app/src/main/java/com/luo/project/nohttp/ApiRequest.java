@@ -1,5 +1,8 @@
 package com.luo.project.nohttp;
 
+import com.luo.project.MainApplication;
+import com.yolanda.nohttp.Headers;
+
 import java.util.Map;
 
 /**
@@ -24,4 +27,15 @@ public class ApiRequest<T> extends GsonRequest<T> {
         }
     }
 
+    @Override
+    public Headers headers() {
+        String cookie = MainApplication.getApp().getLoginCookie();
+        if (cookie == null) {
+            return super.headers();
+        }
+
+        Headers headers = super.headers();
+        headers.add("Cookie", cookie);
+        return headers;
+    }
 }
