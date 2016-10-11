@@ -57,7 +57,7 @@ public class NoHttpActivity extends AppCompatActivity {
 
 //        requestString();
 //
-//        request();
+        request();
 //
 //        requestRenWoXue();
 
@@ -112,7 +112,7 @@ public class NoHttpActivity extends AppCompatActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("channelId", "5572a108b3cdc86cf39001d6");
 
-        new GsonRequest<NewsDetial>(urlRequest) {
+        new ApiRequest<NewsDetial>(urlRequest, true) {
 
             @Override
             protected void onSuccess(NewsDetial result) {
@@ -136,7 +136,7 @@ public class NoHttpActivity extends AppCompatActivity {
                 Log.e("onFinish", " -- onFinish -- ");
             }
 
-        }.addHeaders("apikey", apiKey)
+        }
                 .addParam("channelId", "5572a108b3cdc86cf39001d6")
 ////                .addParam("channelName", "国内最新")
 ////                .addParam("page", 1)
