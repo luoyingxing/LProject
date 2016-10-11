@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.luo.project.MainApplication;
 import com.luo.project.entity.ApiMsg;
+import com.luo.project.entity.ErrMsg;
 import com.yolanda.nohttp.Headers;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.RestRequest;
@@ -47,20 +47,14 @@ public class GsonRequest<T> extends RestRequest<T> {
     public GsonRequest(String url) {
         super(url);
         mUrl = url;
-        if (mParamKeyValues == null) {
-            mParamKeyValues = new LinkedMultiValueMap<>();
-        }
+        mParamKeyValues = new LinkedMultiValueMap<>();
     }
 
     public GsonRequest(String url, Map<String, Object> params) {
         super(url, RequestMethod.GET);
         mUrl = url;
+        mParamKeyValues = new LinkedMultiValueMap<>();
         if (params != null) {
-
-            if (mParamKeyValues == null) {
-                mParamKeyValues = new LinkedMultiValueMap<>();
-            }
-
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 mParamKeyValues.add(entry.getKey(), entry.getValue());
             }
@@ -107,6 +101,16 @@ public class GsonRequest<T> extends RestRequest<T> {
         return encodedParams.toString();
     }
 
+    public GsonRequest<T> addHeaders(String key, String value) {
+        addHeader(key, value);
+        return this;
+    }
+
+    public GsonRequest<T> addCookie(String cookie) {
+        setHeader(Headers.HEAD_KEY_SET_COOKIE, cookie);
+        return this;
+    }
+
     public GsonRequest<T> addParam(String key, Object value) {
         if (mParamKeyValues == null) {
             mParamKeyValues = new LinkedMultiValueMap<>();
@@ -136,13 +140,7 @@ public class GsonRequest<T> extends RestRequest<T> {
     }
 
     private GsonRequest<T> send() {
-        MainApplication.mQueue.add(0, this, null);
-        return this;
-    }
-
-
-    public GsonRequest<T> addHeaders(String key, String value) {
-        addHeader(key, value);
+        MyNoHttp.addRequest(this);
         return this;
     }
 
@@ -166,6 +164,7 @@ public class GsonRequest<T> extends RestRequest<T> {
             return null;
         }
 
+        onResponse(responseHeaders, responseBody);
         Log.e(TAG, "Response= " + json);
 
         if (ApiMsg.isApiMsg(json)) {
@@ -180,6 +179,7 @@ public class GsonRequest<T> extends RestRequest<T> {
                 return obj;
 
             } catch (JsonSyntaxException e) {
+                onError(ErrMsg.parseError());
                 onFinish();
                 return null;
             }
@@ -193,6 +193,9 @@ public class GsonRequest<T> extends RestRequest<T> {
     }
 
     protected void onFinish() {
+    }
+
+    protected void onResponse(Headers headers, byte[] responseBody) {
     }
 
     @SuppressWarnings("unchecked")

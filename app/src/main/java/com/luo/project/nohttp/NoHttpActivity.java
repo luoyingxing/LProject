@@ -14,6 +14,7 @@ import com.luo.project.MainApplication;
 import com.luo.project.R;
 import com.luo.project.entity.ApiMsg;
 import com.luo.project.entity.CollegeNotify;
+import com.luo.project.entity.Girls;
 import com.luo.project.entity.News;
 import com.luo.project.entity.NewsDetial;
 import com.luo.project.entity.Vocabulary;
@@ -55,10 +56,12 @@ public class NoHttpActivity extends AppCompatActivity {
 //        load();
 
 //        requestString();
-
-        request();
-
+//
+//        request();
+//
 //        requestRenWoXue();
+
+        requestImage();
     }
 
 
@@ -115,7 +118,7 @@ public class NoHttpActivity extends AppCompatActivity {
             protected void onSuccess(NewsDetial result) {
                 super.onSuccess(result);
 
-                Log.e(" -onSuccess- ", "onSuccess");
+                Log.e(" -onSuccess- ", "onSuccess" + result.toString());
 
 
             }
@@ -175,10 +178,56 @@ public class NoHttpActivity extends AppCompatActivity {
 
     }
 
+    private void requestImage() {
+        String path = "http://apis.baidu.com/txapi/mvtp/meinv";
+        new GsonRequest<Girls>(path) {
+
+            @Override
+            protected void onSuccess(Girls result) {
+                super.onSuccess(result);
+
+                for (int i = 0; i < result.getNewslist().size(); i++) {
+                    Log.e(" -onSuccess- ", result.getNewslist().get(i).getPicUrl());
+                }
+
+            }
+
+            @Override
+            protected void onError(ApiMsg apiMsg) {
+                super.onError(apiMsg);
+                Log.e("onError", apiMsg.toString());
+            }
+
+
+            @Override
+            protected void onFinish() {
+                super.onFinish();
+                Log.e("onFinish", "onFinish");
+            }
+
+            @Override
+            protected void onResponse(Headers headers, byte[] responseBody) {
+                super.onResponse(headers, responseBody);
+
+                for (String str : headers.keySet()) {
+                    if (str.equalsIgnoreCase(Headers.HEAD_KEY_SET_COOKIE)) {
+                        Log.e("onSuccess", " - cookie - " + headers.getValues(str).get(0));
+                    }
+                }
+
+                Log.e("onFinish", "onFinish");
+            }
+        }.addHeaders("apikey", apiKey)
+                .addCookie("8asd818iahsd87189ei1h8asdy81827")
+                .addParam("num", 6)
+                .get();
+
+    }
+
 
     private void load() {
         Request request = NoHttp.createJsonObjectRequest(Url, RequestMethod.GET);
-        MainApplication.mQueue.add(1, request, new OnResponseListener() {
+        MyNoHttp.addRequest(1, request, new OnResponseListener() {
             @Override
             public void onStart(int what) {
                 Log.e("MainActivity", "onStart");
