@@ -57,7 +57,7 @@ public class NoHttpActivity extends AppCompatActivity {
 
 //        requestString();
 //
-        request();
+//        request();
 //
 //        requestRenWoXue();
 
@@ -94,11 +94,10 @@ public class NoHttpActivity extends AppCompatActivity {
 
 
             @Override
-            protected void onFinish() {
-                super.onFinish();
+            protected void onFinish(int what) {
+                super.onFinish(what);
                 Log.e("onFinish", " -- onFinish -- ");
             }
-
         }.addHeaders("apikey", apiKey)
                 .get();
 
@@ -131,8 +130,8 @@ public class NoHttpActivity extends AppCompatActivity {
 
 
             @Override
-            protected void onFinish() {
-                super.onFinish();
+            protected void onFinish(int what) {
+                super.onFinish(what);
                 Log.e("onFinish", " -- onFinish -- ");
             }
 
@@ -167,8 +166,8 @@ public class NoHttpActivity extends AppCompatActivity {
 
 
             @Override
-            protected void onFinish() {
-                super.onFinish();
+            protected void onFinish(int what) {
+                super.onFinish(what);
                 Log.e("onFinish", " -- onFinish -- ");
             }
 
@@ -188,8 +187,8 @@ public class NoHttpActivity extends AppCompatActivity {
 
                 for (int i = 0; i < result.getNewslist().size(); i++) {
                     Log.e(" -onSuccess- ", result.getNewslist().get(i).getPicUrl());
+                    textView.append(result.getNewslist().get(i).getPicUrl());
                 }
-
             }
 
             @Override
@@ -200,8 +199,8 @@ public class NoHttpActivity extends AppCompatActivity {
 
 
             @Override
-            protected void onFinish() {
-                super.onFinish();
+            protected void onFinish(int what) {
+                super.onFinish(what);
                 Log.e("onFinish", "onFinish");
             }
 
