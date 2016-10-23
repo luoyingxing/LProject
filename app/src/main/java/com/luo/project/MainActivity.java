@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_two;
     private Button button_three;
     private Button button_four;
+    private Button button_five;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, NoHttpActivity.class));
+            }
+        });
+
+        button_five = (Button) findViewById(R.id.button_five);
+        button_five.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, com.luo.project.layout.ViewActivity.class));
             }
         });
 

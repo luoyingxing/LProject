@@ -47,6 +47,14 @@
         android:text="NoHttp"
         android:textColor="#fff" />
 
+    <Button
+        android:id="@+id/button_five"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6767f2"
+        android:text="View"
+        android:textColor="#fff" />
+
     <TextView
         android:id="@+id/tv_main_text"
         android:layout_width="match_parent"
