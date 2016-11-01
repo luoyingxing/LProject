@@ -6,6 +6,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="green">#8ddd81</color>
+    <color name="white">#ffffff</color>
 
     <color name="actionBar">#00000000</color>
 </resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="6dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="6dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="啥啥啥和"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:fadeDuration="300"
+        fresco:failureImage="@mipmap/image_one"
+        fresco:placeholderImage="@mipmap/image_one" />
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:paddingTop="3dp"
+        android:text="啥啥啥啥啥啥和啥啥啥和啥啥啥和啥啥啥和啥啥啥和啥啥啥和和"
+        android:textSize="13sp" />
+
+
+</LinearLayout>

@@ -1,54 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.luo.project.layout.ReleaseLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.luo.project.layout.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:orientation="horizontal">-->
+    <include layout="@layout/refresh_head" />
 
-    <!--<TextView-->
-    <!--android:id="@+id/refresh_text"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@color/theme_color"-->
-    <!--android:gravity="center"-->
-    <!--android:paddingBottom="13dp"-->
-    <!--android:paddingTop="13dp"-->
-    <!--android:text="下拉刷新"-->
-    <!--android:textColor="#fff" />-->
-
-    <!--</RelativeLayout>-->
-
-    <TextView
-        android:id="@+id/body_text"
+    <com.luo.project.layout.PullAbleListView
+        android:id="@+id/lv_content"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@color/green"
-        android:gravity="center"
-        android:paddingBottom="13dp"
-        android:paddingTop="13dp"
-        android:text="内容区域"
-        android:textColor="#fff" />
+        android:layout_height="match_parent" />
 
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:orientation="horizontal">-->
+    <include layout="@layout/load_more" />
 
-    <!--<TextView-->
-    <!--android:id="@+id/load_more_text"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@color/colorAccent"-->
-    <!--android:gravity="center"-->
-    <!--android:paddingBottom="13dp"-->
-    <!--android:paddingTop="13dp"-->
-    <!--android:text="上拉加载"-->
-    <!--android:textColor="#fff" />-->
-
-    <!--</RelativeLayout>-->
-
-
-</com.luo.project.layout.ReleaseLayout>
+</com.luo.project.layout.RefreshLayout>

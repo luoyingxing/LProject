@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.luo.project.ViewGroup.ViewGroupActivity;
+import com.luo.project.entity.NewsDetial;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.view.ViewActivity;
@@ -30,6 +31,7 @@ import com.yolanda.nohttp.rest.Response;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Action5;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -100,6 +104,20 @@ public class MainActivity extends AppCompatActivity {
         test();
 
         rx();
+
+        try {
+            Class<?> clazz = Class.forName(NewsDetial.class.getName());
+
+            Method[] methods = clazz.getMethods();
+
+            for (Method method : methods) {
+                Log.e("-- Method -- ", method.getName());
+            }
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -264,5 +282,16 @@ public class MainActivity extends AppCompatActivity {
 //            或者：
 //            observable.subscribe(subscriber);
 
+
+        String[] names = new String[]{"李白", "杜甫", "陶渊明", "李煜"};
+        Observable.from(names)
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String name) {
+                        Log.d("Observable ", name);
+                    }
+                });
+
+        Log.e("main", "sin(49) = " + Math.sin(49));
     }
 }

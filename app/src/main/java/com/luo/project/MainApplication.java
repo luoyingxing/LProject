@@ -3,6 +3,7 @@ package com.luo.project;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.luo.project.nohttp.MyNoHttp;
 import com.luo.project.utils.FileUtils;
 
@@ -29,6 +30,7 @@ public class MainApplication extends Application {
         super.onCreate();
         mApp = this;
         MyNoHttp.initialize(this);
+        Fresco.initialize(this);
     }
 
     public String getLoginCookie() {
