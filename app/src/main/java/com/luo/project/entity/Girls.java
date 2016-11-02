@@ -44,6 +44,14 @@ public class Girls {
         private String picUrl;
         private String url;
 
+        public NewslistBean(String ctime, String title, String description, String picUrl, String url) {
+            this.ctime = ctime;
+            this.title = title;
+            this.description = description;
+            this.picUrl = picUrl;
+            this.url = url;
+        }
+
         public String getCtime() {
             return ctime;
         }

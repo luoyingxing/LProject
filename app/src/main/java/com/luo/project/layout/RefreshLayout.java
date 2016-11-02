@@ -25,7 +25,7 @@ import java.util.TimerTask;
  * <p/>
  * Created by luoyingxing on 16/10/25.
  */
-public class RefreshLayout extends RelativeLayout {
+public class RefreshLayout extends ViewGroup {
     /**
      * TAG for PullRefreshLayout
      */
@@ -91,7 +91,7 @@ public class RefreshLayout extends RelativeLayout {
     /**
      * 释放加载的距离
      */
-    private float mLoadmoreDist = 200;
+    private float mLoadMoreDist = 200;
 
     /**
      * 定时器
@@ -128,7 +128,7 @@ public class RefreshLayout extends RelativeLayout {
     /**
      * 下拉的箭头
      */
-    private View mPullDwonView;
+    private View mPullDownView;
     /**
      * 正在刷新的图标
      */
@@ -145,7 +145,7 @@ public class RefreshLayout extends RelativeLayout {
     /**
      * 上拉头
      */
-    private View mLoadmoreView;
+    private View mLoadMoreView;
     /**
      * 上拉的箭头
      */
@@ -209,7 +209,7 @@ public class RefreshLayout extends RelativeLayout {
             if (mPullDownY < 0) {
                 // 已完成回弹
                 mPullDownY = 0;
-                mPullDwonView.clearAnimation();
+                mPullDownView.clearAnimation();
                 // 隐藏下拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态
                 if (mState != REFRESHING && mState != LOADING) {
                     changeState(INIT);
@@ -362,8 +362,8 @@ public class RefreshLayout extends RelativeLayout {
                 // 下拉布局初始状态
                 mRefreshStateImageView.setVisibility(View.GONE);
                 mRefreshStateTextView.setText("下拉刷新");
-                mPullDwonView.clearAnimation();
-                mPullDwonView.setVisibility(View.VISIBLE);
+                mPullDownView.clearAnimation();
+                mPullDownView.setVisibility(View.VISIBLE);
 
                 // 上拉布局初始状态
                 mLoadStateImageView.setVisibility(View.GONE);
@@ -374,13 +374,13 @@ public class RefreshLayout extends RelativeLayout {
             case RELEASE_TO_REFRESH:
                 // 释放刷新状态
                 mRefreshStateTextView.setText("释放刷新");
-                mPullDwonView.startAnimation(mRotateAnimation);
+                mPullDownView.startAnimation(mRotateAnimation);
                 break;
             case REFRESHING:
                 // 正在刷新状态
-                mPullDwonView.clearAnimation();
+                mPullDownView.clearAnimation();
                 mRefreshingView.setVisibility(View.VISIBLE);
-                mPullDwonView.setVisibility(View.INVISIBLE);
+                mPullDownView.setVisibility(View.INVISIBLE);
                 mRefreshingView.startAnimation(mRefreshingAnimation);
                 mRefreshStateTextView.setText("正在刷新");
                 break;
@@ -499,11 +499,11 @@ public class RefreshLayout extends RelativeLayout {
 
                 } else if (mPullUpY < 0) {
                     // 下面是判断上拉加载的，同上，注意pullUpY是负值
-                    if (-mPullUpY <= mLoadmoreDist && (mState == RELEASE_TO_LOAD || mState == DONE)) {
+                    if (-mPullUpY <= mLoadMoreDist && (mState == RELEASE_TO_LOAD || mState == DONE)) {
                         changeState(INIT);
                     }
                     // 上拉操作
-                    if (-mPullUpY >= mLoadmoreDist && mState == INIT) {
+                    if (-mPullUpY >= mLoadMoreDist && mState == INIT) {
                         changeState(RELEASE_TO_LOAD);
                     }
                 }
@@ -516,7 +516,7 @@ public class RefreshLayout extends RelativeLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (mPullDownY > mRefreshDist || -mPullUpY > mLoadmoreDist) {
+                if (mPullDownY > mRefreshDist || -mPullUpY > mLoadMoreDist) {
                     // 正在刷新时往下拉（正在加载时往上拉），释放后下拉头（上拉头）不隐藏
                     mIsTouch = false;
                 }
@@ -594,7 +594,7 @@ public class RefreshLayout extends RelativeLayout {
      * 自动加载
      */
     public void autoLoad() {
-        mPullUpY = -mLoadmoreDist;
+        mPullUpY = -mLoadMoreDist;
         requestLayout();
         changeState(LOADING);
         // 加载操作
@@ -609,44 +609,44 @@ public class RefreshLayout extends RelativeLayout {
             // 这里是第一次进来的时候做一些初始化
             mRefreshView = getChildAt(0);
             mPullAbleView = getChildAt(1);
-            mLoadmoreView = getChildAt(2);
+            mLoadMoreView = getChildAt(2);
             mIsLayout = true;
             initView();
 
             mRefreshDist = ((ViewGroup) mRefreshView).getChildAt(0).getMeasuredHeight();
-            mLoadmoreDist = ((ViewGroup) mLoadmoreView).getChildAt(0).getMeasuredHeight();
+            mLoadMoreDist = ((ViewGroup) mLoadMoreView).getChildAt(0).getMeasuredHeight();
         }
         // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
         mRefreshView.layout(0, (int) (mPullDownY + mPullUpY) - mRefreshView.getMeasuredHeight(),
                 mRefreshView.getMeasuredWidth(), (int) (mPullDownY + mPullUpY));
         mPullAbleView.layout(0, (int) (mPullDownY + mPullUpY),
                 mPullAbleView.getMeasuredWidth(), (int) (mPullDownY + mPullUpY) + mPullAbleView.getMeasuredHeight());
-        mLoadmoreView.layout(0, (int) (mPullDownY + mPullUpY) + mPullAbleView.getMeasuredHeight(),
-                mLoadmoreView.getMeasuredWidth(),
-                (int) (mPullDownY + mPullUpY) + mPullAbleView.getMeasuredHeight() + mLoadmoreView.getMeasuredHeight());
+        mLoadMoreView.layout(0, (int) (mPullDownY + mPullUpY) + mPullAbleView.getMeasuredHeight(),
+                mLoadMoreView.getMeasuredWidth(),
+                (int) (mPullDownY + mPullUpY) + mPullAbleView.getMeasuredHeight() + mLoadMoreView.getMeasuredHeight());
     }
 
     private void initView() {
         // 初始化下拉布局
-        mPullDwonView = mRefreshView.findViewById(R.id.pull_icon);
+        mPullDownView = mRefreshView.findViewById(R.id.pull_icon);
         mRefreshStateTextView = (TextView) mRefreshView.findViewById(R.id.state_tv);
         mRefreshingView = mRefreshView.findViewById(R.id.refreshing_icon);
         mRefreshStateImageView = mRefreshView.findViewById(R.id.state_iv);
         // 初始化上拉布局
-        mPullUpView = mLoadmoreView.findViewById(R.id.pullup_icon);
-        mLoadStateTextView = (TextView) mLoadmoreView.findViewById(R.id.loadstate_tv);
-        mLoadingView = mLoadmoreView.findViewById(R.id.loading_icon);
-        mLoadStateImageView = mLoadmoreView.findViewById(R.id.loadstate_iv);
+        mPullUpView = mLoadMoreView.findViewById(R.id.pullup_icon);
+        mLoadStateTextView = (TextView) mLoadMoreView.findViewById(R.id.loadstate_tv);
+        mLoadingView = mLoadMoreView.findViewById(R.id.loading_icon);
+        mLoadStateImageView = mLoadMoreView.findViewById(R.id.loadstate_iv);
     }
 
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        measureChildren(widthMeasureSpec, heightMeasureSpec);
-//        int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-//        int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-//        setMeasuredDimension(width, height);
-//    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        setMeasuredDimension(width, height);
+    }
 
     class MyTimer {
         private Handler handler;
