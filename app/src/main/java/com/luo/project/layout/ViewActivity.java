@@ -15,6 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.luo.project.R;
 import com.luo.project.entity.Girls;
 import com.luo.project.nohttp.GsonRequest;
+import com.luo.project.utils.ImageLoader;
 
 /**
  * ViewActivity
@@ -31,6 +32,8 @@ public class ViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout_view);
 
+        getSupportActionBar().hide();
+
         mRefreshLayout = (RefreshLayout) findViewById(R.id.refresh_layout);
         mPullAbleListView = (PullAbleListView) findViewById(R.id.lv_content);
 
@@ -39,11 +42,13 @@ public class ViewActivity extends AppCompatActivity {
             public void onRefresh(RefreshLayout pullToRefreshLayout) {
                 mAdapter.clear();
                 loadImage();
+//                loadImage(urls);
             }
 
             @Override
             public void onLoadMore(RefreshLayout pullToRefreshLayout) {
                 loadImage();
+//                loadImage(urls);
             }
         });
 
@@ -51,6 +56,26 @@ public class ViewActivity extends AppCompatActivity {
         mPullAbleListView.setAdapter(mAdapter);
 
         loadImage();
+
+//        loadImage(urls);
+    }
+
+    String[] urls = new String[]{"http://i1.hexunimg.cn/2014-08-15/167580248.jpg",
+            "http://desk.fd.zol-img.com.cn/t_s960x600c5/g4/M01/0D/04/Cg-4WVP_npmIY6GRAKcKYPPMR3wAAQ8LgNIuTMApwp4015.jpg",
+            "http://desk.fd.zol-img.com.cn/t_s960x600c5/g5/M00/01/0E/ChMkJlbKwhKIPf_RAAweZKvhDqMAALGiQLPZ9QADB58872.jpg",
+            "http://desk.fd.zol-img.com.cn/t_s960x600c5/g5/M00/02/06/ChMkJ1bKyqKIPFxLAGZe49gDZ3YAALIegJkT54AZl77897.jpg",
+            "http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1610/09/c0/28134119_1476023565298_800x600.jpg",
+            "http://desk.fd.zol-img.com.cn/t_s960x600c5/g5/M00/01/0E/ChMkJ1bKwhGIUJlGAA6OD8_97jgAALGiQIKBdAADo4n874.jpg",
+            "http://pic76.nipic.com/file/20150824/21321671_165321269000_2.jpg",
+            "http://pic2015.5442.com:82/2016/0921/10/2.jpg%21960.jpg",
+            "http://pic1.win4000.com/wallpaper/2/57ec7798da967.jpg",
+            "http://pic1.win4000.com/wallpaper/0/57ec76bf556c1.jpg",
+            "http://pic4.nipic.com/20090823/3193830_121855091_2.jpg"};
+
+    private void loadImage(String[] urls) {
+        for (String url : urls) {
+            mAdapter.add(new Girls.NewslistBean("", "图片", "图片", url, ""));
+        }
     }
 
     private String apiKey = "87dd5b309735c00e1cc37bb52c97b7a0";
@@ -102,9 +127,11 @@ public class ViewActivity extends AppCompatActivity {
             }
             Girls.NewslistBean girls = getItem(position);
 
-            viewHolder.image.setImageURI(Uri.parse(girls.getPicUrl()));
+//            viewHolder.image.setImageURI(Uri.parse(girls.getPicUrl()));
             viewHolder.title.setText(girls.getTitle());
             viewHolder.description.setText(girls.getDescription());
+
+            ImageLoader.loadImage(Uri.parse(girls.getPicUrl()), viewHolder.image);
             return convertView;
         }
 
