@@ -25,8 +25,8 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_image"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        fresco:actualImageScaleType="centerCrop"
+        android:layout_height="200dp"
+        fresco:actualImageScaleType="fitXY"
         fresco:fadeDuration="300"
         fresco:failureImage="@mipmap/image_one"
         fresco:placeholderImage="@mipmap/image_one" />

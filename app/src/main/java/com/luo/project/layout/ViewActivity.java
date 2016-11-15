@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.luo.project.R;
+import com.luo.project.db.GirlsDB;
 import com.luo.project.entity.Girls;
 import com.luo.project.nohttp.GsonRequest;
 import com.luo.project.utils.ImageLoader;
@@ -58,6 +59,8 @@ public class ViewActivity extends AppCompatActivity {
         loadImage();
 
 //        loadImage(urls);
+
+        GirlsDB.insert(getApplicationContext());
     }
 
     String[] urls = new String[]{"http://i1.hexunimg.cn/2014-08-15/167580248.jpg",
@@ -130,6 +133,12 @@ public class ViewActivity extends AppCompatActivity {
 //            viewHolder.image.setImageURI(Uri.parse(girls.getPicUrl()));
             viewHolder.title.setText(girls.getTitle());
             viewHolder.description.setText(girls.getDescription());
+            viewHolder.image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GirlsDB.select(getApplicationContext());
+                }
+            });
 
             ImageLoader.loadImage(Uri.parse(girls.getPicUrl()), viewHolder.image);
             return convertView;
