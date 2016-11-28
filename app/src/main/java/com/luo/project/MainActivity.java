@@ -2,8 +2,11 @@ package com.luo.project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +26,7 @@ import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.view.ViewActivity;
 import com.luo.project.entity.Vocabulary;
+import com.luo.project.wifi.WifiActivity;
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.OnResponseListener;
@@ -34,6 +38,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_three;
     private Button button_four;
     private Button button_five;
+    private Button button_six;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, com.luo.project.layout.ViewActivity.class));
+            }
+        });
+
+        button_six = (Button) findViewById(R.id.button_six);
+        button_six.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, WifiActivity.class));
             }
         });
 
