@@ -16,33 +16,25 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.luo.project.ViewGroup.ViewGroupActivity;
 import com.luo.project.entity.NewsDetial;
+import com.luo.project.flow.FloatWindowService;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.view.ViewActivity;
-import com.luo.project.entity.Vocabulary;
-import com.yolanda.nohttp.NoHttp;
-import com.yolanda.nohttp.RequestMethod;
-import com.yolanda.nohttp.rest.OnResponseListener;
-import com.yolanda.nohttp.rest.Request;
-import com.yolanda.nohttp.rest.Response;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Action5;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -52,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_three;
     private Button button_four;
     private Button button_five;
+    private Button button_six;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, com.luo.project.layout.ViewActivity.class));
+            }
+        });
+
+        button_six = (Button) findViewById(R.id.button_six);
+        button_six.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FloatWindowService.class);
+                startService(intent);
+                finish();
             }
         });
 
@@ -285,6 +288,8 @@ public class MainActivity extends AppCompatActivity {
 
         String[] names = new String[]{"李白", "杜甫", "陶渊明", "李煜"};
         Observable.from(names)
+                .subscribeOn(Schedulers.newThread()) // 指定 subscribe() 发生在 IO 线程
+                .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String name) {
@@ -292,6 +297,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        Log.e("main", "sin(49) = " + Math.sin(49));
     }
 }

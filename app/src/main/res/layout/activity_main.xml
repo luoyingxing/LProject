@@ -55,6 +55,14 @@
         android:text="View"
         android:textColor="#fff" />
 
+    <Button
+        android:id="@+id/button_six"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffa7fa"
+        android:text="flow button"
+        android:textColor="#fff" />
+
     <TextView
         android:id="@+id/tv_main_text"
         android:layout_width="match_parent"
