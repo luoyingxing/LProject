@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_wifi_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#861aca"
+        android:text="扫描网络"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/btn_wifi_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#12bc12"
+        android:text="打开Wifi  "
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/btn_wifi_three"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#c1c71f"
+        android:text="关闭Wifi"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/btn_wifi_four"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6aacdd"
+        android:text="wifi状态"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/btn_wifi_five"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6767f2"
+        android:text="View"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/tv_wifi_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello Word"
+        android:textColor="#ff3121"
+        android:textSize="20sp" />
+
+</LinearLayout>
