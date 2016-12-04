@@ -5,6 +5,11 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <com.luo.project.ui.CircleBar
+        android:id="@+id/circle_bar"
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
+
     <TextView
         android:id="@+id/tv_group_one"
         android:layout_width="wrap_content"

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.luo.project.R;
 import com.luo.project.annotation.InitViewById;
 import com.luo.project.annotation.InitViewParser;
+import com.luo.project.ui.CircleBar;
 
 /**
  * ViewGroupActivity
@@ -22,6 +23,8 @@ public class ViewGroupActivity extends AppCompatActivity {
     private TextView textViewOne;
     @InitViewById(id = R.id.tv_group_two)
     private TextView textViewTwo;
+    @InitViewById(id = R.id.circle_bar)
+    private CircleBar circleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,8 @@ public class ViewGroupActivity extends AppCompatActivity {
             }
         }, 5000);
 
-
+        circleBar.setText("88");
+        circleBar.setSweepAngle(200);
     }
 
 
