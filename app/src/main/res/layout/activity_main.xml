@@ -63,6 +63,14 @@
         android:text="flow button"
         android:textColor="#fff" />
 
+    <Button
+        android:id="@+id/button_seven"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#a8673c"
+        android:text="Thread pool"
+        android:textColor="#fff" />
+
     <TextView
         android:id="@+id/tv_main_text"
         android:layout_width="match_parent"

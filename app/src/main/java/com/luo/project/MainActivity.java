@@ -21,6 +21,7 @@ import com.luo.project.entity.NewsDetial;
 import com.luo.project.flow.FloatWindowService;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
+import com.luo.project.thread.ThreadActivity;
 import com.luo.project.view.ViewActivity;
 
 import java.lang.reflect.Method;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_four;
     private Button button_five;
     private Button button_six;
+    private Button button_seven;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, FloatWindowService.class);
                 startService(intent);
                 finish();
+            }
+        });
+
+        button_seven = (Button) findViewById(R.id.button_seven);
+        button_seven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ThreadActivity.class);
+                startActivity(intent);
             }
         });
 
