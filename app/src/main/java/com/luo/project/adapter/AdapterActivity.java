@@ -27,8 +27,8 @@ public class AdapterActivity extends AppCompatActivity {
         listView.setAdapter(new CommonAdapter<News>(getApplicationContext(),
                 new ArrayList<News>(), R.layout.action_bar_layout) {
             @Override
-            public void convert(ViewHolder helper, News item) {
-
+            public void convert(ViewHolder viewHolder, News item) {
+                viewHolder.setText(R.id.tv_wifi_text, item.getShowapi_res_error());
             }
         });
     }
