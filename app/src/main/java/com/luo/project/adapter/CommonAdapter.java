@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 
 import java.util.List;
@@ -14,13 +15,14 @@ import java.util.List;
  * Created by Administrator on 2016/12/26.
  */
 
-public abstract class CommonAdapter<T> extends BaseAdapter {
+public abstract class CommonAdapter<T> extends ArrayAdapter {
     protected LayoutInflater mInflater;
     protected Context mContext;
     protected List<T> mDatas;
     protected final int mItemLayoutId;
 
     public CommonAdapter(Context context, List<T> mDatas, int itemLayoutId) {
+        super(context, 0, mDatas);
         this.mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
         this.mDatas = mDatas;

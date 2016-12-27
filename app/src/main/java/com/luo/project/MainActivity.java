@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.luo.project.ViewGroup.ViewGroupActivity;
+import com.luo.project.adapter.AdapterActivity;
 import com.luo.project.entity.NewsDetial;
 import com.luo.project.flow.FloatWindowService;
 import com.luo.project.intent.IntentActivity;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_five;
     private Button button_six;
     private Button button_seven;
+    private Button button_eight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ThreadActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button_eight = (Button) findViewById(R.id.button_eight);
+        button_eight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AdapterActivity.class);
                 startActivity(intent);
             }
         });

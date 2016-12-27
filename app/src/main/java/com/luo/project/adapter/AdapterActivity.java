@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import com.luo.project.R;
-import com.luo.project.entity.News;
 
 import java.util.ArrayList;
 
@@ -17,19 +16,34 @@ import java.util.ArrayList;
  */
 
 public class AdapterActivity extends AppCompatActivity {
+    private ListView listView;
+    private CommonAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thread);
+        setContentView(R.layout.activity_adapter);
 
-        ListView listView = new ListView(this);
-        listView.setAdapter(new CommonAdapter<News>(getApplicationContext(),
-                new ArrayList<News>(), R.layout.action_bar_layout) {
+        listView = (ListView) findViewById(R.id.list_view);
+
+
+        adapter = new CommonAdapter<String>(getApplicationContext(),
+                new ArrayList<String>(), R.layout.adapter_item) {
+
             @Override
-            public void convert(ViewHolder viewHolder, News item) {
-                viewHolder.setText(R.id.tv_wifi_text, item.getShowapi_res_error());
+            public void convert(ViewHolder helper, String item) {
+                helper.setText(R.id.tv_text, item);
             }
-        });
+
+        };
+
+        listView.setAdapter(adapter);
+        loadData();
+    }
+
+    private void loadData() {
+        for (int i = 0; i < 20; i++) {
+            adapter.add("this is a adapter" + i * 2);
+        }
     }
 }
