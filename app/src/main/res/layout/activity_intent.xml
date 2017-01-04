@@ -1,8 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:luo="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <com.luo.project.ui.SurfaceLayout
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        luo:column="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ff1"
+            android:text="SurfaceView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#33e"
+            android:text="SurfaceView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ad2222"
+            android:text="SurfaceView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ac4567"
+            android:text="SurfaceView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#33e"
+            android:text="SurfaceView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ad2222"
+            android:text="SurfaceView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ac4567"
+            android:text="SurfaceView" />
+
+    </com.luo.project.ui.SurfaceLayout>
 
     <ImageView
         android:layout_width="match_parent"
@@ -23,5 +74,6 @@
         android:layout_height="wrap_content"
         android:background="#5a9cb1"
         android:text="关机" />
+
 
 </LinearLayout>
