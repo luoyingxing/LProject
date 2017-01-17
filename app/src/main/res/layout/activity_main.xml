@@ -9,7 +9,7 @@
     <com.luo.project.ui.Carousel
         android:id="@+id/carousel"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        android:layout_height="120dp" />
 
     <!--android:fitsSystemWindows="true",这个属性表示系统UI（状态栏、导航栏）可见的时候，
     会给我们的布局加上padding（paddingTop、paddingBottom）属性，
@@ -77,6 +77,14 @@
         android:layout_height="wrap_content"
         android:background="#23f1aa"
         android:text="Adapter"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/button_night"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#a67ffc"
+        android:text="Wifi"
         android:textColor="#fff" />
 
     <TextView

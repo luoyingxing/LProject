@@ -24,6 +24,7 @@ import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.thread.ThreadActivity;
 import com.luo.project.view.ViewActivity;
+import com.luo.project.wifi.WifiActivity;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_six;
     private Button button_seven;
     private Button button_eight;
+    private Button button_night;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AdapterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button_night = (Button) findViewById(R.id.button_night);
+        button_night.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WifiActivity.class);
                 startActivity(intent);
             }
         });

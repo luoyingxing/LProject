@@ -1,11 +1,17 @@
 package com.luo.project.wifi;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,8 +47,8 @@ public class WifiActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_wifi);
+
 
         textView = (TextView) findViewById(R.id.tv_wifi_text);
         button_one = (Button) findViewById(R.id.btn_wifi_one);
@@ -88,6 +94,8 @@ public class WifiActivity extends AppCompatActivity {
 
         mWifiAdmin = new WifiAdmin(WifiActivity.this);
 
+        Log.e("WifiActivity", "onCreate");
+        test();
     }
 
 
@@ -112,5 +120,53 @@ public class WifiActivity extends AppCompatActivity {
         }
     }
 
+
+    private WifiManager wifiManager;
+    private List<ScanResult> scanResults;
+
+    private Receiver receiver;
+
+    private MyWifi myWifi = new MyWifi();
+
+
+    private void test() {
+        Log.e("WifiActivity", "test");
+        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+//
+//        IntentFilter filter =new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+//        registerReceiver(receiver, filter);
+
+        myWifi.openWifi(this, wifiManager);
+        myWifi.registerReceiver();
+
+
+//        wifiManager.startScan();
+
+
+    }
+
+    /**
+     * 打开WIFI
+     */
+    private void openWifi() {
+        if (!wifiManager.isWifiEnabled()) {
+            wifiManager.setWifiEnabled(true);
+        }
+
+    }
+
+    class Receiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() != null &&
+                    intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
+
+                Log.e("WifiActivity", "scanResults ");
+                scanResults = wifiManager.getScanResults();
+                Log.e("WifiActivity", "scanResults " + scanResults.size());
+            }
+        }
+    }
 
 }
