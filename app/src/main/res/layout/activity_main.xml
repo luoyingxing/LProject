@@ -14,85 +14,114 @@
     <!--android:fitsSystemWindows="true",这个属性表示系统UI（状态栏、导航栏）可见的时候，
     会给我们的布局加上padding（paddingTop、paddingBottom）属性，
     这样内容就不会被盖住了。-->
-
-    <Button
-        android:id="@+id/button_one"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#861aca"
-        android:text="RecyclerView"
-        android:textColor="#fff" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#12bc12"
-        android:text="ViewGroup"
-        android:textColor="#fff" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_three"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#c1c71f"
-        android:text="Intent"
-        android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#861aca"
+                android:text="RecyclerView"
+                android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/button_four"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#6aacdd"
-        android:text="NoHttp"
-        android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#12bc12"
+                android:text="ViewGroup"
+                android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/button_five"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#6767f2"
-        android:text="View"
-        android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#c1c71f"
+                android:text="Intent"
+                android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/button_six"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffa7fa"
-        android:text="flow button"
-        android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6aacdd"
+                android:text="NoHttp"
+                android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/button_seven"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#a8673c"
-        android:text="Thread pool"
-        android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6767f2"
+                android:text="View"
+                android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/button_eight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#23f1aa"
-        android:text="Adapter"
-        android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_six"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffa7fa"
+                android:text="flow button"
+                android:textColor="#fff" />
 
-    <Button
-        android:id="@+id/button_night"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#a67ffc"
-        android:text="Wifi"
-        android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_seven"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#a8673c"
+                android:text="Thread pool"
+                android:textColor="#fff" />
 
-    <TextView
-        android:id="@+id/tv_main_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello Word"
-        android:textColor="#ff3"
-        android:textSize="20sp" />
+            <Button
+                android:id="@+id/button_eight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#23f1aa"
+                android:text="Adapter"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/button_night"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#a67ffc"
+                android:text="Wifi"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/tv_main_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello Word"
+                android:textColor="#ff3"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button_ten"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#a67ffc"
+                android:text="RecyclerView"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
