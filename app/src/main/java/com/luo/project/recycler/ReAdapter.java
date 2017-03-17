@@ -20,10 +20,10 @@ import java.util.List;
  */
 
 public class ReAdapter extends RecyclerView.Adapter<ReAdapter.ViewHolder> {
-    public List<String> mList = new ArrayList();
+    private List<String> mList = new ArrayList<>();
     private OnItemClickListener mOnItemClickListener;
 
-    public ReAdapter(List list) {
+    public ReAdapter(List<String> list) {
         mList.addAll(list);
     }
 
@@ -33,7 +33,8 @@ public class ReAdapter extends RecyclerView.Adapter<ReAdapter.ViewHolder> {
     }
 
     public void addAll(List<String> list) {
-
+        mList.addAll(list);
+        notifyDataSetChanged();
     }
 
     public void removeData(int position) {

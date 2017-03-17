@@ -5,6 +5,12 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recycler"
         android:layout_width="match_parent"
