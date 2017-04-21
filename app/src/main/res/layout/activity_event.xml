@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.luo.project.event.ScrollLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#456" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ca5122"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_event"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="#ca51c1"
+            android:text="Button"
+            android:textColor="#fff" />
+
+    </LinearLayout>
+
+
+</com.luo.project.event.ScrollLayout>

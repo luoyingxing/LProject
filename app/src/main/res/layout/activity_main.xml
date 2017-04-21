@@ -104,6 +104,7 @@
                 android:text="Hello Word"
                 android:textColor="#ff3"
                 android:textSize="20sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -118,6 +119,14 @@
                 android:layout_height="wrap_content"
                 android:background="#a67ffc"
                 android:text="RecyclerView"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/button_eleven"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#afa123"
+                android:text="View Event"
                 android:textColor="#fff" />
 
         </LinearLayout>
