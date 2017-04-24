@@ -5,24 +5,70 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:background="#456" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ca5122"
-        android:orientation="vertical">
+        android:background="#fff">
 
-        <Button
-            android:id="@+id/btn_event"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:background="#ca51c1"
-            android:text="Button"
-            android:textColor="#fff" />
+            android:layout_height="match_parent"
+            android:background="#ca5122"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_event"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="#ca51c1"
+                android:text="Button"
+                android:textColor="#fff" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="#8951c1"
+                android:text="Button"
+                android:textColor="#fff" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="#c25131"
+                android:text="Button"
+                android:textColor="#fff" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="#123456"
+                android:text="Button"
+                android:textColor="#fff" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="#632541"
+                android:text="Button"
+                android:textColor="#fff" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="#145236"
+                android:text="Button"
+                android:textColor="#fff" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="#654321"
+                android:text="Button"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+    </ScrollView>
 </com.luo.project.event.ScrollLayout>

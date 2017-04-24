@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 /**
@@ -27,6 +28,8 @@ import android.view.ViewGroup;
 
 public class ScrollLayout extends ViewGroup {
     private static final String TAG = "ScrollLayout";
+
+    private View mBottomView;
     /**
      * 后面布局的高度
      */
@@ -129,6 +132,7 @@ public class ScrollLayout extends ViewGroup {
         }
 
         View bottomView = getChildAt(0);
+        mBottomView = bottomView;
         View contentView = getChildAt(1);
 
 
@@ -170,40 +174,141 @@ public class ScrollLayout extends ViewGroup {
      */
     private int mEvents = 0;
 
+    // 下拉的距离。注意：pullDownY和pullUpY不可能同时不为0
+    public float pullDownY = 0;
+    // 上拉的距离
+    private float pullUpY = 0;
+
+    // 这两个变量用来控制pull的方向，如果不加控制，当情况满足可上拉又可下拉时没法下拉
+    private boolean canPullDown = true;
+    private boolean canPullUp = false;
+
+    /**
+     * 展开底层
+     */
+    private boolean mSpread = false;
+
     //    private int  radio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight()* (pullDownY + Math.abs(pullUpY))));
     // 手指滑动距离与下拉头的滑动距离比，中间会随正切函数变化
     private float mRadio = 2;
 
+    private void log() {
+        Rect rect = new Rect();
+        Rect rect1 = new Rect();
+        getChildAt(1).getGlobalVisibleRect(rect);
+        getChildAt(1).getLocalVisibleRect(rect1);
+        mLog("Global: " + rect.top + " Local: " + rect1.top);
+    }
+
+    private boolean getBottomLayoutVisible() {
+        Rect rect = new Rect();
+        getChildAt(1).getLocalVisibleRect(rect);
+        return rect.top > 0;
+    }
+
+    private boolean canPullDown() {
+        Rect glob = new Rect();
+        Rect local = new Rect();
+        getChildAt(1).getGlobalVisibleRect(glob);
+        getChildAt(1).getLocalVisibleRect(local);
+        return local.top == 0;
+    }
+
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        mLog(ev.getY());
+//        mLog(ev.getY());
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 mDownY = ev.getY();
                 mLastY = mDownY;
+                mEvents = 0;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_POINTER_UP:
+                // 过滤多点触碰
+                mEvents = -1;
                 break;
             case MotionEvent.ACTION_MOVE:
-                mLastY = ev.getY();
-                mContentTopY = (int) (mLastY - mDownY);
+//                log();
+                if (mEvents == 0) {
+                    if (pullDownY > 0 || canPullDown()) {
+                        pullDownY = pullDownY + (ev.getY() - mLastY) / mRadio;
+                        mContentTopY = (int) pullDownY;
+                        if (pullDownY < 0) {
+                            pullDownY = 0;
+                            canPullDown = false;
+                            canPullUp = true;
+                        }
+                        if (pullDownY > getMeasuredHeight()) {
+                            pullDownY = getMeasuredHeight();
+                        }
 
-                if (mContentTopY < 0) {
-                    mContentTopY = 0;
-                } else if (mContentTopY > getHeight()) {
-                    mContentTopY = getHeight();
+                    } else if (pullUpY < 0 && canPullUp) {
+                        // 可以上拉，正在刷新时不能上拉
+                        pullUpY = pullUpY + (ev.getY() - mLastY) / mRadio;
+                        mContentTopY = (int) pullUpY;
+                        if (pullUpY > 0) {
+                            pullUpY = 0;
+                            canPullDown = true;
+                            canPullUp = false;
+                        }
+                        if (pullUpY < -getMeasuredHeight()) {
+                            pullUpY = -getMeasuredHeight();
+                        }
+                    }
+                } else {
+                    mEvents = 0;
+                }
+
+                mLastY = ev.getY();
+                // 根据下拉距离改变比例
+                mRadio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY))));
+                if (pullDownY > 0 || pullUpY < 0) {
+                    mLog("mContentTopY = " + mContentTopY);
+                    requestLayout();
+                }
+
+                if ((pullDownY + Math.abs(pullUpY)) > 8) {
+                    ev.setAction(MotionEvent.ACTION_CANCEL);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (mSpread) {
+                    if (mContentTopY < mBottomViewHeight) {
+                        pullDownY = 0;
+                        mContentTopY = 0;
+                        pullUpY = 0;
+                        canPullDown = true;
+                        canPullUp = false;
+                        mSpread = false;
+                    } else {
+                        pullDownY = mBottomViewHeight;
+                        mContentTopY = mBottomViewHeight;
+                        canPullDown = false;
+                        canPullUp = true;
+                        mSpread = true;
+                    }
+                } else {
+                    if (mContentTopY > 50) {
+                        pullDownY = mBottomViewHeight;
+                        mContentTopY = mBottomViewHeight;
+                        canPullDown = false;
+                        canPullUp = true;
+                        mSpread = true;
+                    } else {
+                        pullDownY = 0;
+                        mContentTopY = 0;
+                        pullUpY = 0;
+                        canPullDown = true;
+                        canPullUp = false;
+                        mSpread = false;
+                    }
                 }
 
                 requestLayout();
-                break;
-            case MotionEvent.ACTION_UP:
-                if (mContentTopY >= mBottomViewHeight / 2) {
-                    mContentTopY = mBottomViewHeight;
-                    requestLayout();
-                } else {
-                    mContentTopY = 0;
-                    requestLayout();
-                }
+
+//                canPullDown = true;
+//                canPullUp = false;
+
                 break;
         }
         return super.dispatchTouchEvent(ev);
