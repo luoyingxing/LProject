@@ -249,7 +249,7 @@ public class ScrollLayout extends ViewGroup {
                 break;
             case MotionEvent.ACTION_UP:
                 if (mSpread) {
-                    if (mContentTopY < mBottomViewHeight - 50) {
+                    if (mContentTopY < mBottomViewHeight - mBottomViewHeight / 3) {
                         mPullDownY = 0;
                         mContentTopY = 0;
                         mPullUpY = 0;
@@ -262,7 +262,7 @@ public class ScrollLayout extends ViewGroup {
                         mSpread = true;
                     }
                 } else {
-                    if (mContentTopY > 50) {
+                    if (mContentTopY > mBottomViewHeight / 3) {
                         mPullDownY = mBottomViewHeight;
                         mContentTopY = mBottomViewHeight;
                         canPullUp = true;
@@ -286,9 +286,9 @@ public class ScrollLayout extends ViewGroup {
         Log.i(TAG, object + "");
     }
 
-//    @Override
-//    public boolean onInterceptHoverEvent(MotionEvent ev) {
-//        mLog("Hover");
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        mLog("Touch");
 //        if (ev.getActionMasked() == MotionEvent.ACTION_MOVE) {
 //            if (mEvents == 0 && mPullUpY < 0 && canPullUp) {
 //                mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
@@ -303,26 +303,6 @@ public class ScrollLayout extends ViewGroup {
 //                return true;
 //            }
 //        }
-//        return super.onInterceptHoverEvent(ev);
-//    }
-//
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        mLog("Touch");
-//        if (ev.getActionMasked() == MotionEvent.ACTION_MOVE) {
-//            if (mEvents == 0 && mPullUpY < 0 && canPullUp) {
-//                mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
-//                mContentTopY = (int) mPullUpY;
-//                if (mPullUpY > 0) {
-//                    mPullUpY = 0;
-//                    canPullUp = false;
-//                }
-//                if (mPullUpY < -getMeasuredHeight()) {
-//                    mPullUpY = -getMeasuredHeight();
-//                }
-//                return true;
-//            }
-//        }
-//        return super.onInterceptTouchEvent(ev);
-//    }
+        return super.onInterceptTouchEvent(ev);
+    }
 }
