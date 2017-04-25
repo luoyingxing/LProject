@@ -288,21 +288,12 @@ public class ScrollLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        mLog("Touch");
-//        if (ev.getActionMasked() == MotionEvent.ACTION_MOVE) {
-//            if (mEvents == 0 && mPullUpY < 0 && canPullUp) {
-//                mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
-//                mContentTopY = (int) mPullUpY;
-//                if (mPullUpY > 0) {
-//                    mPullUpY = 0;
-//                    canPullUp = false;
-//                }
-//                if (mPullUpY < -getMeasuredHeight()) {
-//                    mPullUpY = -getMeasuredHeight();
-//                }
-//                return true;
-//            }
-//        }
+        if (ev.getActionMasked() == MotionEvent.ACTION_MOVE) {
+            if (mEvents == 0 && mContentTopY >0) {
+                mLog("return true");
+                return true;
+            }
+        }
         return super.onInterceptTouchEvent(ev);
     }
 }
