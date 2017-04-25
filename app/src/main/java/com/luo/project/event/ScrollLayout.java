@@ -13,15 +13,6 @@ import android.view.ViewGroup;
  * ScrollLayout  首页定制
  * 下拉超过一定距离则显示背部的布局
  * 所以，该布局支持两个布局，一个是正常显示，一个是下拉一定距离才显示。
- * <p>
- * <p>
- * ScrollLayout 包含前面和后面两部分布局，当前端的子View在屏幕可见时，才进行后面布局的显示或隐藏操作
- * <ScrollLayout>
- * ----<ViewGroup></ViewGroup>
- * ----<ScrollView></ScrollView>
- * </ScrollLayout>
- * <p>
- * <p>
  * Created by luoyingxing on 2017/4/5.
  */
 
@@ -225,7 +216,6 @@ public class ScrollLayout extends ViewGroup {
                         if (mPullDownY > getMeasuredHeight()) {
                             mPullDownY = getMeasuredHeight();
                         }
-
                     } else if (mPullUpY < 0 && canPullUp) {
                         mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
                         mContentTopY = (int) mPullUpY;
@@ -288,12 +278,6 @@ public class ScrollLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (ev.getActionMasked() == MotionEvent.ACTION_MOVE) {
-            if (mEvents == 0 && mContentTopY >0) {
-                mLog("return true");
-                return true;
-            }
-        }
-        return super.onInterceptTouchEvent(ev);
+        return ev.getActionMasked() == MotionEvent.ACTION_MOVE && mContentTopY > 0 || super.onInterceptTouchEvent(ev);
     }
 }
