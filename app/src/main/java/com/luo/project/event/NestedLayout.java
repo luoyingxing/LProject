@@ -8,15 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * ScrollLayout, must include two child View and only two child View.
+ * NestedLayout, must include two child View and only two child View.
  * bottomGroupView,the distance of pull down over default{mDistance} can show this ViewGroup.
  * contentGroupView, include any view
  * <p>
  * Created by luoyingxing on 2017/4/5.
  */
 
-public class ScrollLayout extends ViewGroup {
-    private static final String TAG = "ScrollLayout";
+public class NestedLayout extends ViewGroup {
+    private static final String TAG = "NestedLayout";
     /**
      * the height of ContentView
      */
@@ -60,15 +60,15 @@ public class ScrollLayout extends ViewGroup {
      */
     private int mBottomViewHeight;
 
-    public ScrollLayout(Context context) {
+    public NestedLayout(Context context) {
         super(context);
     }
 
-    public ScrollLayout(Context context, AttributeSet attrs) {
+    public NestedLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ScrollLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NestedLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -91,7 +91,7 @@ public class ScrollLayout extends ViewGroup {
 
         if (getChildCount() != 2) {
             try {
-                throw new Exception("ScrollLayout must include two child View and only two child View!");
+                throw new Exception("NestedLayout must include two child View and only two child View!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -122,7 +122,7 @@ public class ScrollLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (getChildCount() != 2) {
             try {
-                throw new Exception("ScrollLayout must include two child View and only two child View!");
+                throw new Exception("NestedLayout must include two child View and only two child View!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,7 +156,7 @@ public class ScrollLayout extends ViewGroup {
     private boolean canPullDown() {
         if (getChildCount() != 2) {
             try {
-                throw new Exception("ScrollLayout must include two child View and only two child View!");
+                throw new Exception("NestedLayout must include two child View and only two child View!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
