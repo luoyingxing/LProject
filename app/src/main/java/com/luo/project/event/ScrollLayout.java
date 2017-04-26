@@ -3,24 +3,60 @@ package com.luo.project.event;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 /**
- * ScrollLayout  首页定制
- * 下拉超过一定距离则显示背部的布局
- * 所以，该布局支持两个布局，一个是正常显示，一个是下拉一定距离才显示。
+ * ScrollLayout, must include two child View and only two child View.
+ * bottomGroupView,the distance of pull down over default{mDistance} can show this ViewGroup.
+ * contentGroupView, include any view
+ * <p>
  * Created by luoyingxing on 2017/4/5.
  */
 
 public class ScrollLayout extends ViewGroup {
     private static final String TAG = "ScrollLayout";
-
     /**
-     * 后面布局的高度
+     * the height of ContentView
+     */
+    private int mContentTopY = 0;
+    /**
+     * Record the last touch the Y value
+     */
+    private float mLastY = 0;
+    /**
+     * Filtering multi-touch
+     */
+    private int mEvents = 0;
+    /**
+     * the distance of pull down
+     */
+    public float mPullDownY = 0;
+    /**
+     * the distance of pull up
+     */
+    private float mPullUpY = 0;
+    /**
+     * can pull up
+     */
+    private boolean mCanPullUp = false;
+    /**
+     * the bottomView whether is spread
+     */
+    private boolean mSpread = false;
+    /**
+     * Under the fingers sliding distance and sliding distance than the first,
+     * In the middle will change with tangent function,
+     * According to the distance change ratio
+     */
+    private float mRadio = 2;
+    /**
+     * the default distance for pull to show or hide bottomView
+     */
+    private int mDistance = 200;
+    /**
+     * the height of bottom's view
      */
     private int mBottomViewHeight;
 
@@ -37,40 +73,25 @@ public class ScrollLayout extends ViewGroup {
     }
 
     /**
-     * 需要支持margin，直接使用系统的MarginLayoutParams
+     * need backup the margin，use system's MarginLayoutParams
      */
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
-    /**
-     * 负责设置子控件的测量模式和大小，根据所有子控件设置自己的宽和高
-     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        // 获得它的父容器为它设置的测量模式和大小
+
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
         int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
         int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
 
-//        mLog(sizeWidth + "," + sizeHeight);
-
-        int width = 0;
-        int height = 0;
-
-        int childCount = getChildCount();
-        if (childCount == 1) {
+        if (getChildCount() != 2) {
             try {
-                throw new Exception("missing bottom layout, please add bottom layout in first level!");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (childCount > 2) {
-            try {
-                throw new Exception("ScrollLayout can only include two child view!");
+                throw new Exception("ScrollLayout must include two child View and only two child View!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,42 +100,29 @@ public class ScrollLayout extends ViewGroup {
         View bottomView = getChildAt(0);
         View contentView = getChildAt(1);
 
-        // 测量bottomView的宽和高
+        // measure bottomView's height and width
         measureChild(bottomView, widthMeasureSpec, heightMeasureSpec);
         MarginLayoutParams lp = (MarginLayoutParams) bottomView.getLayoutParams();
         int bottomWidth = bottomView.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
         int bottomHeight = bottomView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
         mBottomViewHeight = bottomHeight;
 
-        // 测量contentView的宽和高
+        // measure contentView's height and width
         measureChild(contentView, widthMeasureSpec, heightMeasureSpec);
         MarginLayoutParams params = (MarginLayoutParams) contentView.getLayoutParams();
         int contentWidth = contentView.getMeasuredWidth() + params.leftMargin + params.rightMargin;
         int contentHeight = contentView.getMeasuredHeight() + params.topMargin + params.bottomMargin;
 
-        width = contentWidth;
-        height = contentHeight;
-
-        setMeasuredDimension((modeWidth == MeasureSpec.EXACTLY) ? sizeWidth : width,
-                (modeHeight == MeasureSpec.EXACTLY) ? sizeHeight : height);
+        setMeasuredDimension((modeWidth == MeasureSpec.EXACTLY) ? sizeWidth : contentWidth,
+                (modeHeight == MeasureSpec.EXACTLY) ? sizeHeight : contentHeight);
     }
 
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int width = getWidth();
-        int height = getHeight();
-
-        int childCount = getChildCount();
-        if (childCount == 1) {
+        if (getChildCount() != 2) {
             try {
-                throw new Exception("missing bottom layout, please add bottom layout in first level!");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (childCount > 2) {
-            try {
-                throw new Exception("ScrollLayout can only include two child view!");
+                throw new Exception("ScrollLayout must include two child View and only two child View!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -125,7 +133,6 @@ public class ScrollLayout extends ViewGroup {
 
         MarginLayoutParams params = (MarginLayoutParams) contentView.getLayoutParams();
 
-        //计算bottomView的left,top,right,bottom
         int leftB = params.leftMargin;
         int topB = params.topMargin;
         int rightB = params.rightMargin + bottomView.getMeasuredWidth();
@@ -135,7 +142,6 @@ public class ScrollLayout extends ViewGroup {
 
         MarginLayoutParams lp = (MarginLayoutParams) contentView.getLayoutParams();
 
-        //计算childView的left,top,right,bottom
         int left = lp.leftMargin;
         int top = lp.topMargin;
         int right = lp.rightMargin + contentView.getMeasuredWidth();
@@ -145,55 +151,27 @@ public class ScrollLayout extends ViewGroup {
     }
 
     /**
-     * 内容View的绘制top位置，通过改变该值，来控制内容View的高度，进而显示底部的 view
+     * @return true is can pull down , otherwise.
      */
-    private int mContentTopY = 0;
-    /**
-     * 记录最后触摸的Y值
-     */
-    private float mLastY = 0;
-    /**
-     * 过滤多点触摸
-     */
-    private int mEvents = 0;
-
-    /**
-     * 下拉的距离
-     */
-    public float mPullDownY = 0;
-    /**
-     * 上拉的距离
-     */
-    private float mPullUpY = 0;
-    /**
-     * 可下拉
-     */
-    private boolean canPullUp = false;
-    /**
-     * 是否展开了底层布局
-     */
-    private boolean mSpread = false;
-    // 手指滑动距离与下拉头的滑动距离比，中间会随正切函数变化，根据下拉距离改变比例
-    private float mRadio = 2;
-
-    private void log() {
-        Rect rect = new Rect();
-        Rect rect1 = new Rect();
-        getChildAt(1).getGlobalVisibleRect(rect);
-        getChildAt(1).getLocalVisibleRect(rect1);
-        mLog("Global: " + rect.top + " Local: " + rect1.top);
-    }
-
     private boolean canPullDown() {
-        Rect glob = new Rect();
-        getChildAt(1).getGlobalVisibleRect(glob);
-
+        if (getChildCount() != 2) {
+            try {
+                throw new Exception("ScrollLayout must include two child View and only two child View!");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         Rect local = new Rect();
         getChildAt(1).getLocalVisibleRect(local);
-
         return getChildCount() != 1 && local.top == 0;
     }
 
+    /**
+     * control the ScrollVLayout show or hide Bottom View.
+     *
+     * @param ev MotionEvent
+     * @return true is consumed the event, otherwise
+     */
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -211,17 +189,17 @@ public class ScrollLayout extends ViewGroup {
                         mContentTopY = (int) mPullDownY;
                         if (mPullDownY < 0) {
                             mPullDownY = 0;
-                            canPullUp = true;
+                            mCanPullUp = true;
                         }
                         if (mPullDownY > getMeasuredHeight()) {
                             mPullDownY = getMeasuredHeight();
                         }
-                    } else if (mPullUpY < 0 && canPullUp) {
+                    } else if (mPullUpY < 0 && mCanPullUp) {
                         mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
                         mContentTopY = (int) mPullUpY;
                         if (mPullUpY > 0) {
                             mPullUpY = 0;
-                            canPullUp = false;
+                            mCanPullUp = false;
                         }
                         if (mPullUpY < -getMeasuredHeight()) {
                             mPullUpY = -getMeasuredHeight();
@@ -239,29 +217,29 @@ public class ScrollLayout extends ViewGroup {
                 break;
             case MotionEvent.ACTION_UP:
                 if (mSpread) {
-                    if (mContentTopY < mBottomViewHeight - mBottomViewHeight / 3) {
+                    if (mContentTopY < mBottomViewHeight - mDistance) {
                         mPullDownY = 0;
                         mContentTopY = 0;
                         mPullUpY = 0;
-                        canPullUp = false;
+                        mCanPullUp = false;
                         mSpread = false;
                     } else {
                         mPullDownY = mBottomViewHeight;
                         mContentTopY = mBottomViewHeight;
-                        canPullUp = true;
+                        mCanPullUp = true;
                         mSpread = true;
                     }
                 } else {
-                    if (mContentTopY > mBottomViewHeight / 3) {
+                    if (mContentTopY > mDistance) {
                         mPullDownY = mBottomViewHeight;
                         mContentTopY = mBottomViewHeight;
-                        canPullUp = true;
+                        mCanPullUp = true;
                         mSpread = true;
                     } else {
                         mPullDownY = 0;
                         mContentTopY = 0;
                         mPullUpY = 0;
-                        canPullUp = false;
+                        mCanPullUp = false;
                         mSpread = false;
                     }
                 }
@@ -272,10 +250,12 @@ public class ScrollLayout extends ViewGroup {
         return super.dispatchTouchEvent(ev);
     }
 
-    private void mLog(Object object) {
-        Log.i(TAG, object + "");
-    }
-
+    /**
+     * when the bottom view is spread, stop nested scroll,return true to implement
+     *
+     * @param ev MotionEvent
+     * @return true is consumed the event, otherwise
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return ev.getActionMasked() == MotionEvent.ACTION_MOVE && mContentTopY > 0 || super.onInterceptTouchEvent(ev);
