@@ -52,10 +52,6 @@ public class NestedLayout extends ViewGroup {
      */
     private float mRadio = 2;
     /**
-     * the default distance for pull to show or hide bottomView
-     */
-    private int mDistance = 200;
-    /**
      * the height of bottom's view
      */
     private int mBottomViewHeight;
@@ -217,7 +213,8 @@ public class NestedLayout extends ViewGroup {
                 break;
             case MotionEvent.ACTION_UP:
                 if (mSpread) {
-                    if (mContentTopY < mBottomViewHeight - mDistance) {
+                    int d = mBottomViewHeight - 100 < 0 ? mBottomViewHeight / 2 : mBottomViewHeight - 100;
+                    if (mContentTopY < d) {
                         mPullDownY = 0;
                         mContentTopY = 0;
                         mPullUpY = 0;
@@ -230,7 +227,8 @@ public class NestedLayout extends ViewGroup {
                         mSpread = true;
                     }
                 } else {
-                    if (mContentTopY > mDistance) {
+                    int d = mBottomViewHeight / 3 > 200 ? 200 : mBottomViewHeight / 3;
+                    if (mContentTopY > d) {
                         mPullDownY = mBottomViewHeight;
                         mContentTopY = mBottomViewHeight;
                         mCanPullUp = true;
