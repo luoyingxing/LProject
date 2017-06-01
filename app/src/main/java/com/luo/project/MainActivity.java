@@ -24,6 +24,7 @@ import com.luo.project.flow.FloatWindowService;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
+import com.luo.project.rx.RxJavaActivity;
 import com.luo.project.thread.ThreadActivity;
 import com.luo.project.view.ViewActivity;
 import com.luo.project.wifi.WifiActivity;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_night;
     private Button button_ten;
     private Button button_eleven;
+    private Button button_twelve;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EventActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button_twelve = (Button) findViewById(R.id.button_twelve);
+        button_twelve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RxJavaActivity.class);
                 startActivity(intent);
             }
         });
