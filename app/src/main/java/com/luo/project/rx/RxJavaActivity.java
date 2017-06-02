@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Observer;
@@ -254,6 +255,38 @@ public class RxJavaActivity extends AppCompatActivity {
 
                     }
                 });
+
+        mLog("~~~~~~~~~~~~~~~~~~~~~~ interval ~~~~~~~~~~~~~~~~~~~~~");
+
+        Observable.interval(5, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).map(new Func1() {
+            @Override
+            public Object call(Object o) {
+                //jump and finish
+                return null;
+            }
+
+        }).subscribe();
+
+        mLog("~~~~~~~~~~~~~~~~~~~~~~ timer ~~~~~~~~~~~~~~~~~~~~~");
+
+        //每隔两秒产生一个数字
+        Observable.timer(2, 2, TimeUnit.SECONDS).subscribe(new Subscriber<Long>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("Sequence complete.");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("error:" + e.getMessage());
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                System.out.println("Next:" + aLong.toString());
+            }
+        });
+
     }
 
 
