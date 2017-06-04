@@ -13,11 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.luo.project.ViewGroup.ViewGroupActivity;
 import com.luo.project.adapter.AdapterActivity;
+import com.luo.project.adapter.CommonAdapter;
+import com.luo.project.adapter.ViewHolder;
 import com.luo.project.entity.NewsDetial;
 import com.luo.project.event.EventActivity;
 import com.luo.project.flow.FloatWindowService;
@@ -32,6 +35,7 @@ import com.luo.project.wifi.WifiActivity;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,133 +48,93 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private TextView textView;
-    private Button button_one;
-    private Button button_two;
-    private Button button_three;
-    private Button button_four;
-    private Button button_five;
-    private Button button_six;
-    private Button button_seven;
-    private Button button_eight;
-    private Button button_night;
-    private Button button_ten;
-    private Button button_eleven;
-    private Button button_twelve;
+
+    private ListView listView;
+    private CommonAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = (TextView) findViewById(R.id.tv_main_text);
-        button_one = (Button) findViewById(R.id.button_one);
-        button_one.setOnClickListener(new View.OnClickListener() {
+        listView = (ListView) findViewById(R.id.list_view);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ViewActivity.class));
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        startActivity(new Intent(MainActivity.this, ViewActivity.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(MainActivity.this, ViewGroupActivity.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(MainActivity.this, IntentActivity.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(MainActivity.this, NoHttpActivity.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(MainActivity.this, com.luo.project.layout.ViewActivity.class));
+                        break;
+                    case 5:
+                        Intent intent = new Intent(MainActivity.this, FloatWindowService.class);
+                        startService(intent);
+                        finish();
+                        break;
+                    case 6:
+                        startActivity(new Intent(MainActivity.this, ThreadActivity.class));
+                        break;
+                    case 7:
+                        startActivity(new Intent(MainActivity.this, AdapterActivity.class));
+                        break;
+                    case 8:
+                        startActivity(new Intent(MainActivity.this, WifiActivity.class));
+                        break;
+                    case 9:
+                        startActivity(new Intent(MainActivity.this, RecyclerViewActivity.class));
+                        break;
+                    case 10:
+                        startActivity(new Intent(MainActivity.this, EventActivity.class));
+                        break;
+                    case 11:
+                        startActivity(new Intent(MainActivity.this, RxJavaActivity.class));
+                        break;
+                    case 12:
+                        break;
+                }
             }
         });
 
-        button_two = (Button) findViewById(R.id.button_two);
-        button_two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ViewGroupActivity.class));
-            }
-        });
 
-        button_three = (Button) findViewById(R.id.button_three);
-        button_three.setOnClickListener(new View.OnClickListener() {
+        adapter = new CommonAdapter<String>(this, new ArrayList<String>(), R.layout.item_main_list) {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, IntentActivity.class));
+            public void convert(ViewHolder helper, String item) {
+                helper.setText(R.id.tv_item_main_list, item);
             }
-        });
+        };
 
-        button_four = (Button) findViewById(R.id.button_four);
-        button_four.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NoHttpActivity.class));
-            }
-        });
+        listView.setAdapter(adapter);
 
-        button_five = (Button) findViewById(R.id.button_five);
-        button_five.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, com.luo.project.layout.ViewActivity.class));
-            }
-        });
 
-        button_six = (Button) findViewById(R.id.button_six);
-        button_six.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FloatWindowService.class);
-                startService(intent);
-                finish();
-            }
-        });
+        List<String> list = new ArrayList<>();
+        list.add("RecyclerView");
+        list.add("ViewGroup");
+        list.add("Intent");
+        list.add("NoHttp");
+        list.add("View");
+        list.add("flow button");
+        list.add("Thread pool");
+        list.add("Adapter");
+        list.add("Wifi");
+        list.add("RecyclerView");
+        list.add("View Event");
+        list.add("RxJava");
 
-        button_seven = (Button) findViewById(R.id.button_seven);
-        button_seven.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ThreadActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        button_eight = (Button) findViewById(R.id.button_eight);
-        button_eight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AdapterActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        button_night = (Button) findViewById(R.id.button_night);
-        button_night.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WifiActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        button_ten = (Button) findViewById(R.id.button_ten);
-        button_ten.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RecyclerViewActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        button_eleven = (Button) findViewById(R.id.button_eleven);
-        button_eleven.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, EventActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        button_twelve = (Button) findViewById(R.id.button_twelve);
-        button_twelve.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RxJavaActivity.class);
-                startActivity(intent);
-            }
-        });
+        adapter.addAll(list);
 
         setActionBar();
-
-        test();
 
         rx();
 
@@ -265,35 +229,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return statusHeight;
-    }
-
-    private void test() {
-        List<Integer> array = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-//        请写出三个数的和等于15或者12的组合
-//        每个组合的三个数不能相等
-        int a, b, c;
-        for (int i = 0; i < array.size() - 2; i++) {
-            a = array.get(i);
-
-            for (int j = i + 1; j < array.size() - 1; j++) {
-                b = array.get(j);
-
-                for (int k = i + 2; k < array.size(); k++) {
-                    c = array.get(k);
-
-
-                    int count = a + b + c;
-                    if (count == 15 || count == 12) {
-
-                        if (a != b && a != c && b != c) {
-
-                            Log.i("组合：", "[ " + a + " " + b + " " + c + " ]");
-                        }
-                    }
-                }
-            }
-        }
-
     }
 
     private void rx() {
