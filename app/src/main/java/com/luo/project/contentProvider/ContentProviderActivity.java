@@ -4,14 +4,18 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.UriMatcher;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.provider.ContactsContract.CommonDataKinds.Email;
@@ -22,14 +26,18 @@ import android.provider.ContactsContract.RawContacts;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.luo.project.R;
+import com.luo.project.adapter.CommonAdapter;
+import com.luo.project.adapter.ViewHolder;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ContentProviderActivity
@@ -40,6 +48,8 @@ import java.io.InputStream;
 public class ContentProviderActivity extends AppCompatActivity {
     private Button button;
     private TextView textView;
+    private GridView gridView;
+    private CommonAdapter<String> adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +59,7 @@ public class ContentProviderActivity extends AppCompatActivity {
 
         button = (Button) findViewById(R.id.button);
         textView = (TextView) findViewById(R.id.textView);
+        gridView = (GridView) findViewById(R.id.grid_view);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +80,23 @@ public class ContentProviderActivity extends AppCompatActivity {
         getContentResolver().registerContentObserver(Uri.parse("content://sms"), true, new SmsObserver(new Handler()));
 
 
+        adapter = new CommonAdapter<String>(this, new ArrayList<String>(), R.layout.item_provider_list) {
+            @Override
+            public void convert(ViewHolder helper, String path) {
+                ImageView imageView = helper.getView(R.id.image_view);
+
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                Drawable drawable = new BitmapDrawable(bitmap);
+
+                imageView.setImageDrawable(drawable);
+                bitmap.recycle();
+                bitmap = null;
+
+            }
+        };
+        gridView.setAdapter(adapter);
+
+        scanImage();
     }
 
 
@@ -234,4 +262,36 @@ public class ContentProviderActivity extends AppCompatActivity {
             return super.deliverSelfNotifications();
         }
     }
+
+    private void scanImage() {
+        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        ContentResolver mContentResolver = getContentResolver();
+
+        //只查询jpeg和png的图片
+        Cursor mCursor = mContentResolver.query(mImageUri, null,
+                MediaStore.Images.Media.MIME_TYPE + "=? or " +
+                        MediaStore.Images.Media.MIME_TYPE + "=?",
+                new String[]{"image/jpeg", "image/png"}, MediaStore.Images.Media.DATE_MODIFIED);
+
+        if (mCursor == null) {
+            return;
+        }
+
+
+        List<String> list = new ArrayList<>();
+        while (mCursor.moveToNext()) {
+            String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//            Bitmap bitmap = BitmapFactory.decodeFile(path);
+//            Drawable drawable = new BitmapDrawable(bitmap);
+            list.add(path);
+            if (list.size() > 0) {
+                break;
+            }
+        }
+
+        adapter.addAll(list);
+
+    }
+
+
 }
