@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:name=".MainApplication"
@@ -97,6 +99,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <service android:name=".flow.FloatWindowService" />
+        <service android:name=".contentProvider.MyService" />
 
         <activity
             android:name=".rx.RxJavaActivity"

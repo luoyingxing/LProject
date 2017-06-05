@@ -3,10 +3,14 @@ package com.luo.project.contentProvider;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.content.UriMatcher;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.luo.project.R;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * ContentProviderActivity
@@ -45,12 +53,21 @@ public class ContentProviderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e("ContentProviderActivity", "onClick");
-                addContact();
+//                addContact();
                 String result = getContactInfo();
+                textView.setText(null);
                 textView.setTextColor(Color.BLUE);
                 textView.setText(String.format("记录\t名字\t电话\n%s", result));
+
             }
         });
+
+        readSms();
+
+        register();
+
+        getContentResolver().registerContentObserver(Uri.parse("content://sms"), true, new SmsObserver(new Handler()));
+
 
     }
 
@@ -59,7 +76,14 @@ public class ContentProviderActivity extends AppCompatActivity {
         String result = "";
         ContentResolver resolver = getContentResolver();
         //查询联系人
+        Log.i("ContentProviderActivity", ContactsContract.Contacts.CONTENT_URI.toString());
+        //TODO  content://com.android.contacts/contacts
         Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+        for (int i = 0; i < cursor.getColumnCount(); i++) {
+            Log.i("ContentProviderActivity", i + "    " + cursor.getColumnName(i));
+        }
+
         int idIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID);
         // 取得联系人名字 (显示出来的名字)，实际内容在 ContactsContract.Contacts中
         int nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
@@ -69,6 +93,7 @@ public class ContentProviderActivity extends AppCompatActivity {
             result = result + contactId + "\t\t\t";
             result = result + cursor.getString(nameIndex) + "\t\t\t";
             // 根据联系人ID查询对应的电话号码
+            //TODO content://com.android.contacts/data/phones
             Cursor phoneNumbers = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
             // 取得电话号码(可能存在多个号码)
@@ -135,4 +160,78 @@ public class ContentProviderActivity extends AppCompatActivity {
     }
 
 
+    private void readSms() {
+        //1.利用内容提供者  中间人 获取用户的短信数据.
+        ContentResolver resolver = getContentResolver();
+        Uri uri = Uri.parse("content://sms"); //根据分析 代表的是所有的短信的路径
+        Cursor cursor = resolver.query(uri, new String[]{"address", "date", "body", "type"}, "address=10086", null, null);
+
+        StringBuffer sb = new StringBuffer();
+        while (cursor.moveToNext()) {
+            String address = cursor.getString(0);
+            String date = cursor.getString(1);
+            String body = cursor.getString(2);
+            String type = cursor.getString(3);
+            System.out.println(address + "--" + date + "---" + body + "---" + type);
+            sb.append(address + "--" + date + "---" + body + "---" + type);
+            sb.append("\n");
+        }
+        cursor.close();
+        textView.setText(sb.toString());
+
+    }
+
+    private void register() {
+        Intent intent = new Intent(this, MyService.class);
+        startService(intent);
+    }
+
+    private class SmsObserver extends ContentObserver {
+
+        public SmsObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            Log.v("onChange", "onChange()");
+            Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, "date desc"); //按日期【排序  最后条记录应该在最上面  desc 从大到小    asc小到大
+            Log.e("onChange", "记录数:" + c.getCount());
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    String address = c.getString(c.getColumnIndex("address"));
+                    String body = c.getString(c.getColumnIndex("body"));
+
+                    Log.i("短信：", "address : " + address);
+                    Log.i("短信：", "body : " + body);
+                }
+                c.close();
+            }
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
+            //content://sms/3388
+            Log.v("onChange", "uri  --  " + uri.toString());
+
+            Cursor c = getContentResolver().query(uri, null, null, null, null); //按日期【排序  最后条记录应该在最上面  desc 从大到小    asc小到大
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    String address = c.getString(c.getColumnIndex("address"));
+                    String body = c.getString(c.getColumnIndex("body"));
+
+                    Log.i("Uri短信：", "address : " + address);
+                    Log.i("Uri短信：", "body : " + body);
+                }
+                c.close();
+            }
+        }
+
+        @Override
+        public boolean deliverSelfNotifications() {
+            Log.v("MyService", "deliverSelfNotifications");
+            return super.deliverSelfNotifications();
+        }
+    }
 }
