@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg_one"
-    android:fitsSystemWindows="true"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <com.luo.project.ui.Carousel
@@ -11,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="120dp" />
 
-    <ListView
+    <GridView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:divider="#fff123"
-        android:dividerHeight="1dp" />
+        android:numColumns="2"
+        android:stretchMode="columnWidth" />
 
 </LinearLayout>

@@ -8,21 +8,18 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.GridView;
 
 import com.luo.project.ViewGroup.ViewGroupActivity;
 import com.luo.project.adapter.AdapterActivity;
 import com.luo.project.adapter.CommonAdapter;
 import com.luo.project.adapter.ViewHolder;
 import com.luo.project.contentProvider.ContentProviderActivity;
-import com.luo.project.entity.NewsDetial;
 import com.luo.project.event.EventActivity;
 import com.luo.project.flow.FloatWindowService;
 import com.luo.project.gallery.GalleryActivity;
@@ -34,34 +31,27 @@ import com.luo.project.thread.ThreadActivity;
 import com.luo.project.view.ViewActivity;
 import com.luo.project.wifi.WifiActivity;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private ListView listView;
+    private GridView gridView;
     private CommonAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setActionBar();
 
-        listView = (ListView) findViewById(R.id.list_view);
+        gridView = (GridView) findViewById(R.id.list_view);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
@@ -121,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        listView.setAdapter(adapter);
+        gridView.setAdapter(adapter);
 
 
         List<String> list = new ArrayList<>();
@@ -141,24 +131,6 @@ public class MainActivity extends AppCompatActivity {
         list.add("Gallery");
 
         adapter.addAll(list);
-
-        setActionBar();
-
-        rx();
-
-        try {
-            Class<?> clazz = Class.forName(NewsDetial.class.getName());
-
-            Method[] methods = clazz.getMethods();
-
-            for (Method method : methods) {
-                Log.e("-- Method -- ", method.getName());
-            }
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -239,72 +211,4 @@ public class MainActivity extends AppCompatActivity {
         return statusHeight;
     }
 
-    private void rx() {
-
-        Observer<String> observer = new Observer<String>() {
-            @Override
-            public void onNext(String s) {
-                Log.d(TAG, "Item: " + s);
-            }
-
-            @Override
-            public void onCompleted() {
-                Log.d(TAG, "Completed!");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, "Error!");
-            }
-        };
-
-        Subscriber<String> subscriber = new Subscriber<String>() {
-            @Override
-            public void onNext(String s) {
-                Log.d(TAG, "Item: " + s);
-            }
-
-            @Override
-            public void onCompleted() {
-                Log.d(TAG, "Completed!");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, "Error!");
-            }
-
-            @Override
-            public void onStart() {
-                super.onStart();
-            }
-        };
-
-        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                subscriber.onNext("Hello");
-                subscriber.onNext("Hi");
-                subscriber.onNext("Aloha");
-                subscriber.onCompleted();
-            }
-        });
-
-        observable.subscribe(observer);
-//            或者：
-//            observable.subscribe(subscriber);
-
-
-        String[] names = new String[]{"李白", "杜甫", "陶渊明", "李煜"};
-        Observable.from(names)
-                .subscribeOn(Schedulers.newThread()) // 指定 subscribe() 发生在 IO 线程
-                .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String name) {
-                        Log.d("Observable ", name);
-                    }
-                });
-
-    }
 }
