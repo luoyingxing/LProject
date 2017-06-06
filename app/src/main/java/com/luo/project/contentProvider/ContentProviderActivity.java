@@ -126,12 +126,10 @@ public class ContentProviderActivity extends AppCompatActivity {
 
                             @Override
                             public void onCompleted() {
-                                Log.i("ContentProviderActivity", "onCompleted");
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.i("ContentProviderActivity", "onError");
                             }
                         });
             }
@@ -335,10 +333,17 @@ public class ContentProviderActivity extends AppCompatActivity {
             }
         }).subscribeOn(Schedulers.newThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<String>>() {
+                .subscribe(new Subscriber<List<String>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
                     @Override
-                    public void call(List<String> list) {
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<String> list) {
                         adapter.addAll(list);
                     }
                 });
