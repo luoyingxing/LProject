@@ -25,6 +25,7 @@ import com.luo.project.contentProvider.ContentProviderActivity;
 import com.luo.project.entity.NewsDetial;
 import com.luo.project.event.EventActivity;
 import com.luo.project.flow.FloatWindowService;
+import com.luo.project.gallery.GalleryActivity;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
@@ -104,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 12:
                         startActivity(new Intent(MainActivity.this, ContentProviderActivity.class));
-
+                        break;
+                    case 13:
+                        startActivity(new Intent(MainActivity.this, GalleryActivity.class));
                         break;
                 }
             }
@@ -135,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("View Event");
         list.add("RxJava");
         list.add("ContentProvider");
+        list.add("Gallery");
 
         adapter.addAll(list);
 
