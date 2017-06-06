@@ -19,6 +19,7 @@ import com.luo.project.ViewGroup.ViewGroupActivity;
 import com.luo.project.adapter.AdapterActivity;
 import com.luo.project.adapter.CommonAdapter;
 import com.luo.project.adapter.ViewHolder;
+import com.luo.project.animator.AnimatorActivity;
 import com.luo.project.contentProvider.ContentProviderActivity;
 import com.luo.project.event.EventActivity;
 import com.luo.project.flow.FloatWindowService;
@@ -99,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                     case 13:
                         startActivity(new Intent(MainActivity.this, GalleryActivity.class));
                         break;
+                    case 14:
+                        startActivity(new Intent(MainActivity.this, AnimatorActivity.class));
+                        break;
                 }
             }
         });
@@ -129,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("RxJava");
         list.add("ContentProvider");
         list.add("Gallery");
+        list.add("Animator");
 
         adapter.addAll(list);
 
