@@ -20,6 +20,8 @@
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2" />
+        android:columnWidth="80dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth" />
 
 </LinearLayout>

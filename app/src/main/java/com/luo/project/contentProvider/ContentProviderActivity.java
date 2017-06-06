@@ -34,10 +34,23 @@ import android.widget.Toast;
 import com.luo.project.R;
 import com.luo.project.adapter.CommonAdapter;
 import com.luo.project.adapter.ViewHolder;
+import com.luo.project.rx.RxJavaActivity;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Emitter;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 
 /**
  * ContentProviderActivity
@@ -79,26 +92,54 @@ public class ContentProviderActivity extends AppCompatActivity {
 
         getContentResolver().registerContentObserver(Uri.parse("content://sms"), true, new SmsObserver(new Handler()));
 
-
         adapter = new CommonAdapter<String>(this, new ArrayList<String>(), R.layout.item_provider_list) {
             @Override
-            public void convert(ViewHolder helper, String path) {
-                ImageView imageView = helper.getView(R.id.image_view);
+            public void convert(ViewHolder helper, final String path) {
+                final ImageView imageView = helper.getView(R.id.image_view);
+                imageView.setImageBitmap(null);
+                Observable.create(new Observable.OnSubscribe<Bitmap>() {
+                    @Override
+                    public void call(Subscriber<? super Bitmap> subscriber) {
+                        try {
+                            BitmapFactory.Options opt = new BitmapFactory.Options();
+                            opt.inPreferredConfig = Bitmap.Config.RGB_565;
+                            opt.inPurgeable = true;
+                            opt.inSampleSize = 4;
+                            opt.inInputShareable = true;
+                            opt.outHeight = 80;
+                            opt.outHeight = 80;
+                            InputStream inputStream = new FileInputStream(path);
+                            subscriber.onNext(BitmapFactory.decodeStream(inputStream, null, opt));
+                            subscriber.onCompleted();
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Bitmap>() {
+                            @Override
+                            public void onNext(Bitmap drawable) {
+                                imageView.setImageBitmap(drawable);
+                            }
 
-                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                Drawable drawable = new BitmapDrawable(bitmap);
+                            @Override
+                            public void onCompleted() {
+                                Log.i("ContentProviderActivity", "onCompleted");
+                            }
 
-                imageView.setImageDrawable(drawable);
-                bitmap.recycle();
-                bitmap = null;
-
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.i("ContentProviderActivity", "onError");
+                            }
+                        });
             }
         };
         gridView.setAdapter(adapter);
 
         scanImage();
     }
-
 
     public String getContactInfo() {
         String result = "";
@@ -264,32 +305,44 @@ public class ContentProviderActivity extends AppCompatActivity {
     }
 
     private void scanImage() {
-        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        ContentResolver mContentResolver = getContentResolver();
+        Observable.create(new Observable.OnSubscribe<List<String>>() {
+            @Override
+            public void call(Subscriber<? super List<String>> subscriber) {
+                Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                ContentResolver mContentResolver = getContentResolver();
 
-        //只查询jpeg和png的图片
-        Cursor mCursor = mContentResolver.query(mImageUri, null,
-                MediaStore.Images.Media.MIME_TYPE + "=? or " +
-                        MediaStore.Images.Media.MIME_TYPE + "=?",
-                new String[]{"image/jpeg", "image/png"}, MediaStore.Images.Media.DATE_MODIFIED);
+                //只查询jpeg和png的图片
+                Cursor mCursor = mContentResolver.query(mImageUri, null,
+                        MediaStore.Images.Media.MIME_TYPE + "=? or " +
+                                MediaStore.Images.Media.MIME_TYPE + "=?",
+                        new String[]{"image/jpeg", "image/png"}, MediaStore.Images.Media.DATE_MODIFIED);
 
-        if (mCursor == null) {
-            return;
-        }
+                if (mCursor == null) {
+                    return;
+                }
 
+                List<String> list = new ArrayList<>();
+                while (mCursor.moveToNext()) {
+                    String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    Log.v("scanImage", "path：" + path);
+                    list.add(path);
+                }
 
-        List<String> list = new ArrayList<>();
-        while (mCursor.moveToNext()) {
-            String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
-//            Bitmap bitmap = BitmapFactory.decodeFile(path);
-//            Drawable drawable = new BitmapDrawable(bitmap);
-            list.add(path);
-            if (list.size() > 0) {
-                break;
+                Log.e("scanImage", "图片个数：" + list.size());
+
+                subscriber.onNext(list);
+                subscriber.onCompleted();
             }
-        }
+        }).subscribeOn(Schedulers.newThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<String>>() {
 
-        adapter.addAll(list);
+                    @Override
+                    public void call(List<String> list) {
+                        adapter.addAll(list);
+                    }
+                });
+
 
     }
 
