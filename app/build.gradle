@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "com.luo.project"
@@ -26,12 +26,15 @@ android {
 }
 
 dependencies {
+    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+        exclude(group: 'com.google.android', module: 'support-v4')
+    }
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.yolanda.nohttp:nohttp:1.0.2'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.facebook.fresco:fresco:0.8.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
