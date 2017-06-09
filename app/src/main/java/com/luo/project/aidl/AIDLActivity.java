@@ -1,5 +1,6 @@
 package com.luo.project.aidl;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,9 @@ public class AIDLActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                // 启动本地服务和远程服务
+                startService(new Intent(AIDLActivity.this, LocalCastielService.class));
+                startService(new Intent(AIDLActivity.this, RemoteCastielService.class));
             }
         });
     }

@@ -118,6 +118,21 @@
         <activity android:name=".gallery.GalleryActivity" />
         <activity android:name=".animator.AnimatorActivity" />
         <activity android:name=".aidl.AIDLActivity"></activity>
+
+        <service android:name=".aidl.LocalCastielService">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".aidl.RemoteCastielService"
+            android:process=":com.luo.project.aidl">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
