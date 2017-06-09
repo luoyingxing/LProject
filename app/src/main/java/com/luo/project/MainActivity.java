@@ -19,6 +19,7 @@ import com.luo.project.ViewGroup.ViewGroupActivity;
 import com.luo.project.adapter.AdapterActivity;
 import com.luo.project.adapter.CommonAdapter;
 import com.luo.project.adapter.ViewHolder;
+import com.luo.project.aidl.AIDLActivity;
 import com.luo.project.animator.AnimatorActivity;
 import com.luo.project.contentProvider.ContentProviderActivity;
 import com.luo.project.event.EventActivity;
@@ -103,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
                     case 14:
                         startActivity(new Intent(MainActivity.this, AnimatorActivity.class));
                         break;
+                    case 15:
+                        startActivity(new Intent(MainActivity.this, AIDLActivity.class));
+                        break;
                 }
             }
         });
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("ContentProvider");
         list.add("Gallery");
         list.add("Animator");
+        list.add("AIDL");
 
         adapter.addAll(list);
 

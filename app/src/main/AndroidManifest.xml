@@ -116,7 +116,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".gallery.GalleryActivity" />
-        <activity android:name=".animator.AnimatorActivity"></activity>
+        <activity android:name=".animator.AnimatorActivity" />
+        <activity android:name=".aidl.AIDLActivity"></activity>
     </application>
 
 </manifest>
