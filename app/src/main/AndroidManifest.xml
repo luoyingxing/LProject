@@ -117,14 +117,13 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".gallery.GalleryActivity" />
         <activity android:name=".animator.AnimatorActivity" />
-        <activity android:name=".aidl.AIDLActivity"></activity>
+        <activity android:name=".aidl.AIDLActivity" />
 
         <service android:name=".aidl.LocalCastielService">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".aidl.RemoteCastielService"
             android:process=":com.luo.project.aidl">
@@ -132,6 +131,10 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".server.ServerActivity" />
+
+        <service android:name=".server.ServiceOne" />
 
     </application>
 

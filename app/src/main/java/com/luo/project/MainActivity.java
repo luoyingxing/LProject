@@ -29,6 +29,7 @@ import com.luo.project.intent.IntentActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
 import com.luo.project.rx.RxJavaActivity;
+import com.luo.project.server.ServerActivity;
 import com.luo.project.thread.ThreadActivity;
 import com.luo.project.view.ViewActivity;
 import com.luo.project.wifi.WifiActivity;
@@ -107,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
                     case 15:
                         startActivity(new Intent(MainActivity.this, AIDLActivity.class));
                         break;
+                    case 16:
+                        startActivity(new Intent(MainActivity.this, ServerActivity.class));
+                        break;
                 }
             }
         });
@@ -139,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("Gallery");
         list.add("Animator");
         list.add("AIDL");
+        list.add("Server");
 
         adapter.addAll(list);
 
