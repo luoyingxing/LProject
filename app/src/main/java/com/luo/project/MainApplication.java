@@ -101,7 +101,6 @@ public class MainApplication extends Application {
                 .build();
         //配置ImageLoader
         CoreConfig coreConfig = new CoreConfig.Builder(mApp, new FrescoImageLoader(mApp), theme)
-                .setDebug(BuildConfig.DEBUG)
                 .setFunctionConfig(functionConfig)
                 .build();
         GalleryFinal.init(coreConfig);

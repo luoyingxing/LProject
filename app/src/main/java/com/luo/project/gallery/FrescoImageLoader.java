@@ -71,14 +71,17 @@ public class FrescoImageLoader implements cn.finalteam.galleryfinal.ImageLoader 
                 return dr == draweeHolder.getHierarchy().getTopLevelDrawable();
             }
 
-        });
+            @Override
+            public void onDraw(Canvas canvas) {
+                Drawable drawable = draweeHolder.getHierarchy().getTopLevelDrawable();
+                if (drawable == null) {
+                    imageView.setImageDrawable(defaultDrawable);
+                } else {
+                    imageView.setImageDrawable(drawable);
+                }
+            }
 
-        Drawable drawable = draweeHolder.getHierarchy().getTopLevelDrawable();
-        if (drawable == null) {
-            imageView.setImageDrawable(defaultDrawable);
-        } else {
-            imageView.setImageDrawable(drawable);
-        }
+        });
 
         Uri uri = new Uri.Builder()
                 .scheme(UriUtil.LOCAL_FILE_SCHEME)
