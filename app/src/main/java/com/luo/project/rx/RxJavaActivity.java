@@ -1,10 +1,12 @@
 package com.luo.project.rx;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -298,6 +300,18 @@ public class RxJavaActivity extends AppCompatActivity {
                     @Override
                     public void call(String s) {
                         mLog(s);
+                    }
+                });
+
+        Observable.timer(2000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        ObjectAnimator
+                                .ofFloat(imageView, "alpha", 0.0F, 1.0F, 0.5F)
+                                .setDuration(1500)
+                                .start();
                     }
                 });
     }
