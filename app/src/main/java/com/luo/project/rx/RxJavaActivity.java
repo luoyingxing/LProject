@@ -287,6 +287,19 @@ public class RxJavaActivity extends AppCompatActivity {
             }
         });
 
+        Observable.just("roems1", "roems2", "roems3")
+                .map(new Func1<String, String>() {
+                    @Override
+                    public String call(String s) {
+                        return " --- map -- " + s;
+                    }
+                })
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        mLog(s);
+                    }
+                });
     }
 
 
