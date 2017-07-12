@@ -30,6 +30,7 @@ public class InitViewParser {
             Log.e("-- parse -- ", field.getName());
             if (field.isAnnotationPresent(InitViewById.class)) {
                 InitViewById injectView = field.getAnnotation(InitViewById.class);
+
                 int id = injectView.id();
                 if (id < 0) {
                     throw new Exception("id must not be null");
@@ -39,6 +40,9 @@ public class InitViewParser {
                         view = ((View) object).findViewById(id);
                     } else if (object instanceof Activity) {
                         view = ((Activity) object).findViewById(id);
+                        if (field.isAnnotationPresent(OnClick.class)){
+                            view.setOnClickListener((View.OnClickListener) object);
+                        }
                     }
                     field.set(object, view);
                 }
