@@ -35,7 +35,63 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+
+            applicationVariants.all {
+                variant ->
+                    def application = "LProject"
+                    def buildName = "channel" //渠道名字
+                    def outApkName = "peojectTest" //最终输出文件名
+                    def outDir
+
+                    def versionName = 'v' + variant.getVersionName() //版本名称
+                    def versionCode = 'c' + variant.getVersionCode()//版本号
+
+                    variant.outputs.each { output ->
+                        variant.productFlavors.each { product ->
+                            buildName = product.name //获取渠道名字
+                        }
+                        outDir = output.outputFile.parent
+                        outApkName = application + '_' + versionName + '_' + versionCode + '_' + variant.buildType.name + buildName + '.apk'
+                        output.outputFile = new File(outDir, outApkName)
+                    }
+            }
         }
+    }
+
+    productFlavors {
+        qihu360 {} // 360手机助手
+        yingyongbao {} // 腾讯应用宝
+        wandoujia {} // 豌豆荚
+//        baidu {} // 百度手机助手
+//        miui {} // 小米
+//        flyme {} // 魅族
+//        lenovo {} // 联想-乐商店
+//        oppo {} // Oppo-可可软件商店
+//        huawei {} // 华为
+//        vivo {} // vivo
+//        hiapk {} // 安卓市场
+//        sj91 {} // 91手机助手
+//        sogou {} // 搜狗手机市场
+//        sohu {} // 搜狐应用中心
+
+//        taobao {} // 淘宝手机助手
+//        gfan {} // 机锋
+//        appchina {} // 应用汇
+//        mumayi {} // 木蚂蚁
+//        wangyi163 {} // 网易应用
+//        nduoa {} // N多市场
+//        mm10086 {} // MM商城-中国移动
+//        wostore {} // WO商店
+//        youyi {} // 优异
+//        uc {} // UC+开发平台
+//        anzhi {} // 安智市场
+//        google {} // google play
+//        amazon {} // 亚马逊
+
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
     }
 
     sourceSets {
@@ -43,6 +99,7 @@ android {
             java.srcDirs = ['src/main/java', 'src/main/aidl']
         }
     }
+
 }
 
 dependencies {
