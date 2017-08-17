@@ -131,7 +131,8 @@ public class WifiActivity extends AppCompatActivity {
 
     private void test() {
         Log.e("WifiActivity", "test");
-        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        //TODO 下面这个暂时注释掉，打包异常
+//        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 //
 //        IntentFilter filter =new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 //        registerReceiver(receiver, filter);
