@@ -31,6 +31,7 @@ import com.luo.project.recycler.RecyclerViewActivity;
 import com.luo.project.rx.RxJavaActivity;
 import com.luo.project.server.ServerActivity;
 import com.luo.project.thread.ThreadActivity;
+import com.luo.project.vector.VectorActivity;
 import com.luo.project.view.ViewActivity;
 import com.luo.project.wifi.WifiActivity;
 
@@ -111,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
                     case 16:
                         startActivity(new Intent(MainActivity.this, ServerActivity.class));
                         break;
+                    case 17:
+                        startActivity(new Intent(MainActivity.this, VectorActivity.class));
+                        break;
                 }
             }
         });
@@ -144,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("Animator");
         list.add("AIDL");
         list.add("Server");
+        list.add("Vector");
 
         adapter.addAll(list);
 

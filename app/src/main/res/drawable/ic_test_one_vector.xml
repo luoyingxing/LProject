@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportHeight="100"
+    android:viewportWidth="100">
+    <group
+        android:name="rotateGroup"
+        android:pivotX="50.0"
+        android:pivotY="50.0">
+        <path
+            android:name="triangle1"
+            android:fillColor="#00ff00"
+            android:pathData="M50,30  L 50,30 L 70,70 L 30,70 z" />
+        <path
+            android:name="triangle2"
+            android:pathData="M30,80  L 30,80 L 70,80 L 50,90 z"
+            android:strokeColor="#ff0000" />
+    </group>
+</vector>  

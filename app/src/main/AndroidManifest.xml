@@ -136,6 +136,8 @@
 
         <service android:name=".server.ServiceOne" />
 
+        <activity android:name=".vector.VectorActivity" />
+
     </application>
 
 </manifest>
