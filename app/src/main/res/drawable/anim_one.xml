@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:drawable="@drawable/vector_one"
+    tools:targetApi="lollipop">
+
+    <!--<target-->
+    <!--android:name="rotateGroup"-->
+    <!--android:animation="@animator/rotate_animator" />-->
+
+    <target
+        android:name="start1"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start1"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start2"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start3"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start4"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start5"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start6"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start7"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start8"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start9"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start10"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start11"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start12"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start13"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start14"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start15"
+        android:animation="@animator/anim_path" />
+    <target
+        android:name="start16"
+        android:animation="@animator/anim_path" />
+
+</animated-vector>

@@ -1,6 +1,8 @@
 package com.luo.project.vector;
 
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,10 +26,21 @@ public class VectorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vector);
 
         ImageView imageView = (ImageView) findViewById(R.id.image_view);
+        final ImageView oneIV = (ImageView) findViewById(R.id.image_one);
         ImageView twoIV = (ImageView) findViewById(R.id.image_two);
 
         final AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) imageView.getDrawable();
         final AnimatedVectorDrawable twoIVDrawable = (AnimatedVectorDrawable) twoIV.getDrawable();
+
+        oneIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable drawable = oneIV.getDrawable();
+                if (drawable instanceof Animatable) {
+                    ((Animatable) drawable).start();
+                }
+            }
+        });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
