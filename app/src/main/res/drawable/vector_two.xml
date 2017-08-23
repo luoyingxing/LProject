@@ -1,0 +1,46 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportHeight="200"
+    android:viewportWidth="200">
+
+    <!--<path-->
+    <!--android:pathData="m50,0 l0,50 l50,0"-->
+    <!--android:strokeColor="#f12ccc" />-->
+
+    <!--<path-->
+    <!--android:pathData="M50,0 L100,0 L100,50"-->
+    <!--android:strokeColor="#123cca" />-->
+
+    <!--<path-->
+    <!--android:pathData="M0,50 a20,20 0 1 0 100 0"-->
+    <!--android:strokeColor="#f12ccc"-->
+    <!--android:strokeWidth="2dp" />-->
+
+    <group
+        android:name="rotateGroup"
+        android:pivotX="50.0"
+        android:pivotY="50.0">
+
+        <path
+            android:name="path_q_one"
+            android:pathData="M0,0 Q50,0 70,80"
+            android:strokeColor="#59eeda"
+            android:strokeWidth="1" />
+
+        <path
+            android:name="path_q_two"
+            android:fillColor="#FF4081"
+            android:pathData="M0,40 C50,0 50,50 80,120 z"
+            android:strokeColor="#e12424"
+            android:strokeWidth="2" />
+
+        <!--<path-->
+        <!--android:name="path_q_two"-->
+        <!--android:pathData="M10,80 C80,100 20,10 120,10"-->
+        <!--android:strokeColor="#acc123"-->
+        <!--android:strokeWidth="1" />-->
+
+    </group>
+
+</vector>
