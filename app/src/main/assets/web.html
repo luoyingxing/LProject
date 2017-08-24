@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <h1 id="h1">欢迎光临启舰的blog</h1>
+    <input type="button" value="js调native" onclick="ok()">
+
+    <input type="button" value="跳转" onclick="jump()">
+</head>
+<body>
+<script type="text/javascript">
+
+function ok() {
+     android.toastMessage("哈哈,i m webView msg");
+}
+
+function jump() {
+     android.jump();
+}
+
+function sum(i,m) {
+     document.getElementById("h1").innerHTML = (i + m);
+}
+
+function getGreetings() {
+     return 10008;
+}
+
+</script>
+</body>
+</html>

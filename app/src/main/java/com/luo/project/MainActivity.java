@@ -34,6 +34,7 @@ import com.luo.project.server.ServerActivity;
 import com.luo.project.thread.ThreadActivity;
 import com.luo.project.vector.VectorActivity;
 import com.luo.project.view.ViewActivity;
+import com.luo.project.web.WebViewActivity;
 import com.luo.project.wifi.WifiActivity;
 
 import java.lang.reflect.ParameterizedType;
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
                     case 17:
                         startActivity(new Intent(MainActivity.this, VectorActivity.class));
                         break;
+                    case 18:
+                        startActivity(new Intent(MainActivity.this, WebViewActivity.class));
+                        break;
                 }
             }
         });
@@ -150,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("AIDL");
         list.add("Server");
         list.add("Vector");
+        list.add("WebView");
 
         adapter.addAll(list);
 
