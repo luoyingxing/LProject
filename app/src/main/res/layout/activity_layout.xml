@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.luo.project.layout.TestLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/test_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.luo.project.layout.LayoutActivity">
+
+    <com.luo.project.layout.TestView
+        android:id="@+id/test_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ee6877" />
+
+</com.luo.project.layout.TestLayout>

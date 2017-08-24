@@ -26,6 +26,7 @@ import com.luo.project.event.EventActivity;
 import com.luo.project.flow.FloatWindowService;
 import com.luo.project.gallery.GalleryActivity;
 import com.luo.project.intent.IntentActivity;
+import com.luo.project.layout.LayoutActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
 import com.luo.project.rx.RxJavaActivity;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, NoHttpActivity.class));
                         break;
                     case 4:
-                        startActivity(new Intent(MainActivity.this, com.luo.project.layout.ViewActivity.class));
+                        startActivity(new Intent(MainActivity.this, LayoutActivity.class));
                         break;
                     case 5:
                         Intent intent = new Intent(MainActivity.this, FloatWindowService.class);
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("ViewGroup");
         list.add("Intent");
         list.add("NoHttp");
-        list.add("View");
+        list.add("Layout");
         list.add("flow button");
         list.add("Thread pool");
         list.add("Adapter");
