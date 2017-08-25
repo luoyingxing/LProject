@@ -29,6 +29,7 @@ import com.luo.project.intent.IntentActivity;
 import com.luo.project.layout.LayoutActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
+import com.luo.project.reflect.ReflectActivity;
 import com.luo.project.rx.RxJavaActivity;
 import com.luo.project.server.ServerActivity;
 import com.luo.project.thread.ThreadActivity;
@@ -120,10 +121,12 @@ public class MainActivity extends AppCompatActivity {
                     case 18:
                         startActivity(new Intent(MainActivity.this, WebViewActivity.class));
                         break;
+                    case 19:
+                        startActivity(new Intent(MainActivity.this, ReflectActivity.class));
+                        break;
                 }
             }
         });
-
 
         adapter = new CommonAdapter<String>(this, new ArrayList<String>(), R.layout.item_main_list) {
             @Override
@@ -133,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
         gridView.setAdapter(adapter);
-
 
         List<String> list = new ArrayList<>();
         list.add("RecyclerView");
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("Server");
         list.add("Vector");
         list.add("WebView");
+        list.add("reflect");
 
         adapter.addAll(list);
 
@@ -221,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
     public int getStatusHeight(Context context) {
         int statusHeight = -1;

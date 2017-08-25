@@ -67,12 +67,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".layout.ViewActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
             android:name=".thread.ThreadActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
@@ -138,7 +132,8 @@
 
         <activity android:name=".vector.VectorActivity" />
         <activity android:name=".layout.LayoutActivity" />
-        <activity android:name=".web.WebViewActivity"></activity>
+        <activity android:name=".web.WebViewActivity" />
+        <activity android:name=".reflect.ReflectActivity"></activity>
     </application>
 
 </manifest>
