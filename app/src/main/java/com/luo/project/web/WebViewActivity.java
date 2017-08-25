@@ -104,7 +104,7 @@ public class WebViewActivity extends AppCompatActivity {
         // 打开本地sd卡内的index.html文件
         // "content://com.android.htmlfileprovider/sdcard/index.html"
 
-//        url = "file:///android_asset/web.html";
+        url = "file:///android_asset/web.html";
     }
 
     @Override
