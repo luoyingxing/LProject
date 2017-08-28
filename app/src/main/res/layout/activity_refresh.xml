@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.luo.project.refresh.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.luo.project.refresh.BaseHeader
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="30dp"
+            android:text="refresh release"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </com.luo.project.refresh.BaseHeader>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@mipmap/image_one" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@mipmap/image_two" />
+
+    </LinearLayout>
+
+
+    <com.luo.project.refresh.BaseFooter
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="30dp"
+            android:text="load more"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </com.luo.project.refresh.BaseFooter>
+
+</com.luo.project.refresh.RefreshLayout>

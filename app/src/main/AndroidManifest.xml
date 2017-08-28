@@ -133,7 +133,8 @@
         <activity android:name=".vector.VectorActivity" />
         <activity android:name=".layout.LayoutActivity" />
         <activity android:name=".web.WebViewActivity" />
-        <activity android:name=".reflect.ReflectActivity"></activity>
+        <activity android:name=".reflect.ReflectActivity" />
+        <activity android:name=".refresh.RefreshActivity"></activity>
     </application>
 
 </manifest>

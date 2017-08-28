@@ -30,6 +30,7 @@ import com.luo.project.layout.LayoutActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
 import com.luo.project.reflect.ReflectActivity;
+import com.luo.project.refresh.RefreshActivity;
 import com.luo.project.rx.RxJavaActivity;
 import com.luo.project.server.ServerActivity;
 import com.luo.project.thread.ThreadActivity;
@@ -124,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
                     case 19:
                         startActivity(new Intent(MainActivity.this, ReflectActivity.class));
                         break;
+                    case 20:
+                        startActivity(new Intent(MainActivity.this, RefreshActivity.class));
+                        break;
                 }
             }
         });
@@ -158,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("Vector");
         list.add("WebView");
         list.add("reflect");
+        list.add("refresh");
 
         adapter.addAll(list);
 
