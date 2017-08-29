@@ -20,25 +20,12 @@
 
     </com.luo.project.refresh.BaseHeader>
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@mipmap/image_one" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@mipmap/image_two" />
-
-    </LinearLayout>
-
+        android:divider="@color/colorAccent"
+        android:dividerHeight="1dp" />
 
     <com.luo.project.refresh.BaseFooter
         android:layout_width="match_parent"
