@@ -6,14 +6,14 @@
 
     <com.luo.project.refresh.BaseHeader
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="30dp"
+            android:padding="20dp"
             android:text="refresh release"
             android:textColor="@color/white"
             android:textSize="15sp" />
@@ -29,14 +29,14 @@
 
     <com.luo.project.refresh.BaseFooter
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="30dp"
+            android:padding="20dp"
             android:text="load more"
             android:textColor="@color/white"
             android:textSize="15sp" />

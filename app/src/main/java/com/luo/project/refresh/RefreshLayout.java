@@ -450,7 +450,7 @@ public class RefreshLayout extends ViewGroup {
 
 //    @Override
 //    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        return ev.getActionMasked() == MotionEvent.ACTION_MOVE && mContentTopY > 0 || super.onInterceptTouchEvent(ev);
+//        return ev.getActionMasked() == MotionEvent.ACTION_DOWN && mStatus == Status.LOADING  || super.onInterceptTouchEvent(ev);
 //    }
 
     @Override
