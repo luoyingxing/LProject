@@ -214,7 +214,7 @@ public class RefreshLayout extends ViewGroup {
 
                 if (firstVisiblePosition == 0) {
                     View topChildView = ((AbsListView) mContentView).getChildAt(0);
-                    return topChildView.getTop() == 0;
+                    return null != topChildView && topChildView.getTop() == 0;
                 }
             }
 
@@ -234,7 +234,7 @@ public class RefreshLayout extends ViewGroup {
 
                 if (lastVisiblePosition == (((AbsListView) mContentView).getCount() - 1)) {
                     View bottomChildView = ((AbsListView) mContentView).getChildAt(lastVisiblePosition - firstVisiblePosition);
-                    return mContentView.getHeight() >= bottomChildView.getBottom();
+                    return null != bottomChildView && mContentView.getHeight() >= bottomChildView.getBottom();
                 }
             }
 
@@ -256,7 +256,7 @@ public class RefreshLayout extends ViewGroup {
     private int mEvents;
     private boolean mCanPullDown;
     private boolean mCanPullUp;
-    private boolean mIsTouch;
+//    private boolean mIsTouch;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -276,18 +276,8 @@ public class RefreshLayout extends ViewGroup {
                 mEvents = -1;
                 break;
             case MotionEvent.ACTION_MOVE:
-//                Rect local = new Rect();
-//                mContentView.getLocalVisibleRect(local);
-//                Rect local1 = new Rect();
-//                mContentView.getGlobalVisibleRect(local1);
-//                Log.e(TAG, "ContentView.getMeasuredHeight() -- " + mContentView.getMeasuredHeight());
-//                Log.e(TAG, "ContentView.getY() -- " + mContentView.getY());
-//                Log.e(TAG, "ContentView.getHeight() -- " + mContentView.getHeight());
-//                Log.i(TAG, "local   " + local.left + "," + local.top + "," + local.right + "," + local.bottom);
-//                Log.i(TAG, "Global   " + local1.left + "," + local1.top + "," + local1.right + "," + local1.bottom);
-
                 if (mEvents == 0) {
-                    if (mPullDownY > 0 || canPullDown() && mCanPullDown && mStatus != Status.LOADING) {
+                    if (mPullDownY > 0 || canPullDown() && mCanPullDown && mStatus != Status.REFRESHING) {
                         // 可以下拉，正在加载时不能下拉
 
                         mPullDownY = mPullDownY + (ev.getY() - mLastY) / mRadio;
@@ -301,12 +291,12 @@ public class RefreshLayout extends ViewGroup {
                             mPullDownY = getMeasuredHeight();
                         }
 
-                        if (mStatus == Status.REFRESHING) {
-                            // 正在刷新的时候触摸移动
-                            mIsTouch = true;
-                        }
+//                        if (mStatus == Status.REFRESHING) {
+                        // 正在刷新的时候触摸移动
+//                            mIsTouch = true;
+//                        }
 
-                    } else if (mPullUpY < 0 || canPullUp() && mCanPullUp && mStatus != Status.REFRESHING) {
+                    } else if (mPullUpY < 0 || canPullUp() && mCanPullUp && mStatus != Status.LOADING) {
                         // 可以上拉，正在刷新时不能上拉
                         mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
                         if (mPullUpY > 0) {
@@ -318,12 +308,13 @@ public class RefreshLayout extends ViewGroup {
                             mPullUpY = -getMeasuredHeight();
                         }
 
-                        if (mStatus == Status.LOADING) {
-                            // 正在加载的时候触摸移动
-                            mIsTouch = true;
-                        }
-                    } else
-                        releasePull();
+//                        if (mStatus == Status.LOADING) {
+                        // 正在加载的时候触摸移动
+//                            mIsTouch = true;
+//                        }
+                    } else {
+//                        releasePull();
+                    }
                 } else {
                     mEvents = 0;
                 }
@@ -331,10 +322,12 @@ public class RefreshLayout extends ViewGroup {
                 mLastY = ev.getY();
                 // 根据下拉距离改变比例
                 mRadio = (float) (4 + 4 * Math.tan(Math.PI / 2 / getMeasuredHeight() * (mPullDownY + Math.abs(mPullUpY))));
-                if (mPullDownY > 0 || mPullUpY < 0) {
+
+                if ((mPullDownY > 0) || (mPullUpY < 0)) {
                     requestLayout();
                 }
-                if (mPullDownY > 0) {
+
+                if (mPullDownY > 0 && mStatus != Status.REFRESHING) {
                     if (mPullDownY <= mHeaderHeight && (mStatus == Status.RELEASE_TO_REFRESH || mStatus == Status.DONE)) {
                         // 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新
                         changeState(Status.INIT);
@@ -343,7 +336,7 @@ public class RefreshLayout extends ViewGroup {
                         // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
                         changeState(Status.RELEASE_TO_REFRESH);
                     }
-                } else if (mPullUpY < 0) {
+                } else if (mPullUpY < 0 && mStatus != Status.LOADING) {
                     // 下面是判断上拉加载的，同上，注意mPullUpY是负值
                     if (-mPullUpY <= mFooterHeight && (mStatus == Status.RELEASE_TO_LOAD || mStatus == Status.DONE)) {
                         changeState(Status.INIT);
@@ -365,7 +358,7 @@ public class RefreshLayout extends ViewGroup {
                 Log.e(TAG, "changeState() -- ACTION_UP");
                 if (mPullDownY > mHeaderHeight || -mPullUpY > mFooterHeight) {
                     // 正在刷新时往下拉（正在加载时往上拉），释放后下拉头（上拉头）不隐藏
-                    mIsTouch = false;
+//                    mIsTouch = false;
                 }
 
                 Log.e(TAG, "changeState() -- mStatus " + mStatus);
@@ -385,8 +378,14 @@ public class RefreshLayout extends ViewGroup {
                         mOnRefreshListener.onLoadMore(this);
                     }
                 } else {
-                    mPullUpY = 0;
-                    mPullDownY = 0;
+                    if (mStatus == Status.REFRESHING) {
+                        mPullDownY = mHeaderHeight;
+                    } else if (mStatus == Status.LOADING) {
+                        mPullUpY = -mFooterHeight;
+                    } else {
+                        mPullUpY = 0;
+                        mPullDownY = 0;
+                    }
                 }
 
                 requestLayout();
@@ -399,8 +398,8 @@ public class RefreshLayout extends ViewGroup {
     }
 
     private void changeState(Status status) {
+        Log.e(TAG, "State -- " + status);
         mStatus = status;
-        Log.d(TAG, "changeState() -- " + status);
     }
 
     public void onRefreshComplete() {
