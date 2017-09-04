@@ -1,8 +1,8 @@
 package com.luo.project.refresh;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+
+import com.luo.project.R;
 
 /**
  * RefreshLayout
@@ -28,6 +30,8 @@ public class RefreshLayout extends ViewGroup {
     private View mHeaderView;
     private View mContentView;
     private View mFooterView;
+
+    private int mPullViewPosition;
 
     private Status mStatus = Status.INIT;
 
@@ -65,6 +69,11 @@ public class RefreshLayout extends ViewGroup {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         mWindowWidth = metrics.widthPixels;
         mWindowHeight = metrics.heightPixels;
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RefreshLayout);
+        mPullViewPosition = array.getInt(R.styleable.RefreshLayout_pullViewPosition, 0);
+
+        array.recycle();
     }
 
     @Override
@@ -73,44 +82,61 @@ public class RefreshLayout extends ViewGroup {
         super.onFinishInflate();
         int count = getChildCount();
 
-        if (1 == count) {
-            View view = getChildAt(0);
-            //强制默认为内容布局
-            if (null == mContentView) {
-                mContentView = view;
-            }
-        } else if (3 == count) {
-            View view0 = getChildAt(0);
-            View view1 = getChildAt(1);
-            View view2 = getChildAt(2);
-
-            if (null == mHeaderView && view0 instanceof Header) {
-                mHeaderView = view0;
-            }
-
-            if (null == mContentView) {
-                mContentView = view1;
-            }
-
-            if (null == mFooterView && view2 instanceof Footer) {
-                mFooterView = view2;
-            }
-
-        } else if (2 == count) {
-            //遍历child view来适配
-            for (int i = 0; i < count; i++) {
-                if (null == mHeaderView && getChildAt(i) instanceof Header) {
-                    mHeaderView = getChildAt(i);
-                } else if (null == mFooterView && getChildAt(i) instanceof Footer) {
-                    mFooterView = getChildAt(i);
-                } else if (null == mContentView) {
-                    mContentView = getChildAt(i);
-                }
-            }
-        } else {
+        if (1 > count || 3 < count) {
             throw new RuntimeException("RefreshLayout can only include three child view, and must include at most one child view");
         }
 
+        if (1 == count) {
+            if (null == mContentView) {
+                mContentView = getChildAt(0);
+            }
+        }
+
+        if (2 == count) {
+            if (0 == mPullViewPosition) {
+                throw new RuntimeException("please assign the pull view in RefreshLayout in xml with refresh:pullViewPosition=\"first\"");
+            }
+
+            if (null == mContentView) {
+                mContentView = getChildAt(mPullViewPosition - 1);
+            }
+
+            if (mPullViewPosition == 1) {
+                if (null == mFooterView) {
+                    mFooterView = getChildAt(1);
+                }
+            } else {
+                if (null == mHeaderView) {
+                    mHeaderView = getChildAt(0);
+                }
+            }
+        }
+
+        if (3 == count) {
+            if (null == mHeaderView) {
+                if (getChildAt(0) instanceof Footer) {
+                    throw new RuntimeException("The Header view is can not implements Footer");
+                } else {
+                    mHeaderView = getChildAt(0);
+                }
+            }
+
+            if (null == mContentView) {
+                mContentView = getChildAt(1);
+            }
+
+            if (null == mFooterView) {
+                if (getChildAt(2) instanceof Header) {
+                    throw new RuntimeException("The Footer view is can not implements Header");
+                } else {
+                    mFooterView = getChildAt(2);
+                }
+            }
+        }
+
+        if (null == mContentView) {
+            throw new RuntimeException("RefreshLayout must include one of pull view");
+        }
     }
 
     @Override
@@ -129,9 +155,6 @@ public class RefreshLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.d(TAG, "onMeasure()");
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
         int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
@@ -187,7 +210,6 @@ public class RefreshLayout extends ViewGroup {
                     mFooterView.getMeasuredWidth(),
                     (int) (mPullDownY + mPullUpY) + mContentView.getMeasuredHeight() + mFooterView.getMeasuredHeight());
         }
-
     }
 
     @Override
@@ -212,9 +234,9 @@ public class RefreshLayout extends ViewGroup {
                 int firstVisiblePosition = ((AbsListView) mContentView).getFirstVisiblePosition();
                 int lastVisiblePosition = ((AbsListView) mContentView).getLastVisiblePosition();
 
-                if (firstVisiblePosition == 0) {
+                if (0 == firstVisiblePosition) {
                     View topChildView = ((AbsListView) mContentView).getChildAt(0);
-                    return null != topChildView && topChildView.getTop() == 0;
+                    return null != topChildView && 0 == topChildView.getTop();
                 }
             }
 
@@ -256,7 +278,6 @@ public class RefreshLayout extends ViewGroup {
     private int mEvents;
     private boolean mCanPullDown;
     private boolean mCanPullUp;
-//    private boolean mIsTouch;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -267,9 +288,9 @@ public class RefreshLayout extends ViewGroup {
             case MotionEvent.ACTION_DOWN:
                 mDownY = ev.getY();
                 mLastY = mDownY;
-//                timer.cancel();
                 mEvents = 0;
-                releasePull();
+                mCanPullDown = true;
+                mCanPullUp = true;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_POINTER_UP:
@@ -327,7 +348,7 @@ public class RefreshLayout extends ViewGroup {
                     requestLayout();
                 }
 
-                if (mPullDownY > 0 && mStatus != Status.REFRESHING) {
+                if (mPullDownY > 0 && mStatus != Status.REFRESHING && null != mHeaderView) {
                     if (mPullDownY <= mHeaderHeight && (mStatus == Status.RELEASE_TO_REFRESH || mStatus == Status.DONE)) {
                         // 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新
                         changeState(Status.INIT);
@@ -336,7 +357,7 @@ public class RefreshLayout extends ViewGroup {
                         // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
                         changeState(Status.RELEASE_TO_REFRESH);
                     }
-                } else if (mPullUpY < 0 && mStatus != Status.LOADING) {
+                } else if (mPullUpY < 0 && mStatus != Status.LOADING && null != mFooterView) {
                     // 下面是判断上拉加载的，同上，注意mPullUpY是负值
                     if (-mPullUpY <= mFooterHeight && (mStatus == Status.RELEASE_TO_LOAD || mStatus == Status.DONE)) {
                         changeState(Status.INIT);
@@ -345,7 +366,6 @@ public class RefreshLayout extends ViewGroup {
                     if (-mPullUpY >= mFooterHeight && mStatus == Status.INIT) {
                         changeState(Status.RELEASE_TO_LOAD);
                     }
-
                 }
                 // 因为刷新和加载操作不能同时进行，所以mPullDownY和mPullUpY不会同时不为0，因此这里用(mPullDownY +
                 // Math.abs(mPullUpY))就可以不对当前状态作区分了
@@ -363,14 +383,14 @@ public class RefreshLayout extends ViewGroup {
 
                 Log.e(TAG, "changeState() -- mStatus " + mStatus);
 
-                if (mStatus == Status.RELEASE_TO_REFRESH) {
+                if (mStatus == Status.RELEASE_TO_REFRESH && null != mHeaderView) {
                     changeState(Status.REFRESHING);
                     mPullDownY = mHeaderHeight;
                     // 刷新操作
                     if (mOnRefreshListener != null) {
                         mOnRefreshListener.onRefresh(this);
                     }
-                } else if (mStatus == Status.RELEASE_TO_LOAD) {
+                } else if (mStatus == Status.RELEASE_TO_LOAD && null != mFooterView) {
                     changeState(Status.LOADING);
                     mPullUpY = -mFooterHeight;
                     // 加载操作
@@ -378,9 +398,9 @@ public class RefreshLayout extends ViewGroup {
                         mOnRefreshListener.onLoadMore(this);
                     }
                 } else {
-                    if (mStatus == Status.REFRESHING) {
+                    if (mStatus == Status.REFRESHING && null != mHeaderView) {
                         mPullDownY = mHeaderHeight;
-                    } else if (mStatus == Status.LOADING) {
+                    } else if (mStatus == Status.LOADING && null != mFooterView) {
                         mPullUpY = -mFooterHeight;
                     } else {
                         mPullUpY = 0;
@@ -414,14 +434,6 @@ public class RefreshLayout extends ViewGroup {
         mPullDownY = 0;
         requestLayout();
         mStatus = Status.INIT;
-    }
-
-    /**
-     * 不限制上拉或下拉
-     */
-    private void releasePull() {
-        mCanPullDown = true;
-        mCanPullUp = true;
     }
 
     private OnRefreshListener mOnRefreshListener;

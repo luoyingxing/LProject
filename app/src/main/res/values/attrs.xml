@@ -5,4 +5,11 @@
         <attr name="column" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="RefreshLayout">
+        <attr name="pullViewPosition">
+            <enum name="first" value="1" />
+            <enum name="second" value="2" />
+        </attr>
+    </declare-styleable>
+
 </resources>

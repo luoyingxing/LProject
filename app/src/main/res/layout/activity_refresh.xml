@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.luo.project.refresh.BaseHeader
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent">
@@ -18,7 +18,7 @@
             android:textColor="@color/white"
             android:textSize="15sp" />
 
-    </com.luo.project.refresh.BaseHeader>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/list_view"
@@ -27,7 +27,7 @@
         android:divider="@color/colorAccent"
         android:dividerHeight="1dp" />
 
-    <com.luo.project.refresh.BaseFooter
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
@@ -41,6 +41,6 @@
             android:textColor="@color/white"
             android:textSize="15sp" />
 
-    </com.luo.project.refresh.BaseFooter>
+    </RelativeLayout>
 
 </com.luo.project.refresh.RefreshLayout>
