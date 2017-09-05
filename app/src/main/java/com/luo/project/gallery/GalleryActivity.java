@@ -1,10 +1,13 @@
 package com.luo.project.gallery;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -47,6 +50,40 @@ public class GalleryActivity extends AppCompatActivity {
             }
         };
         gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                //可以选择图片类型，如果是*表明所有类型的图片
+                intent.setDataAndType(Uri.parse(adapter.getItem(position).getPhotoPath()), "image/*");
+                // 下面这个crop = true是设置在开启的Intent中设置显示的VIEW可裁剪
+                intent.putExtra("crop", "true");
+                // aspectX aspectY 是宽高的比例，这里设置的是正方形（长宽比为1:1）
+                intent.putExtra("aspectX", 1);
+                intent.putExtra("aspectY", 1);
+                // outputX outputY 是裁剪图片宽高
+                intent.putExtra("outputX", 1000);
+                intent.putExtra("outputY", 1000);
+                //裁剪时是否保留图片的比例，这里的比例是1:1
+                intent.putExtra("scale", true);
+                //是否是圆形裁剪区域，设置了也不一定有效
+                //intent.putExtra("circleCrop", true);
+                //设置输出的格式
+                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+                //是否将数据保留在Bitmap中返回
+                intent.putExtra("return-data", true);
+
+                startActivityForResult(intent, 202);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("onActivityResult", "requestCode = " + requestCode);
+        Log.e("onActivityResult", "resultCode = " + resultCode);
+        Log.e("onActivityResult", "data = " + data);
     }
 
     private int REQUEST_CODE_GALLERY = 102;

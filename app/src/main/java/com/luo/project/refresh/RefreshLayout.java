@@ -35,13 +35,13 @@ public class RefreshLayout extends ViewGroup {
 
     private Status mStatus = Status.INIT;
 
-    private enum Status {
+    public enum Status {
         INIT,
-        RELEASE_TO_REFRESH,
+        PREPARE_TO_REFRESH,
         REFRESHING,
-        RELEASE_TO_LOAD,
+        PREPARE_TO_LOAD,
         LOADING,
-        DONE
+        FINISH
     }
 
     public RefreshLayout(Context context) {
@@ -272,7 +272,6 @@ public class RefreshLayout extends ViewGroup {
 
     private float mPullDownY;
     private float mPullUpY;
-    private float mDownY;
     private float mLastY;
     private float mRadio = 4;
     private int mEvents;
@@ -281,13 +280,9 @@ public class RefreshLayout extends ViewGroup {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.e(TAG, "DownY " + mPullDownY);
-        Log.e(TAG, "UpY " + mPullUpY);
-
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                mDownY = ev.getY();
-                mLastY = mDownY;
+                mLastY = ev.getY();
                 mEvents = 0;
                 mCanPullDown = true;
                 mCanPullUp = true;
@@ -299,127 +294,160 @@ public class RefreshLayout extends ViewGroup {
             case MotionEvent.ACTION_MOVE:
                 if (mEvents == 0) {
                     if (mPullDownY > 0 || canPullDown() && mCanPullDown && mStatus != Status.REFRESHING) {
-                        // 可以下拉，正在加载时不能下拉
-
                         mPullDownY = mPullDownY + (ev.getY() - mLastY) / mRadio;
-                        if (mPullDownY < 0) {
-                            mPullDownY = 0;
-                            mCanPullDown = false;
-                            mCanPullUp = true;
-                        }
-
-                        if (mPullDownY > getMeasuredHeight()) {
-                            mPullDownY = getMeasuredHeight();
-                        }
-
-//                        if (mStatus == Status.REFRESHING) {
-                        // 正在刷新的时候触摸移动
-//                            mIsTouch = true;
-//                        }
-
+                        checkPullDown();
+                        onPullingDown();
                     } else if (mPullUpY < 0 || canPullUp() && mCanPullUp && mStatus != Status.LOADING) {
-                        // 可以上拉，正在刷新时不能上拉
                         mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
-                        if (mPullUpY > 0) {
-                            mPullUpY = 0;
-                            mCanPullDown = true;
-                            mCanPullUp = false;
-                        }
-                        if (mPullUpY < -getMeasuredHeight()) {
-                            mPullUpY = -getMeasuredHeight();
-                        }
-
-//                        if (mStatus == Status.LOADING) {
-                        // 正在加载的时候触摸移动
-//                            mIsTouch = true;
-//                        }
-                    } else {
-//                        releasePull();
+                        checkPullUp();
+                        onPullingUp();
                     }
                 } else {
                     mEvents = 0;
                 }
 
                 mLastY = ev.getY();
-                // 根据下拉距离改变比例
-                mRadio = (float) (4 + 4 * Math.tan(Math.PI / 2 / getMeasuredHeight() * (mPullDownY + Math.abs(mPullUpY))));
+                updateRadio();
+                updateLayout();
+                updateLayoutStatusOnMove();
 
-                if ((mPullDownY > 0) || (mPullUpY < 0)) {
-                    requestLayout();
-                }
-
-                if (mPullDownY > 0 && mStatus != Status.REFRESHING && null != mHeaderView) {
-                    if (mPullDownY <= mHeaderHeight && (mStatus == Status.RELEASE_TO_REFRESH || mStatus == Status.DONE)) {
-                        // 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新
-                        changeState(Status.INIT);
-                    }
-                    if (mPullDownY >= mHeaderHeight && mStatus == Status.INIT) {
-                        // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
-                        changeState(Status.RELEASE_TO_REFRESH);
-                    }
-                } else if (mPullUpY < 0 && mStatus != Status.LOADING && null != mFooterView) {
-                    // 下面是判断上拉加载的，同上，注意mPullUpY是负值
-                    if (-mPullUpY <= mFooterHeight && (mStatus == Status.RELEASE_TO_LOAD || mStatus == Status.DONE)) {
-                        changeState(Status.INIT);
-                    }
-                    // 上拉操作
-                    if (-mPullUpY >= mFooterHeight && mStatus == Status.INIT) {
-                        changeState(Status.RELEASE_TO_LOAD);
-                    }
-                }
-                // 因为刷新和加载操作不能同时进行，所以mPullDownY和mPullUpY不会同时不为0，因此这里用(mPullDownY +
-                // Math.abs(mPullUpY))就可以不对当前状态作区分了
-                if ((mPullDownY + Math.abs(mPullUpY)) > 8) {
-                    // 防止下拉过程中误触发长按事件和点击事件
+                if (cancelPull()) {
                     ev.setAction(MotionEvent.ACTION_CANCEL);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                Log.e(TAG, "changeState() -- ACTION_UP");
-                if (mPullDownY > mHeaderHeight || -mPullUpY > mFooterHeight) {
-                    // 正在刷新时往下拉（正在加载时往上拉），释放后下拉头（上拉头）不隐藏
-//                    mIsTouch = false;
-                }
-
-                Log.e(TAG, "changeState() -- mStatus " + mStatus);
-
-                if (mStatus == Status.RELEASE_TO_REFRESH && null != mHeaderView) {
-                    changeState(Status.REFRESHING);
-                    mPullDownY = mHeaderHeight;
-                    // 刷新操作
-                    if (mOnRefreshListener != null) {
-                        mOnRefreshListener.onRefresh(this);
-                    }
-                } else if (mStatus == Status.RELEASE_TO_LOAD && null != mFooterView) {
-                    changeState(Status.LOADING);
-                    mPullUpY = -mFooterHeight;
-                    // 加载操作
-                    if (mOnRefreshListener != null) {
-                        mOnRefreshListener.onLoadMore(this);
-                    }
-                } else {
-                    if (mStatus == Status.REFRESHING && null != mHeaderView) {
-                        mPullDownY = mHeaderHeight;
-                    } else if (mStatus == Status.LOADING && null != mFooterView) {
-                        mPullUpY = -mFooterHeight;
-                    } else {
-                        mPullUpY = 0;
-                        mPullDownY = 0;
-                    }
-                }
-
-                requestLayout();
+                requestRefreshLayoutOnDone();
             default:
                 break;
         }
-
         super.dispatchTouchEvent(ev);
         return true;
     }
 
-    private void changeState(Status status) {
-        Log.e(TAG, "State -- " + status);
-        mStatus = status;
+    private void checkPullDown() {
+        if (mPullDownY < 0) {
+            mPullDownY = 0;
+            mCanPullDown = false;
+            mCanPullUp = true;
+        }
+        if (mPullDownY > getMeasuredHeight()) {
+            mPullDownY = getMeasuredHeight();
+        }
+    }
+
+    private void onPullingDown() {
+        if (null != mHeaderView && mHeaderView instanceof Header) {
+            int extend = mPullDownY > mHeaderHeight ? (int) (mHeaderHeight - mPullDownY) : 0;
+            float percent = mPullDownY > mHeaderHeight ? 1 : mPullDownY / mHeaderHeight;
+            ((Header) mHeaderView).onPullingDown(percent, mPullDownY, mHeaderHeight, extend);
+        }
+    }
+
+    private void onPullingUp() {
+        if (null != mFooterView && mFooterView instanceof Footer) {
+            int extend = -mPullUpY > mFooterHeight ? (int) (mFooterHeight + mPullUpY) : 0;
+            float percent = -mPullUpY > mFooterHeight ? 1 : -mPullUpY / mFooterHeight;
+            ((Footer) mFooterView).onPullingUp(percent, -mPullUpY, mFooterHeight, extend);
+        }
+    }
+
+    private void checkPullUp() {
+        if (mPullUpY > 0) {
+            mPullUpY = 0;
+            mCanPullDown = true;
+            mCanPullUp = false;
+        }
+        if (mPullUpY < -getMeasuredHeight()) {
+            mPullUpY = -getMeasuredHeight();
+        }
+    }
+
+    private void updateRadio() {
+        mRadio = (float) (4 + 4 * Math.tan(Math.PI / 2 / getMeasuredHeight() * (mPullDownY + Math.abs(mPullUpY))));
+    }
+
+    private void updateLayout() {
+        if ((mPullDownY > 0) || (mPullUpY < 0)) {
+            requestLayout();
+        }
+    }
+
+    private boolean cancelPull() {
+        // 防止下拉过程中误触发长按事件和点击事件
+        return (mPullDownY + Math.abs(mPullUpY)) > 6;
+    }
+
+    private void updateLayoutStatusOnMove() {
+        if (mPullDownY > 0 && mStatus != Status.REFRESHING && null != mHeaderView) {
+            if (mPullDownY <= mHeaderHeight && (mStatus == Status.PREPARE_TO_REFRESH || mStatus == Status.FINISH)) {
+                mStatus = Status.INIT;
+                if (mHeaderView instanceof Header) {
+                    ((Header) mHeaderView).onInit();
+                }
+            }
+
+            if (mPullDownY >= mHeaderHeight && mStatus == Status.INIT) {
+                mStatus = Status.PREPARE_TO_REFRESH;
+                if (mHeaderView instanceof Header) {
+                    ((Header) mHeaderView).onPrepareToRefresh();
+                }
+            }
+        } else if (mPullUpY < 0 && mStatus != Status.LOADING && null != mFooterView) {
+
+            if (-mPullUpY <= mFooterHeight && (mStatus == Status.PREPARE_TO_LOAD || mStatus == Status.FINISH)) {
+                mStatus = Status.INIT;
+                if (mFooterView instanceof Footer) {
+                    ((Footer) mFooterView).onInit();
+                }
+            }
+
+            if (-mPullUpY >= mFooterHeight && mStatus == Status.INIT) {
+                mStatus = Status.PREPARE_TO_LOAD;
+                if (mFooterView instanceof Footer) {
+                    ((Footer) mFooterView).onPrepareToLoadMore();
+                }
+            }
+        }
+    }
+
+    private void requestRefreshLayoutOnDone() {
+        if (mStatus == Status.PREPARE_TO_REFRESH && null != mHeaderView) {
+            mStatus = Status.REFRESHING;
+            if (mHeaderView instanceof Header) {
+                ((Header) mHeaderView).onRefreshing();
+            }
+            mPullDownY = mHeaderHeight;
+            // 刷新操作
+            if (mOnRefreshListener != null) {
+                mOnRefreshListener.onRefresh();
+            }
+        } else if (mStatus == Status.PREPARE_TO_LOAD && null != mFooterView) {
+            mStatus = Status.LOADING;
+            if (mFooterView instanceof Footer) {
+                ((Footer) mFooterView).onLoading();
+            }
+            mPullUpY = -mFooterHeight;
+            // 加载操作
+            if (mOnRefreshListener != null) {
+                mOnRefreshListener.onLoadMore();
+            }
+        } else {
+            if (mStatus == Status.REFRESHING && null != mHeaderView) {
+                mPullDownY = mHeaderHeight;
+            } else if (mStatus == Status.LOADING && null != mFooterView) {
+                mPullUpY = -mFooterHeight;
+            } else {
+                if (mHeaderView instanceof Header) {
+                    ((Header) mHeaderView).onInit();
+                }
+                if (mFooterView instanceof Footer) {
+                    ((Footer) mFooterView).onInit();
+                }
+                mPullUpY = 0;
+                mPullDownY = 0;
+            }
+        }
+        requestLayout();
     }
 
     public void onRefreshComplete() {
@@ -427,6 +455,10 @@ public class RefreshLayout extends ViewGroup {
         mPullDownY = 0;
         requestLayout();
         mStatus = Status.INIT;
+
+        if (null != mHeaderView && mHeaderView instanceof Header) {
+            ((Header) mHeaderView).onFinish();
+        }
     }
 
     public void onLoadMoreComplete() {
@@ -434,6 +466,10 @@ public class RefreshLayout extends ViewGroup {
         mPullDownY = 0;
         requestLayout();
         mStatus = Status.INIT;
+
+        if (null != mFooterView && mFooterView instanceof Footer) {
+            ((Footer) mFooterView).onFinish();
+        }
     }
 
     private OnRefreshListener mOnRefreshListener;
@@ -442,21 +478,11 @@ public class RefreshLayout extends ViewGroup {
         mOnRefreshListener = listener;
     }
 
-    /**
-     * 刷新加载回调接口
-     *
-     * @author chenjing
-     */
-    public interface OnRefreshListener {
-        /**
-         * 刷新操作
-         */
-        void onRefresh(RefreshLayout pullToRefreshLayout);
 
-        /**
-         * 加载操作
-         */
-        void onLoadMore(RefreshLayout pullToRefreshLayout);
+    public interface OnRefreshListener {
+        void onRefresh();
+
+        void onLoadMore();
     }
 
 //    @Override

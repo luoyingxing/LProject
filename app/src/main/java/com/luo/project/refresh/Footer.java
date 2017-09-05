@@ -1,6 +1,5 @@
 package com.luo.project.refresh;
 
-
 /**
  * Footer
  * <p>
@@ -8,25 +7,34 @@ package com.luo.project.refresh;
  */
 
 public interface Footer {
+    /**
+     * 手指拖动上拉
+     *
+     * @param percent      上拉的百分比 0.00 - 1.00
+     * @param pullHeight   上拉的距离
+     * @param footerHeight footer的高度
+     * @param extendHeight footer的扩展高度
+     */
+    void onPullingUp(float percent, float pullHeight, int footerHeight, int extendHeight);
 
     /**
-     * 手指拖动下拉（会连续多次调用）
-     *
-     * @param percent      下拉的百分比 值 = offset/footerHeight (0 - percent - (footerHeight+extendHeight) / footerHeight )
-     * @param offset       下拉的像素偏移量  0 - offset - (footerHeight+extendHeight)
-     * @param footerHeight Footer的高度
-     * @param extendHeight Footer的扩展高度
+     * 初始化状态
      */
-    void onPullingUp(float percent, int offset, int footerHeight, int extendHeight);
+    void onInit();
 
     /**
-     * 手指释放之后的持续动画（会连续多次调用）
-     *
-     * @param percent      下拉的百分比 值 = offset/footerHeight (0 - percent - (footerHeight+extendHeight) / footerHeight )
-     * @param offset       下拉的像素偏移量  0 - offset - (footerHeight+extendHeight)
-     * @param footerHeight Footer的高度
-     * @param extendHeight Footer的扩展高度
+     * 准备好加载状态
      */
-    void onPullReleasing(float percent, int offset, int footerHeight, int extendHeight);
+    void onPrepareToLoadMore();
+
+    /**
+     * 正在加载状态
+     */
+    void onLoading();
+
+    /**
+     * 加载结束状态
+     */
+    void onFinish();
 
 }

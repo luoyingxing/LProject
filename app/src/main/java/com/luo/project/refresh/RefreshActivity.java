@@ -33,14 +33,14 @@ public class RefreshActivity extends AppCompatActivity {
         layout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
 
             @Override
-            public void onRefresh(RefreshLayout pullToRefreshLayout) {
+            public void onRefresh() {
                 Log.i("RefreshActivity", "onRefresh ");
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(), 2000);
                 adapter.clear();
             }
 
             @Override
-            public void onLoadMore(RefreshLayout pullToRefreshLayout) {
+            public void onLoadMore() {
                 Log.i("RefreshActivity", "onLoadMore ");
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(), 2000);
             }

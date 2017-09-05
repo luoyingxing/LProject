@@ -1,6 +1,5 @@
 package com.luo.project.refresh;
 
-
 /**
  * Header
  * <p>
@@ -9,23 +8,32 @@ package com.luo.project.refresh;
 
 public interface Header {
     /**
-     * 手指拖动下拉（会连续多次调用）
+     * 手指拖动下拉
      *
-     * @param percent      下拉的百分比 值 = offset/headerHeight (0 - percent - (headerHeight+extendHeight) / headerHeight )
-     * @param offset       下拉的像素偏移量  0 - offset - (headerHeight+extendHeight)
+     * @param percent      下拉的百分比 0.00 - 1.00
+     * @param pullHeight   下拉的距离
      * @param headerHeight Header的高度
      * @param extendHeight Header的扩展高度
      */
-    void onPullingDown(float percent, int offset, int headerHeight, int extendHeight);
+    void onPullingDown(float percent, float pullHeight, int headerHeight, int extendHeight);
 
     /**
-     * 手指释放之后的持续动画
-     *
-     * @param percent      下拉的百分比 值 = offset/headerHeight (0 - percent - (headerHeight+extendHeight) / headerHeight )
-     * @param offset       下拉的像素偏移量  0 - offset - (headerHeight+extendHeight)
-     * @param headerHeight Header的高度
-     * @param extendHeight Header的扩展高度
+     * 初始化状态
      */
-    void onReleasing(float percent, int offset, int headerHeight, int extendHeight);
+    void onInit();
 
+    /**
+     * 准备好刷新状态
+     */
+    void onPrepareToRefresh();
+
+    /**
+     * 正在刷新状态
+     */
+    void onRefreshing();
+
+    /**
+     * 刷新结束状态
+     */
+    void onFinish();
 }
