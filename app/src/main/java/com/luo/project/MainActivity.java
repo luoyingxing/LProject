@@ -22,6 +22,7 @@ import com.luo.project.adapter.ViewHolder;
 import com.luo.project.aidl.AIDLActivity;
 import com.luo.project.animator.AnimatorActivity;
 import com.luo.project.contentProvider.ContentProviderActivity;
+import com.luo.project.design.DesignActivity;
 import com.luo.project.event.EventActivity;
 import com.luo.project.flow.FloatWindowService;
 import com.luo.project.gallery.GalleryActivity;
@@ -128,6 +129,9 @@ public class MainActivity extends AppCompatActivity {
                     case 20:
                         startActivity(new Intent(MainActivity.this, RefreshActivity.class));
                         break;
+                    case 21:
+                        startActivity(new Intent(MainActivity.this, DesignActivity.class));
+                        break;
                 }
             }
         });
@@ -163,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("WebView");
         list.add("reflect");
         list.add("refresh");
+        list.add("design");
 
         adapter.addAll(list);
 
