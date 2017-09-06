@@ -26,6 +26,7 @@
                 android:id="@+id/tv"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:scaleType="fitXY"
                 android:src="@mipmap/img_tool_bar_two"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7" />
