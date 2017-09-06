@@ -228,8 +228,11 @@ public class RefreshLayout extends ViewGroup {
      * @return true is can pull down , otherwise.
      */
     private boolean canPullDown() {
-        if (null != mContentView) {
+        if (mPullDownY > 0) {
+            return true;
+        }
 
+        if (null != mContentView) {
             if (mContentView instanceof AbsListView) {
                 int firstVisiblePosition = ((AbsListView) mContentView).getFirstVisiblePosition();
                 int lastVisiblePosition = ((AbsListView) mContentView).getLastVisiblePosition();
@@ -249,6 +252,9 @@ public class RefreshLayout extends ViewGroup {
     }
 
     private boolean canPullUp() {
+        if (mPullUpY < 0) {
+            return true;
+        }
         if (null != mContentView) {
             if (mContentView instanceof AbsListView) {
                 int firstVisiblePosition = ((AbsListView) mContentView).getFirstVisiblePosition();
@@ -293,11 +299,11 @@ public class RefreshLayout extends ViewGroup {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mEvents == 0) {
-                    if (mPullDownY > 0 || canPullDown() && mCanPullDown && mStatus != Status.REFRESHING) {
+                    if (canPullDown() && mCanPullDown && mStatus != Status.REFRESHING) {
                         mPullDownY = mPullDownY + (ev.getY() - mLastY) / mRadio;
                         checkPullDown();
                         onPullingDown();
-                    } else if (mPullUpY < 0 || canPullUp() && mCanPullUp && mStatus != Status.LOADING) {
+                    } else if (canPullUp() && mCanPullUp && mStatus != Status.LOADING) {
                         mPullUpY = mPullUpY + (ev.getY() - mLastY) / mRadio;
                         checkPullUp();
                         onPullingUp();
@@ -317,7 +323,6 @@ public class RefreshLayout extends ViewGroup {
                 break;
             case MotionEvent.ACTION_UP:
                 requestRefreshLayoutOnDone();
-            default:
                 break;
         }
         super.dispatchTouchEvent(ev);
@@ -384,12 +389,20 @@ public class RefreshLayout extends ViewGroup {
                 if (mHeaderView instanceof Header) {
                     ((Header) mHeaderView).onInit();
                 }
+
+                if (null != mOnStatusListener) {
+                    mOnStatusListener.onRefreshInit();
+                }
             }
 
             if (mPullDownY >= mHeaderHeight && mStatus == Status.INIT) {
                 mStatus = Status.PREPARE_TO_REFRESH;
                 if (mHeaderView instanceof Header) {
                     ((Header) mHeaderView).onPrepareToRefresh();
+                }
+
+                if (null != mOnStatusListener) {
+                    mOnStatusListener.onPrepareToRefresh();
                 }
             }
         } else if (mPullUpY < 0 && mStatus != Status.LOADING && null != mFooterView) {
@@ -399,12 +412,20 @@ public class RefreshLayout extends ViewGroup {
                 if (mFooterView instanceof Footer) {
                     ((Footer) mFooterView).onInit();
                 }
+
+                if (null != mOnStatusListener) {
+                    mOnStatusListener.onLoadInit();
+                }
             }
 
             if (-mPullUpY >= mFooterHeight && mStatus == Status.INIT) {
                 mStatus = Status.PREPARE_TO_LOAD;
                 if (mFooterView instanceof Footer) {
                     ((Footer) mFooterView).onPrepareToLoadMore();
+                }
+
+                if (null != mOnStatusListener) {
+                    mOnStatusListener.onPrepareToLoadMore();
                 }
             }
         }
@@ -416,6 +437,11 @@ public class RefreshLayout extends ViewGroup {
             if (mHeaderView instanceof Header) {
                 ((Header) mHeaderView).onRefreshing();
             }
+
+            if (null != mOnStatusListener) {
+                mOnStatusListener.onRefreshing();
+            }
+
             mPullDownY = mHeaderHeight;
             // 刷新操作
             if (mOnRefreshListener != null) {
@@ -426,6 +452,11 @@ public class RefreshLayout extends ViewGroup {
             if (mFooterView instanceof Footer) {
                 ((Footer) mFooterView).onLoading();
             }
+
+            if (null != mOnStatusListener) {
+                mOnStatusListener.onLoading();
+            }
+
             mPullUpY = -mFooterHeight;
             // 加载操作
             if (mOnRefreshListener != null) {
@@ -443,6 +474,11 @@ public class RefreshLayout extends ViewGroup {
                 if (mFooterView instanceof Footer) {
                     ((Footer) mFooterView).onInit();
                 }
+
+                if (null != mOnStatusListener) {
+                    mOnStatusListener.onRefreshInit();
+                    mOnStatusListener.onLoadInit();
+                }
                 mPullUpY = 0;
                 mPullDownY = 0;
             }
@@ -459,6 +495,10 @@ public class RefreshLayout extends ViewGroup {
         if (null != mHeaderView && mHeaderView instanceof Header) {
             ((Header) mHeaderView).onFinish();
         }
+
+        if (null != mOnStatusListener) {
+            mOnStatusListener.onRefreshFinish();
+        }
     }
 
     public void onLoadMoreComplete() {
@@ -470,19 +510,52 @@ public class RefreshLayout extends ViewGroup {
         if (null != mFooterView && mFooterView instanceof Footer) {
             ((Footer) mFooterView).onFinish();
         }
+
+        if (null != mOnStatusListener) {
+            mOnStatusListener.onLoadFinish();
+        }
     }
 
+    /**
+     * 回调监听刷新和加载更多
+     */
     private OnRefreshListener mOnRefreshListener;
+
+    /**
+     * 回调监听所有的动作状态
+     */
+    private OnStatusListener mOnStatusListener;
 
     public void setOnRefreshListener(OnRefreshListener listener) {
         mOnRefreshListener = listener;
     }
 
+    public void setOnStatusListener(OnStatusListener listener) {
+        mOnStatusListener = listener;
+    }
 
     public interface OnRefreshListener {
         void onRefresh();
 
         void onLoadMore();
+    }
+
+    public interface OnStatusListener {
+        void onRefreshInit();
+
+        void onPrepareToRefresh();
+
+        void onRefreshing();
+
+        void onRefreshFinish();
+
+        void onLoadInit();
+
+        void onPrepareToLoadMore();
+
+        void onLoading();
+
+        void onLoadFinish();
     }
 
 //    @Override
