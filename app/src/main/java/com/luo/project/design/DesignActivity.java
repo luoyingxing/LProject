@@ -14,6 +14,7 @@ public class DesignActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     private Toolbar mToolbar;
     private TextView titleTV;
+    private TextView contentTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class DesignActivity extends AppCompatActivity {
 
         appBarLayout = (AppBarLayout) findViewById(R.id.base_top_al);
         titleTV = (TextView) findViewById(R.id.toolbar_title);
+        contentTV = (TextView) findViewById(R.id.content);
 
         mToolbar = (Toolbar) findViewById(R.id.base_tool_bar);
         mToolbar.setTitleTextColor(Color.WHITE);
@@ -56,6 +58,8 @@ public class DesignActivity extends AppCompatActivity {
 
                 Log.i("DesignActivity", "offset/total = " + (float) offset / (float) total);
 
+                int color = Color.argb(100, Color.red(offset), Color.green(offset/2), Color.blue(offset*2));
+                contentTV.setBackgroundColor(color);
                 titleTV.setAlpha((float) offset / (float) total);
             }
         });
