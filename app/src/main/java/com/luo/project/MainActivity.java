@@ -65,19 +65,19 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        startActivity(new Intent(MainActivity.this, ViewActivity.class));
+                        startActivity(ViewActivity.class);
                         break;
                     case 1:
-                        startActivity(new Intent(MainActivity.this, ViewGroupActivity.class));
+                        startActivity(ViewGroupActivity.class);
                         break;
                     case 2:
-                        startActivity(new Intent(MainActivity.this, IntentActivity.class));
+                        startActivity(IntentActivity.class);
                         break;
                     case 3:
-                        startActivity(new Intent(MainActivity.this, NoHttpActivity.class));
+                        startActivity(NoHttpActivity.class);
                         break;
                     case 4:
-                        startActivity(new Intent(MainActivity.this, LayoutActivity.class));
+                        startActivity(LayoutActivity.class);
                         break;
                     case 5:
                         Intent intent = new Intent(MainActivity.this, FloatWindowService.class);
@@ -85,52 +85,52 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case 6:
-                        startActivity(new Intent(MainActivity.this, ThreadActivity.class));
+                        startActivity(ThreadActivity.class);
                         break;
                     case 7:
-                        startActivity(new Intent(MainActivity.this, AdapterActivity.class));
+                        startActivity(AdapterActivity.class);
                         break;
                     case 8:
-                        startActivity(new Intent(MainActivity.this, WifiActivity.class));
+                        startActivity(WifiActivity.class);
                         break;
                     case 9:
-                        startActivity(new Intent(MainActivity.this, RecyclerViewActivity.class));
+                        startActivity(RecyclerViewActivity.class);
                         break;
                     case 10:
-                        startActivity(new Intent(MainActivity.this, EventActivity.class));
+                        startActivity(EventActivity.class);
                         break;
                     case 11:
-                        startActivity(new Intent(MainActivity.this, RxJavaActivity.class));
+                        startActivity(RxJavaActivity.class);
                         break;
                     case 12:
-                        startActivity(new Intent(MainActivity.this, ContentProviderActivity.class));
+                        startActivity(ContentProviderActivity.class);
                         break;
                     case 13:
-                        startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+                        startActivity(GalleryActivity.class);
                         break;
                     case 14:
-                        startActivity(new Intent(MainActivity.this, AnimatorActivity.class));
+                        startActivity(AnimatorActivity.class);
                         break;
                     case 15:
-                        startActivity(new Intent(MainActivity.this, AIDLActivity.class));
+                        startActivity(AIDLActivity.class);
                         break;
                     case 16:
-                        startActivity(new Intent(MainActivity.this, ServerActivity.class));
+                        startActivity(ServerActivity.class);
                         break;
                     case 17:
-                        startActivity(new Intent(MainActivity.this, VectorActivity.class));
+                        startActivity(VectorActivity.class);
                         break;
                     case 18:
-                        startActivity(new Intent(MainActivity.this, WebViewActivity.class));
+                        startActivity(WebViewActivity.class);
                         break;
                     case 19:
-                        startActivity(new Intent(MainActivity.this, ReflectActivity.class));
+                        startActivity(ReflectActivity.class);
                         break;
                     case 20:
-                        startActivity(new Intent(MainActivity.this, RefreshActivity.class));
+                        startActivity(RefreshActivity.class);
                         break;
                     case 21:
-                        startActivity(new Intent(MainActivity.this, DesignActivity.class));
+                        startActivity(DesignActivity.class);
                         break;
                 }
             }
@@ -171,6 +171,10 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addAll(list);
 
+    }
+
+    private void startActivity(Class clazz) {
+        startActivity(new Intent(MainActivity.this, clazz));
     }
 
     private void setActionBar() {
