@@ -21,17 +21,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * LocalCastielService
+ * LocalService
  *
  * @Description: 本地服务
  * <p>
  * Created by luoyingxing on 2017/6/9.
  */
 
-public class LocalCastielService extends Service {
-    MyBinder myBinder;
-    private PendingIntent pintent;
-    MyServiceConnection myServiceConnection;
+public class LocalService extends Service {
+    private MyBinder myBinder;
+    private PendingIntent pIntent;
+    private MyServiceConnection myServiceConnection;
 
     @Override
     public void onCreate() {
@@ -46,7 +46,7 @@ public class LocalCastielService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.bindService(new Intent(this, RemoteCastielService.class), myServiceConnection, Context.BIND_IMPORTANT);
-        pintent = PendingIntent.getService(this, 0, intent, 0);
+        pIntent = PendingIntent.getService(this, 0, intent, 0);
 
         Notification notification = new Notification.Builder(this)
                 .setAutoCancel(true)
@@ -54,7 +54,7 @@ public class LocalCastielService extends Service {
                 .setTicker("Ticker")
                 .setContentTitle("ContentTitle")
                 .setContentText("正在运行…")
-                .setContentIntent(pintent)
+                .setContentIntent(pIntent)
                 .setWhen(System.currentTimeMillis())
                 .build();
 
@@ -96,10 +96,10 @@ public class LocalCastielService extends Service {
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
             // 连接出现了异常断开了，RemoteService被杀掉了
-            Toast.makeText(LocalCastielService.this, "远程服务Remote被干掉", Toast.LENGTH_LONG).show();
+            Toast.makeText(LocalService.this, "远程服务Remote被干掉", Toast.LENGTH_LONG).show();
             // 启动RemoteCastielService
-            LocalCastielService.this.startService(new Intent(LocalCastielService.this, RemoteCastielService.class));
-            LocalCastielService.this.bindService(new Intent(LocalCastielService.this, RemoteCastielService.class), myServiceConnection, Context.BIND_IMPORTANT);
+            LocalService.this.startService(new Intent(LocalService.this, RemoteCastielService.class));
+            LocalService.this.bindService(new Intent(LocalService.this, RemoteCastielService.class), myServiceConnection, Context.BIND_IMPORTANT);
         }
 
     }

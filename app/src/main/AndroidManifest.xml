@@ -113,7 +113,7 @@
         <activity android:name=".animator.AnimatorActivity" />
         <activity android:name=".aidl.AIDLActivity" />
 
-        <service android:name=".aidl.LocalCastielService">
+        <service android:name=".aidl.LocalService">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>

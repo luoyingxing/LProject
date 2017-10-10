@@ -17,9 +17,6 @@ import android.widget.Toast;
 import com.luo.project.CastielProgressConnection;
 import com.luo.project.R;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * RemoteCastielService
  *
@@ -45,7 +42,7 @@ public class RemoteCastielService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.bindService(new Intent(this, LocalCastielService.class), myServiceConnection, Context.BIND_IMPORTANT);
+        this.bindService(new Intent(this, LocalService.class), myServiceConnection, Context.BIND_IMPORTANT);
 
         pintent = PendingIntent.getService(this, 0, intent, 0);
 
@@ -77,8 +74,8 @@ public class RemoteCastielService extends Service {
             // 连接出现了异常断开了，LocalCastielService被杀死了
             Toast.makeText(RemoteCastielService.this, "本地服务Local被干掉", Toast.LENGTH_LONG).show();
             // 启动LocalCastielService
-            RemoteCastielService.this.startService(new Intent(RemoteCastielService.this, LocalCastielService.class));
-            RemoteCastielService.this.bindService(new Intent(RemoteCastielService.this, LocalCastielService.class), myServiceConnection, Context.BIND_IMPORTANT);
+            RemoteCastielService.this.startService(new Intent(RemoteCastielService.this, LocalService.class));
+            RemoteCastielService.this.bindService(new Intent(RemoteCastielService.this, LocalService.class), myServiceConnection, Context.BIND_IMPORTANT);
         }
 
     }
