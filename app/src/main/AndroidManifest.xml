@@ -135,10 +135,10 @@
         <activity android:name=".web.WebViewActivity" />
         <activity android:name=".reflect.ReflectActivity" />
         <activity android:name=".refresh.RefreshActivity" />
-
-        <activity android:name=".design.DesignActivity"
-            android:theme="@style/NoActionBar"/>
-
+        <activity
+            android:name=".design.DesignActivity"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".retrofit.RetrofitActivity"></activity>
     </application>
 
 </manifest>

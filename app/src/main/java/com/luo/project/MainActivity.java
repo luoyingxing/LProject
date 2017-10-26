@@ -33,6 +33,7 @@ import com.luo.project.recycler.RecyclerViewActivity;
 import com.luo.project.reflect.ReflectActivity;
 import com.luo.project.refresh.RefreshActivity;
 import com.luo.project.rx.RxJavaActivity;
+import com.luo.project.retrofit.RetrofitActivity;
 import com.luo.project.server.ServerActivity;
 import com.luo.project.thread.ThreadActivity;
 import com.luo.project.vector.VectorActivity;
@@ -132,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
                     case 21:
                         startActivity(DesignActivity.class);
                         break;
+                    case 22:
+                        startActivity(RetrofitActivity.class);
+                        break;
                 }
             }
         });
@@ -168,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("reflect");
         list.add("refresh");
         list.add("design");
+        list.add("Retrofit");
 
         adapter.addAll(list);
 
