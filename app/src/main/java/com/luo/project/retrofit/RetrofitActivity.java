@@ -35,6 +35,22 @@ public class RetrofitActivity extends AppCompatActivity {
 
         query();
 
+        new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())//解析方法
+                .baseUrl(URL)//主机地址
+                .build().create(ApiService.class)
+                .getResult("头条", "1e055d822e828e1f0d78ef05cde6f5f2")
+                .enqueue(new Callback<Focus>() {
+                    @Override
+                    public void onResponse(Call<Focus> call, Response<Focus> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Focus> call, Throwable t) {
+
+                    }
+                });
     }
 
     private void query() {
