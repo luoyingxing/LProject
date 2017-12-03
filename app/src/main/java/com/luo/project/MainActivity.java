@@ -21,6 +21,7 @@ import com.luo.project.adapter.CommonAdapter;
 import com.luo.project.adapter.ViewHolder;
 import com.luo.project.aidl.AIDLActivity;
 import com.luo.project.animator.AnimatorActivity;
+import com.luo.project.breakwifi.BreakWifiActivity;
 import com.luo.project.contentProvider.ContentProviderActivity;
 import com.luo.project.design.DesignActivity;
 import com.luo.project.event.EventActivity;
@@ -136,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
                     case 22:
                         startActivity(RetrofitActivity.class);
                         break;
+                    case 23:
+                        startActivity(BreakWifiActivity.class);
+                        break;
                 }
             }
         });
@@ -173,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("refresh");
         list.add("design");
         list.add("Retrofit");
+        list.add("Break WIFI");
 
         adapter.addAll(list);
 

@@ -45,12 +45,16 @@
         android:text="View"
         android:textColor="#fff" />
 
-    <TextView
-        android:id="@+id/tv_wifi_text"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello Word"
-        android:textColor="#ff3121"
-        android:textSize="20sp" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_wifi_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="result:" />
+
+    </ScrollView>
 
 </LinearLayout>

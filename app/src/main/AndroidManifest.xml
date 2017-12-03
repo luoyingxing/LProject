@@ -138,7 +138,8 @@
         <activity
             android:name=".design.DesignActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".retrofit.RetrofitActivity"></activity>
+        <activity android:name=".retrofit.RetrofitActivity" />
+        <activity android:name=".breakwifi.BreakWifiActivity"></activity>
     </application>
 
 </manifest>
