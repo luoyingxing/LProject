@@ -30,10 +30,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <!--往sdcard中写入数据的权限 -->
-    <!--在sdcard中创建/删除文件的权限 -->
 
-
+    <!-- 往sdcard中写入数据的权限 -->
+    <!-- 在sdcard中创建/删除文件的权限 -->
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -151,7 +150,8 @@
             android:name=".design.DesignActivity"
             android:theme="@style/NoActionBar" />
         <activity android:name=".retrofit.RetrofitActivity" />
-        <activity android:name=".breakwifi.BreakWifiActivity"></activity>
+        <activity android:name=".breakwifi.BreakWifiActivity" />
+        <activity android:name=".coordinator.CoordinatorActivity"/>
     </application>
 
 </manifest>
