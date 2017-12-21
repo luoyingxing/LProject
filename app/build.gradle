@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.luo.project"
@@ -10,6 +10,8 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        //Android Studio升级到3.0之后，运行的时候会报错,版本名后面添加一句话，意思就是flavor dimension 它的维度就是该版本号，这样维度就是都是统一的了
+        flavorDimensions "versionCode"
     }
 
     signingConfigs {
@@ -46,15 +48,22 @@ android {
                     def versionName = 'v' + variant.getVersionName() //版本名称
                     def versionCode = 'c' + variant.getVersionCode()//版本号
 
-                    variant.outputs.each { output ->
+                    variant.outputs.all { output ->
                         variant.productFlavors.each { product ->
                             buildName = product.name //获取渠道名字
                         }
                         outDir = output.outputFile.parent
                         outApkName = application + '_' + versionName + '_' + versionCode + '_' + variant.buildType.name + buildName + '.apk'
-                        output.outputFile = new File(outDir, outApkName)
+                        outputFileName = new File(outDir, outApkName)
                     }
             }
+
+//            android.applicationVariants.all { variant ->
+//                variant.outputs.all {
+//                    outputFileName = "${variant.name}-${variant.versionName}.apk"
+//                }
+//            }
+
         }
     }
 
