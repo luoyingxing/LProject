@@ -151,7 +151,9 @@
             android:theme="@style/NoActionBar" />
         <activity android:name=".retrofit.RetrofitActivity" />
         <activity android:name=".breakwifi.BreakWifiActivity" />
-        <activity android:name=".coordinator.CoordinatorActivity"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:name=".coordinator.CoordinatorActivity"/>
     </application>
 
 </manifest>

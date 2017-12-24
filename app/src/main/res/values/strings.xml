@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">LProject</string>
     <string name="action_settings">Settings</string>
+
+    <string name="behavior_sample_title">com.luo.project.coordinator.AlphaTitleBehavior</string>
+
 </resources>

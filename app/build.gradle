@@ -38,25 +38,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
 
-            applicationVariants.all {
-                variant ->
-                    def application = "LProject"
-                    def buildName = "channel" //渠道名字
-                    def outApkName = "peojectTest" //最终输出文件名
-                    def outDir
-
-                    def versionName = 'v' + variant.getVersionName() //版本名称
-                    def versionCode = 'c' + variant.getVersionCode()//版本号
-
-                    variant.outputs.all { output ->
-                        variant.productFlavors.each { product ->
-                            buildName = product.name //获取渠道名字
-                        }
-                        outDir = output.outputFile.parent
-                        outApkName = application + '_' + versionName + '_' + versionCode + '_' + variant.buildType.name + buildName + '.apk'
-                        outputFileName = new File(outDir, outApkName)
-                    }
-            }
+//            applicationVariants.all {
+//                variant ->
+//                    def application = "LProject"
+//                    def buildName = "channel" //渠道名字
+//                    def outApkName = "peojectTest" //最终输出文件名
+//                    def outDir
+//
+//                    def versionName = 'v' + variant.getVersionName() //版本名称
+//                    def versionCode = 'c' + variant.getVersionCode()//版本号
+//
+//                    variant.outputs.all { output ->
+//                        variant.productFlavors.each { product ->
+//                            buildName = product.name //获取渠道名字
+//                        }
+//                        outDir = output.outputFile.parent
+//                        outApkName = application + '_' + versionName + '_' + versionCode + '_' + variant.buildType.name + buildName + '.apk'
+//                        outputFileName = new File(outDir, outApkName)
+//                    }
+//            }
 
 //            android.applicationVariants.all { variant ->
 //                variant.outputs.all {
@@ -68,9 +68,9 @@ android {
     }
 
     productFlavors {
-        qihu360 {} // 360手机助手
-        yingyongbao {} // 腾讯应用宝
-        wandoujia {} // 豌豆荚
+//        qihu360 {} // 360手机助手
+//        yingyongbao {} // 腾讯应用宝
+//        wandoujia {} // 豌豆荚
 //        baidu {} // 百度手机助手
 //        miui {} // 小米
 //        flyme {} // 魅族
@@ -110,6 +110,18 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
 dependencies {
