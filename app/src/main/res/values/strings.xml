@@ -4,4 +4,6 @@
 
     <string name="behavior_sample_title">com.luo.project.coordinator.AlphaTitleBehavior</string>
 
+    <string name="behavior_sample_header">com.luo.project.coordinator.SampleHeaderBehavior</string>
+    <string name="behavior_recyclerview">com.luo.project.coordinator.RecyclerViewBehavior</string>
 </resources>
