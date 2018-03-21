@@ -32,6 +32,7 @@ import com.luo.project.gallery.GalleryActivity;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.layout.LayoutActivity;
 import com.luo.project.nohttp.NoHttpActivity;
+import com.luo.project.qr.QRActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
 import com.luo.project.reflect.ReflectActivity;
 import com.luo.project.refresh.RefreshActivity;
@@ -148,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
                     case 25:
                         startActivity(TitleBarActivity.class);
                         break;
+                    case 26:
+                        startActivity(QRActivity.class);
+                        break;
                 }
             }
         });
@@ -188,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("Break WIFI");
         list.add("CoordinatorLayout");
         list.add("TitleBar");
+        list.add("QR");
 
         adapter.addAll(list);
 

@@ -155,8 +155,11 @@
             android:name=".coordinator.CoordinatorActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:name=".bar.TitleBarActivity"/>
+            android:name=".bar.TitleBarActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity android:name=".qr.QRActivity" />
+
     </application>
 
 </manifest>
