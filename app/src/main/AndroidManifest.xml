@@ -158,6 +158,8 @@
             android:name=".bar.TitleBarActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".support.ConstraintActivity" />
+        <activity android:name=".qr.QRActivity" />
+
     </application>
 
 </manifest>

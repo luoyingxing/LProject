@@ -12,4 +12,15 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="QRCodeView">
+        <attr name="boxViewWidth" format="dimension"></attr>
+        <attr name="boxViewHeight" format="dimension"></attr>
+        <attr name="maskColor" format="color"></attr>
+        <attr name="boxViewCornerColor" format="color"></attr>
+        <attr name="boxViewBorderColor" format="color"></attr>
+        <attr name="boxViewCornerSize" format="dimension"></attr>
+        <attr name="boxViewCornerLength" format="dimension"></attr>
+        <attr name="boxViewCornerOffset" format="dimension"></attr>
+    </declare-styleable>
+
 </resources>
