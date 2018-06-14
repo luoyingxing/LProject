@@ -15,186 +15,54 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.luo.project.ViewGroup.ViewGroupActivity;
-import com.luo.project.adapter.AdapterActivity;
 import com.luo.project.adapter.CommonAdapter;
 import com.luo.project.adapter.ViewHolder;
-import com.luo.project.aidl.AIDLActivity;
-import com.luo.project.animator.AnimatorActivity;
-import com.luo.project.bar.TitleBarActivity;
-import com.luo.project.breakwifi.BreakWifiActivity;
-import com.luo.project.contentProvider.ContentProviderActivity;
-import com.luo.project.coordinator.CoordinatorActivity;
-import com.luo.project.design.DesignActivity;
-import com.luo.project.event.EventActivity;
-import com.luo.project.flow.FloatWindowService;
-import com.luo.project.gallery.GalleryActivity;
-import com.luo.project.intent.IntentActivity;
-import com.luo.project.layout.LayoutActivity;
-import com.luo.project.nohttp.NoHttpActivity;
-import com.luo.project.recycler.RecyclerViewActivity;
-import com.luo.project.reflect.ReflectActivity;
-import com.luo.project.refresh.RefreshActivity;
-import com.luo.project.rx.RxJavaActivity;
-import com.luo.project.retrofit.RetrofitActivity;
-import com.luo.project.server.ServerActivity;
-import com.luo.project.thread.ThreadActivity;
-import com.luo.project.vector.VectorActivity;
-import com.luo.project.view.ViewActivity;
-import com.luo.project.web.WebViewActivity;
-import com.luo.project.wifi.WifiActivity;
+import com.luo.project.entity.Project;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "MainActivity";
 
     private GridView gridView;
-    private CommonAdapter<String> adapter;
+    private CommonAdapter<Project> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setActionBar();
+//        setActionBar();
 
-        gridView = (GridView) findViewById(R.id.list_view);
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView = findViewById(R.id.list_view);
+        adapter = new CommonAdapter<Project>(this, new ArrayList<Project>(), R.layout.item_main_list) {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        startActivity(ViewActivity.class);
-                        break;
-                    case 1:
-                        startActivity(ViewGroupActivity.class);
-                        break;
-                    case 2:
-                        startActivity(IntentActivity.class);
-                        break;
-                    case 3:
-                        startActivity(NoHttpActivity.class);
-                        break;
-                    case 4:
-                        startActivity(LayoutActivity.class);
-                        break;
-                    case 5:
-                        Intent intent = new Intent(MainActivity.this, FloatWindowService.class);
-                        startService(intent);
-                        finish();
-                        break;
-                    case 6:
-                        startActivity(ThreadActivity.class);
-                        break;
-                    case 7:
-                        startActivity(AdapterActivity.class);
-                        break;
-                    case 8:
-                        startActivity(WifiActivity.class);
-                        break;
-                    case 9:
-                        startActivity(RecyclerViewActivity.class);
-                        break;
-                    case 10:
-                        startActivity(EventActivity.class);
-                        break;
-                    case 11:
-                        startActivity(RxJavaActivity.class);
-                        break;
-                    case 12:
-                        startActivity(ContentProviderActivity.class);
-                        break;
-                    case 13:
-                        startActivity(GalleryActivity.class);
-                        break;
-                    case 14:
-                        startActivity(AnimatorActivity.class);
-                        break;
-                    case 15:
-                        startActivity(AIDLActivity.class);
-                        break;
-                    case 16:
-                        startActivity(ServerActivity.class);
-                        break;
-                    case 17:
-                        startActivity(VectorActivity.class);
-                        break;
-                    case 18:
-                        startActivity(WebViewActivity.class);
-                        break;
-                    case 19:
-                        startActivity(ReflectActivity.class);
-                        break;
-                    case 20:
-                        startActivity(RefreshActivity.class);
-                        break;
-                    case 21:
-                        startActivity(DesignActivity.class);
-                        break;
-                    case 22:
-                        startActivity(RetrofitActivity.class);
-                        break;
-                    case 23:
-                        startActivity(BreakWifiActivity.class);
-                        break;
-                    case 24:
-                        startActivity(CoordinatorActivity.class);
-                        break;
-                    case 25:
-                        startActivity(TitleBarActivity.class);
-                        break;
-                }
-            }
-        });
-
-        adapter = new CommonAdapter<String>(this, new ArrayList<String>(), R.layout.item_main_list) {
-            @Override
-            public void convert(ViewHolder helper, String item) {
-                helper.setText(R.id.tv_item_main_list, item);
+            public void convert(ViewHolder helper, Project item) {
+                helper.setText(R.id.tv_item_main_list, item.getTitle());
+                helper.setText(R.id.tv_item_main_subtitle, item.getSubtitle());
             }
         };
-
         gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(this);
 
-        List<String> list = new ArrayList<>();
-        list.add("RecyclerView");
-        list.add("ViewGroup");
-        list.add("Intent");
-        list.add("NoHttp");
-        list.add("Layout");
-        list.add("flow button");
-        list.add("Thread pool");
-        list.add("Adapter");
-        list.add("Wifi");
-        list.add("RecyclerView");
-        list.add("View Event");
-        list.add("RxJava");
-        list.add("ContentProvider");
-        list.add("Gallery");
-        list.add("Animator");
-        list.add("AIDL");
-        list.add("Server");
-        list.add("Vector");
-        list.add("WebView");
-        list.add("reflect");
-        list.add("refresh");
-        list.add("design");
-        list.add("Retrofit");
-        list.add("Break WIFI");
-        list.add("CoordinatorLayout");
-        list.add("TitleBar");
-
-        adapter.addAll(list);
-
+        adapter.addAll(Project.getProjectList());
     }
 
     private void startActivity(Class clazz) {
         startActivity(new Intent(MainActivity.this, clazz));
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position == 5) {
+            Intent intent = new Intent(MainActivity.this, adapter.getItem(position).getClazz());
+            startService(intent);
+            finish();
+        } else {
+            startActivity(adapter.getItem(position).getClazz());
+        }
     }
 
     private void setActionBar() {
@@ -272,5 +140,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return statusHeight;
     }
-
 }
