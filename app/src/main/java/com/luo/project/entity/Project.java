@@ -15,6 +15,7 @@ import com.luo.project.gallery.GalleryActivity;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.layout.LayoutActivity;
 import com.luo.project.nohttp.NoHttpActivity;
+import com.luo.project.qr.QRActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
 import com.luo.project.reflect.ReflectActivity;
 import com.luo.project.refresh.RefreshActivity;
@@ -76,6 +77,7 @@ public class Project {
         list.add(new Project(BreakWifiActivity.class, "Break WIFI", ""));
         list.add(new Project(CoordinatorActivity.class, "CoordinatorLayout", ""));
         list.add(new Project(TitleBarActivity.class, "TitleBar", ""));
+        list.add(new Project(QRActivity.class, "QR", "第三方二维码扫描库"));
         list.add(new Project(ConstraintActivity.class, "ConstraintLayout", "support包的约束布局（xml默认的布局）"));
 
 
