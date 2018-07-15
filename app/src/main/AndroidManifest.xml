@@ -160,6 +160,11 @@
         <activity android:name=".support.ConstraintActivity" />
         <activity android:name=".qr.QRActivity" />
 
+        <activity
+            android:name=".move.ViewMoveActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MoveStyle" />
+
     </application>
 
 </manifest>

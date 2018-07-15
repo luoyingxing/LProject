@@ -14,6 +14,7 @@ import com.luo.project.flow.FloatWindowService;
 import com.luo.project.gallery.GalleryActivity;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.layout.LayoutActivity;
+import com.luo.project.move.ViewMoveActivity;
 import com.luo.project.nohttp.NoHttpActivity;
 import com.luo.project.qr.QRActivity;
 import com.luo.project.recycler.RecyclerViewActivity;
@@ -51,6 +52,7 @@ public class Project {
     public static List<Project> getProjectList() {
         List<Project> list = new ArrayList<>();
 
+        list.add(new Project(ViewMoveActivity.class, "Move", "view移动的速率和时间"));
         list.add(new Project(ViewActivity.class, "RecyclerView", ""));
         list.add(new Project(ViewGroupActivity.class, "ViewGroup", ""));
         list.add(new Project(IntentActivity.class, "Intent", ""));
@@ -79,7 +81,6 @@ public class Project {
         list.add(new Project(TitleBarActivity.class, "TitleBar", ""));
         list.add(new Project(QRActivity.class, "QR", "第三方二维码扫描库"));
         list.add(new Project(ConstraintActivity.class, "ConstraintLayout", "support包的约束布局（xml默认的布局）"));
-
 
         return list;
 
