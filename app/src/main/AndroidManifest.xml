@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- 往sdcard中写入数据的权限 -->
     <!-- 在sdcard中创建/删除文件的权限 -->
@@ -164,6 +165,16 @@
             android:name=".move.ViewMoveActivity"
             android:screenOrientation="landscape"
             android:theme="@style/MoveStyle" />
+
+        <receiver
+            android:name=".auto.BootReceiver"
+            android:allowTaskReparenting="true"
+            android:enabled="true"
+            android:taskAffinity="com.luo.project">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

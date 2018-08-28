@@ -14,6 +14,8 @@ public class Constant {
      * login cookie
      */
     public static final String PREFS_LOGIN_COOKIE = "login_cookie";
+
+    public static final String AUTO_RUN_APP = "auto_run_app";
     /**
      * pageSize for paging
      */

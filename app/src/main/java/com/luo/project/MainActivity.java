@@ -18,6 +18,7 @@ import android.widget.GridView;
 import com.luo.project.adapter.CommonAdapter;
 import com.luo.project.adapter.ViewHolder;
 import com.luo.project.entity.Project;
+import com.luo.project.utils.FileUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter = new CommonAdapter<Project>(this, new ArrayList<Project>(), R.layout.item_main_list) {
             @Override
             public void convert(ViewHolder helper, Project item) {
-                helper.setText(R.id.tv_item_main_list, item.getTitle());
+                helper.setText(R.id.tv_item_main_list, item.getTitle() + "-" + FileUtils.getPref(Constant.AUTO_RUN_APP));
                 helper.setText(R.id.tv_item_main_subtitle, item.getSubtitle());
             }
         };
