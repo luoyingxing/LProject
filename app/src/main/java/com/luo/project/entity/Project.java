@@ -12,6 +12,7 @@ import com.luo.project.design.DesignActivity;
 import com.luo.project.event.EventActivity;
 import com.luo.project.flow.FloatWindowService;
 import com.luo.project.gallery.GalleryActivity;
+import com.luo.project.handler.HandlerActivity;
 import com.luo.project.intent.IntentActivity;
 import com.luo.project.layout.LayoutActivity;
 import com.luo.project.move.ViewMoveActivity;
@@ -81,6 +82,7 @@ public class Project {
         list.add(new Project(TitleBarActivity.class, "TitleBar", ""));
         list.add(new Project(QRActivity.class, "QR", "第三方二维码扫描库"));
         list.add(new Project(ConstraintActivity.class, "ConstraintLayout", "support包的约束布局（xml默认的布局）"));
+        list.add(new Project(HandlerActivity.class, "HandlerActivity", "Handler机制"));
 
         return list;
 

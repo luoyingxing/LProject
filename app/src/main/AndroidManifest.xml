@@ -160,6 +160,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".support.ConstraintActivity" />
         <activity android:name=".qr.QRActivity" />
+        <activity android:name=".handler.HandlerActivity" />
 
         <activity
             android:name=".move.ViewMoveActivity"
