@@ -166,6 +166,7 @@
             android:name=".move.ViewMoveActivity"
             android:screenOrientation="landscape"
             android:theme="@style/MoveStyle" />
+        <activity android:name=".excel.ExcelActivity" />
 
         <receiver
             android:name=".auto.BootReceiver"

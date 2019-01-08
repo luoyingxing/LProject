@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.luo.project"
@@ -107,6 +107,7 @@ android {
         main {
             java.srcDirs = ['src/main/java', 'src/main/aidl']
             assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+            jniLibs.srcDirs = ['libs']
         }
     }
 
@@ -145,4 +146,5 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'com.github.thepacific:mvc:0.0.2'
     testImplementation 'junit:junit:4.12'
+    implementation files('libs/jxl.jar')
 }
