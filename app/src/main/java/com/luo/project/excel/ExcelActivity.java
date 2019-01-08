@@ -52,7 +52,7 @@ public class ExcelActivity extends AppCompatActivity {
 
         try {
             //hello.xls为要读取的excel文件名
-            book = Workbook.getWorkbook(assetManager.open("excel_test.xls"));
+            book = Workbook.getWorkbook(assetManager.open("excel_t.xls"));
 
             //获得第一个工作表对象(ecxel中sheet的编号从0开始,0,1,2,3,....)
             sheet = book.getSheet(1);
