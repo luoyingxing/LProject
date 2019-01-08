@@ -19,4 +19,9 @@ public class Info {
         this.number = number;
         this.information = information;
     }
+
+    @Override
+    public String toString() {
+        return provider + "   " + card + "   " + number + "   " + information + "   ";
+    }
 }

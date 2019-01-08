@@ -13,8 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jxl.Cell;
+import jxl.CellType;
+import jxl.DateCell;
+import jxl.NumberCell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -28,11 +33,14 @@ import jxl.write.WriteException;
  * date: 2019/1/8.
  */
 public class ExcelActivity extends AppCompatActivity {
+    private String regex;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.excel_activity);
+
+        regex = "[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}";
     }
 
     @Override
@@ -51,8 +59,14 @@ public class ExcelActivity extends AppCompatActivity {
         Sheet sheet;
 
         try {
+//            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+//            File file = new File(path + "/excel.xls");
             //hello.xls为要读取的excel文件名
-            book = Workbook.getWorkbook(assetManager.open("excel_t.xls"));
+//            book = Workbook.getWorkbook(file);
+
+
+            book = Workbook.getWorkbook(assetManager.open("excel.xls"));
+
 
             //获得第一个工作表对象(ecxel中sheet的编号从0开始,0,1,2,3,....)
             sheet = book.getSheet(1);
@@ -67,13 +81,11 @@ public class ExcelActivity extends AppCompatActivity {
                 if (content.length > 1) {
 //                    Log.d("ExcelActivity", "content: " + content[0]);
 
-                    String[] info = content[0].split("，| ,| ");
+                    String[] info = content[0].split("，|,| ", 3);  //分为3个数组
 
                     Info inf = new Info();
 
-
-                    if (info.length == 4) {
-//                        Log.d("ExcelActivity", "" + info[0]);
+                    if (info.length == 3) {
                         String[] pStr = info[0].split("[\\d]+");
                         if (pStr.length > 1) {
                             inf.provider = pStr[1].substring(1);
@@ -81,37 +93,39 @@ public class ExcelActivity extends AppCompatActivity {
                             inf.provider = info[0];
                         }
 
-//                        Log.w("ExcelActivity", "" + inf.provider);
-
                         inf.card = info[1];
-                        inf.number = info[2];
-                        inf.information = info[3];
 
-//                        Log.e("ExcelActivity", info[0] + "     " +
-//                                info[1] + "      " +
-//                                info[2] + "      " +
-//                                info[3]);
-                    } else if (info.length == 5) {
-//                        Log.d("ExcelActivity", "" + info[0]);
-                        String[] pStr = info[0].split("[\\d]+");
-                        if (pStr.length > 1) {
-                            inf.provider = pStr[1].substring(1);
-                        } else {
-                            inf.provider = info[0];
+
+                        //找出车牌和个人信息
+                        String str = info[2];
+                        Matcher m = Pattern.compile(regex).matcher(str);
+
+                        if (m.find()) {
+                            String number = m.group();
+                            inf.number = number;
+
+                            String information = null;
+
+                            int index = str.indexOf(number);
+                            if (index == 0) {
+                                information = str.substring(number.length(), str.length());
+                            } else if (index == str.length() - number.length()) {
+                                information = str.substring(0, str.length() - number.length());
+                            } else {
+                                information = str.substring(0, index) + str.substring(index + number.length(), str.length());
+                            }
+
+                            information = information.replace("，", " ");
+                            information = information.replace(",", " ");
+                            information = information.replace("；", " ");
+
+
+                            inf.information = information.trim();
                         }
 
-//                        Log.w("ExcelActivity", " " + inf.provider);
-
-                        inf.card = info[1];
-                        inf.number = info[2];
-                        inf.information = info[3] + "，" + info[4];
-
-//                        Log.e("ExcelActivity", info[0] + "     " +
-//                                info[1] + "      " +
-//                                info[2] + "      " +
-//                                info[3] + "，" + info[4]);
                     }
 
+//                    Log.i("ExcelActivity", "" + inf.toString());
                     list.add(inf);
                 }
             }
@@ -119,6 +133,7 @@ public class ExcelActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         Log.w("ExcelActivity", "============== 读取完毕 ===============");
     }
@@ -167,7 +182,7 @@ public class ExcelActivity extends AppCompatActivity {
     private void test() {
         try {
             WriteExcel excel = new WriteExcel();
-            excel.create("excel_test");
+            excel.create("excel");
 
             for (int i = 0; i < list.size(); i++) {
                 Info info = list.get(i);
