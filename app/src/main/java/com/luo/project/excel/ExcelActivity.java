@@ -50,7 +50,7 @@ public class ExcelActivity extends AppCompatActivity {
         test();
     }
 
-    private List<List<Info>> excelList = new ArrayList<>();
+    private List<ExcelCell> excelList = new ArrayList<>();
 
     private void read() {
 //        AssetManager assetManager = getAssets();
@@ -71,6 +71,9 @@ public class ExcelActivity extends AppCompatActivity {
             }
 
             for (Sheet sheet : sheets) {
+                ExcelCell excelCell = new ExcelCell();
+                excelCell.tableName = sheet.getName();
+
                 List<Info> list = new ArrayList<>();
 //
 //                //获得第一个工作表对象(ecxel中sheet的编号从0开始,0,1,2,3,....)
@@ -119,10 +122,10 @@ public class ExcelActivity extends AppCompatActivity {
                                     information = str.substring(0, index) + str.substring(index + number.length(), str.length());
                                 }
 
-                                information = information.replace("，", " ");
-                                information = information.replace(",", " ");
-                                information = information.replace("；", " ");
-
+                                information = information.replaceAll("，", " ");
+                                information = information.replaceAll(",", " ");
+                                information = information.replaceAll("；", " ");
+                                information = information.replaceAll(" ", "");
 
                                 inf.information = information.trim();
                             }
@@ -134,7 +137,8 @@ public class ExcelActivity extends AppCompatActivity {
                     list.add(inf);
                 }
 
-                excelList.add(list);
+                excelCell.list = list;
+                excelList.add(excelCell);
             }
 
             book.close();
@@ -190,10 +194,11 @@ public class ExcelActivity extends AppCompatActivity {
     private void test() {
         try {
             for (int j = 0; j < excelList.size(); j++) {
-                List<Info> list = excelList.get(j);
+                ExcelCell excelCell = excelList.get(j);
+                List<Info> list = excelCell.list;
 
                 WriteExcel excel = new WriteExcel();
-                excel.create("excel_" + j);
+                excel.create("excel_" + excelCell.tableName);
 
                 for (int i = 0; i < list.size(); i++) {
                     Info info = list.get(i);
