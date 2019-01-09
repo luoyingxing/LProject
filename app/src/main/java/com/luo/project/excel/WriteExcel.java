@@ -47,7 +47,7 @@ public class WriteExcel {
         try {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath();
             // 输出Excel的路径
-            String filePath = path + "/" + fileName + ".xls";
+            String filePath = path + "/abc/" + fileName + ".xls";
             // 新建一个文件
             OutputStream os = new FileOutputStream(filePath);
             // 创建Excel工作簿

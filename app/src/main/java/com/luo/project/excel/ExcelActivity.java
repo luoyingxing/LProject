@@ -50,85 +50,93 @@ public class ExcelActivity extends AppCompatActivity {
         test();
     }
 
-    private List<Info> list = new ArrayList<>();
+    private List<List<Info>> excelList = new ArrayList<>();
 
     private void read() {
-        AssetManager assetManager = getAssets();
+//        AssetManager assetManager = getAssets();
 
         Workbook book;
-        Sheet sheet;
 
         try {
-//            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-//            File file = new File(path + "/excel.xls");
-            //hello.xls为要读取的excel文件名
-//            book = Workbook.getWorkbook(file);
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File file = new File(path + "/abc/excel.xls");
+            book = Workbook.getWorkbook(file);
+
+//            book = Workbook.getWorkbook(assetManager.open("excel.xls"));
 
 
-            book = Workbook.getWorkbook(assetManager.open("excel.xls"));
+            Sheet[] sheets = book.getSheets();
+            if (sheets.length == 0) {
+                return;
+            }
 
+            for (Sheet sheet : sheets) {
+                List<Info> list = new ArrayList<>();
+//
+//                //获得第一个工作表对象(ecxel中sheet的编号从0开始,0,1,2,3,....)
+//                sheet = book.getSheet(0);
 
-            //获得第一个工作表对象(ecxel中sheet的编号从0开始,0,1,2,3,....)
-            sheet = book.getSheet(1);
+                int row = sheet.getRows();
 
-            int row = sheet.getRows();
-
-            for (int i = 1; i < row; i++) {
-                Cell cell = sheet.getCell(2, i); //（列，行）
-                String data = cell.getContents();
-                String[] content = data.split("装：");
-
-                if (content.length > 1) {
-//                    Log.d("ExcelActivity", "content: " + content[0]);
-
-                    String[] info = content[0].split("，|,| ", 3);  //分为3个数组
+                for (int i = 1; i < row; i++) {
+                    Cell cell = sheet.getCell(2, i); //（列，行）
+                    String data = cell.getContents();
+                    String[] content = data.split("装：");
 
                     Info inf = new Info();
+                    if (content.length > 1) {
+//                    Log.d("ExcelActivity", "content: " + content[0]);
 
-                    if (info.length == 3) {
-                        String[] pStr = info[0].split("[\\d]+");
-                        if (pStr.length > 1) {
-                            inf.provider = pStr[1].substring(1);
-                        } else {
-                            inf.provider = info[0];
-                        }
+                        String[] info = content[0].split("，|,| ", 3);  //分为3个数组
 
-                        inf.card = info[1];
-
-
-                        //找出车牌和个人信息
-                        String str = info[2];
-                        Matcher m = Pattern.compile(regex).matcher(str);
-
-                        if (m.find()) {
-                            String number = m.group();
-                            inf.number = number;
-
-                            String information = null;
-
-                            int index = str.indexOf(number);
-                            if (index == 0) {
-                                information = str.substring(number.length(), str.length());
-                            } else if (index == str.length() - number.length()) {
-                                information = str.substring(0, str.length() - number.length());
+                        if (info.length == 3) {
+                            String[] pStr = info[0].split("[\\d]+");
+                            if (pStr.length > 1) {
+                                inf.provider = pStr[1].substring(1);
                             } else {
-                                information = str.substring(0, index) + str.substring(index + number.length(), str.length());
+                                inf.provider = info[0];
                             }
 
-                            information = information.replace("，", " ");
-                            information = information.replace(",", " ");
-                            information = information.replace("；", " ");
+                            inf.card = info[1];
 
 
-                            inf.information = information.trim();
+                            //找出车牌和个人信息
+                            String str = info[2];
+                            Matcher m = Pattern.compile(regex).matcher(str);
+
+                            if (m.find()) {
+                                String number = m.group();
+                                inf.number = number;
+
+                                String information = null;
+
+                                int index = str.indexOf(number);
+                                if (index == 0) {
+                                    information = str.substring(number.length(), str.length());
+                                } else if (index == str.length() - number.length()) {
+                                    information = str.substring(0, str.length() - number.length());
+                                } else {
+                                    information = str.substring(0, index) + str.substring(index + number.length(), str.length());
+                                }
+
+                                information = information.replace("，", " ");
+                                information = information.replace(",", " ");
+                                information = information.replace("；", " ");
+
+
+                                inf.information = information.trim();
+                            }
+
                         }
-
                     }
 
-//                    Log.i("ExcelActivity", "" + inf.toString());
+                    Log.i("ExcelActivity", "" + inf.toString());
                     list.add(inf);
                 }
+
+                excelList.add(list);
             }
+
             book.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,20 +189,24 @@ public class ExcelActivity extends AppCompatActivity {
 
     private void test() {
         try {
-            WriteExcel excel = new WriteExcel();
-            excel.create("excel");
+            for (int j = 0; j < excelList.size(); j++) {
+                List<Info> list = excelList.get(j);
 
-            for (int i = 0; i < list.size(); i++) {
-                Info info = list.get(i);
+                WriteExcel excel = new WriteExcel();
+                excel.create("excel_" + j);
 
-                excel.addString(3, i, info.provider);//列，行，文本
-                excel.addString(4, i, info.card);
-                excel.addString(5, i, info.number);
-                excel.addString(6, i, info.information);
+                for (int i = 0; i < list.size(); i++) {
+                    Info info = list.get(i);
+                    Log.d("ExcelActivity", "" + info.toString());
+                    excel.addString(3, i, info.provider);//列，行，文本
+                    excel.addString(4, i, info.card);
+                    excel.addString(5, i, info.number);
+                    excel.addString(6, i, info.information);
 
+                }
+
+                excel.close();
             }
-            excel.close();
-
         } catch (WriteException e) {
             e.printStackTrace();
         } catch (IOException e) {
